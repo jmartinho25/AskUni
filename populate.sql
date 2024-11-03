@@ -8,6 +8,11 @@ INSERT INTO roles (name) VALUES
 ('admin'), 
 ('moderator');
 
+INSERT INTO badges (name, description) VALUES 
+('20 Likes', 'Awarded for receiving 20 likes on a post.'),
+('First Question', 'Awarded for asking your first question.'),
+('First Correct Answer', 'Awarded for getting your answer marked as correct.');
+
 INSERT INTO users (username, name, email, password, description, score) VALUES 
 ('john_doe', 'John Doe', 'john_doe@fe.up.pt', 'hashed_password_1', 'A regular user.', 50),
 ('jane_smith', 'Jane Smith', 'jane_smith@fe.up.pt', 'hashed_password_2', 'An avid contributor.', 70),
@@ -160,11 +165,6 @@ INSERT INTO posts_tags (posts_id, tags_id) VALUES
 (19, 1),
 (20, 17);
 
-INSERT INTO badges (name, description) VALUES 
-('20 Likes', 'Awarded for receiving 20 likes on a post.'),
-('First Question', 'Awarded for asking your first question.'),
-('First Correct Answer', 'Awarded for getting your answer marked as correct.');
-
 INSERT INTO questions (posts_id, title) VALUES 
 (1, 'Effective Study Techniques for Engineering Mathematics?'),
 (2, 'Resources for Understanding Circuit Analysis?'),
@@ -257,3 +257,15 @@ INSERT INTO content_reports (report_reason, date, solved, comments_id, posts_id)
 
 UPDATE posts SET content = 'What are the most effective study techniques for mastering engineering mathematics? I struggle with calculus and differential equations and would appreciate some guidance.' WHERE id = 1;
 UPDATE comments SET content = 'I’ve noticed that consistent practice really does help with calculus and differential equations; it’s all about building a strong foundation.' WHERE id = 2;
+
+INSERT INTO earned_badges (users_id, badges_id, date) VALUES 
+(1, 2, now()),
+(2, 2, now()),
+(3, 2, now()),
+(4, 2, now()),
+(5, 2, now()),
+(6, 2, now()),
+(7, 2, now()),
+(8, 2, now()),
+(9, 2, now()),
+(10, 2, now());
