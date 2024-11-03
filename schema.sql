@@ -6,8 +6,6 @@ CREATE SCHEMA IF NOT EXISTS lbaw24153;
 
 SET search_path TO lbaw24153;
 
-
-
 --------------------------------
 -- Drop old schema
 --------------------------------
@@ -377,8 +375,7 @@ CREATE INDEX tags_search_idx ON tags USING GIN(tsvectors);
 --------------------------------
 -- Create Triggers
 --------------------------------
-
--- TRIGGER01: Notificação de novo comentário em um post
+-- TRIGGER01: Notification of new comment on a post
 CREATE OR REPLACE FUNCTION new_comment_notification() RETURNS TRIGGER AS
 $BODY$
 DECLARE
@@ -411,7 +408,7 @@ CREATE TRIGGER new_comment_notification
     EXECUTE PROCEDURE new_comment_notification();
 
 
--- TRIGGER02: Notificação de usuário marcado em um comentário
+-- TRIGGER02: Notification of user tagged in a comment
 CREATE OR REPLACE FUNCTION comment_tagging_notification() RETURNS TRIGGER AS
 $BODY$
 DECLARE
@@ -440,7 +437,7 @@ CREATE TRIGGER comment_tagging_notification
     EXECUTE PROCEDURE comment_tagging_notification();
 
 
--- TRIGGER03: Notificação de nova pergunta com tag seguida
+-- TRIGGER03: Notification of new question on followed tag
 CREATE OR REPLACE FUNCTION tag_new_question_notification() RETURNS TRIGGER AS $$
 DECLARE
     follower_id INTEGER;
@@ -481,7 +478,7 @@ FOR EACH ROW
 EXECUTE FUNCTION tag_new_question_notification();
 
 
--- TRIGGER04: Notificação de pergunta liked
+-- TRIGGER04: Notification of liked question
 CREATE OR REPLACE FUNCTION liked_question_notification() RETURNS TRIGGER AS $$
 DECLARE
     question_author_id INTEGER;
@@ -518,7 +515,8 @@ AFTER INSERT ON users_likes_posts
 FOR EACH ROW
 EXECUTE FUNCTION liked_question_notification();
 
--- TRIGGER05: Notificação de pergunta disliked
+
+-- TRIGGER05: Notification of disliked question
 CREATE OR REPLACE FUNCTION disliked_question_notification() RETURNS TRIGGER AS $$
 DECLARE
     question_author_id INTEGER;
@@ -556,7 +554,7 @@ FOR EACH ROW
 EXECUTE FUNCTION disliked_question_notification();
 
 
--- TRIGGER06: Notificação de nova resposta
+-- TRIGGER06: Notification of new answer
 CREATE OR REPLACE FUNCTION new_answer_notification() RETURNS TRIGGER AS $$
 DECLARE
     question_author_id INTEGER;
@@ -592,7 +590,7 @@ FOR EACH ROW
 EXECUTE FUNCTION new_answer_notification();
 
 
--- TRIGGER07: Notificação de resposta liked
+-- TRIGGER07: Notification of liked answer
 CREATE OR REPLACE FUNCTION liked_answer_notification() RETURNS TRIGGER AS $$
 DECLARE
     answer_author_id INTEGER;
@@ -630,7 +628,7 @@ FOR EACH ROW
 EXECUTE FUNCTION liked_answer_notification();
 
 
--- TRIGGER08: Notificação de resposta disliked
+-- TRIGGER08: Notification of disliked answer
 CREATE OR REPLACE FUNCTION disliked_answer_notification() RETURNS TRIGGER AS $$
 DECLARE
     answer_author_id INTEGER;
@@ -668,7 +666,7 @@ FOR EACH ROW
 EXECUTE FUNCTION disliked_answer_notification();
 
 
--- TRIGGER09: Adicionar usuários marcados em um comentário na tabela comments_tagging_users
+-- TRIGGER09: Add tagged users in a comment to the comments_tagging_users table
 CREATE OR REPLACE FUNCTION add_tagged_users_to_comments() RETURNS TRIGGER AS $$
 DECLARE
     tagged_username TEXT;
@@ -699,7 +697,7 @@ FOR EACH ROW
 EXECUTE FUNCTION add_tagged_users_to_comments();
 
 
--- TRIGGER10: Adicionar badge ao usuário que receber 20 likes em um post
+-- TRIGGER10: Add badge to a user who receives 20 likes on a post
 CREATE OR REPLACE FUNCTION add_badge_on_20_likes() RETURNS TRIGGER AS $$
 DECLARE
     post_author_id INTEGER;
@@ -736,7 +734,7 @@ FOR EACH ROW
 EXECUTE FUNCTION add_badge_on_20_likes();
 
 
--- TRIGGER11: Adicionar badge ao usuário que fizer sua primeira pergunta
+-- TRIGGER11: Add badge to a user who asks their first question
 CREATE OR REPLACE FUNCTION add_badge_on_first_question() RETURNS TRIGGER AS $$
 DECLARE
     question_count INTEGER;
@@ -769,7 +767,7 @@ FOR EACH ROW
 EXECUTE FUNCTION add_badge_on_first_question();
 
 
--- TRIGGER12: Adicionar badge ao usuário que der a primeira resposta correta
+-- TRIGGER12: Add badge to user who gives the first correct answer
 CREATE OR REPLACE FUNCTION add_badge_on_first_correct_answer() RETURNS TRIGGER AS $$
 DECLARE
     answer_author_id INTEGER;
@@ -806,7 +804,7 @@ WHEN (NEW.answers_id IS DISTINCT FROM OLD.answers_id)
 EXECUTE FUNCTION add_badge_on_first_correct_answer();
 
 
--- TRIGGER13: Adicionar badge ao usuário
+-- TRIGGER13: Add badge to user
 CREATE OR REPLACE FUNCTION new_badge_notification() RETURNS TRIGGER AS $$
 DECLARE
     badge_name TEXT;
@@ -833,7 +831,8 @@ AFTER INSERT ON earned_badges
 FOR EACH ROW
 EXECUTE FUNCTION new_badge_notification();
 
--- TRIGGER14: Atualizar o score do usuário quando receber um like em um post
+
+-- TRIGGER14: Update the user's score when receiving a like on a post
 CREATE OR REPLACE FUNCTION increment_user_score() RETURNS TRIGGER AS $$
 DECLARE
 	user_id INTEGER;
@@ -856,7 +855,8 @@ AFTER INSERT ON users_likes_posts
 FOR EACH ROW
 EXECUTE FUNCTION increment_user_score();
 
--- TRIGGER19: Diminuir o score do usuário quando receber um dislike em um post
+
+-- TRIGGER15: Decrease the user's score when receiving a dislike on a post
 CREATE OR REPLACE FUNCTION decrement_user_score() RETURNS TRIGGER AS $$
 DECLARE
 	user_id INTEGER;
@@ -879,7 +879,8 @@ AFTER INSERT ON users_dislikes_posts
 FOR EACH ROW
 EXECUTE FUNCTION decrement_user_score();
 
--- TRIGGER15: Manter histórico de edições em posts
+
+-- TRIGGER16: Maintain edit history in posts
 CREATE OR REPLACE FUNCTION log_post_edit() RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO edit_histories (previous_content, new_content, date, posts_id)
@@ -895,7 +896,23 @@ WHEN (OLD.content IS DISTINCT FROM NEW.content)
 EXECUTE FUNCTION log_post_edit();
 
 
--- TRIGGER16: Bloquear usuário ao receber muitos reports no mesmo post
+-- TRIGGER17: Maintain edit history in comments
+CREATE OR REPLACE FUNCTION log_comment_edit() RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO edit_histories (previous_content, new_content, date, comments_id)
+    VALUES (OLD.content, NEW.content, now(), OLD.id);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_log_comment_edit
+BEFORE UPDATE ON comments
+FOR EACH ROW
+WHEN (OLD.content IS DISTINCT FROM NEW.content)
+EXECUTE FUNCTION log_comment_edit();
+
+
+-- TRIGGER18: Block user upon receiving too many reports on the same post
 CREATE OR REPLACE FUNCTION block_user_on_excessive_reports() RETURNS TRIGGER AS
 $$
 DECLARE
@@ -920,8 +937,7 @@ FOR EACH ROW
 EXECUTE FUNCTION block_user_on_excessive_reports();
 
 
--- oq é q estas 2 em baixo fazem?
--- TRIGGER17: Marcar comentários como editados
+-- TRIGGER19: Mark comments as edited
 CREATE OR REPLACE FUNCTION mark_comment_as_edited()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -937,7 +953,7 @@ FOR EACH ROW
 WHEN (OLD.content IS DISTINCT FROM NEW.content)
 EXECUTE FUNCTION mark_comment_as_edited();
 
--- TRIGGER18: Marcar posts como editados
+-- TRIGGER20: Mark posts as edited
 CREATE OR REPLACE FUNCTION mark_post_as_edited()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -952,44 +968,4 @@ AFTER UPDATE ON posts
 FOR EACH ROW
 WHEN (OLD.content IS DISTINCT FROM NEW.content)
 EXECUTE FUNCTION mark_post_as_edited();
-
-
-/*
--- TRIGGER14: Verificar se um usuário já deu like num post
-CREATE OR REPLACE FUNCTION verify_user_like() RETURNS TRIGGER AS
-$$
-BEGIN
-    IF EXISTS (SELECT 1 FROM users_likes_posts WHERE NEW.users_id = users_id AND NEW.posts_id = posts_id) THEN
-        RAISE EXCEPTION 'A user can only like a post once';
-    END IF;
-
-    RETURN NEW;
-END
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER verify_user_like
-BEFORE INSERT ON users_likes_posts
-FOR EACH ROW
-EXECUTE PROCEDURE verify_user_like();
--- TRIGGER15: Verificar se um usuário já deu dislike num post
-CREATE OR REPLACE FUNCTION verify_user_dislike() RETURNS TRIGGER AS
-$$
-BEGIN
-    IF EXISTS (SELECT 1 FROM users_dislikes_posts WHERE NEW.users_id = users_id AND NEW.posts_id = posts_id) THEN
-        RAISE EXCEPTION 'A user can only dislike a post once';
-    END IF;
-
-    RETURN NEW;
-END
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER verify_user_dislike
-BEFORE INSERT ON users_dislikes_posts
-FOR EACH ROW
-EXECUTE PROCEDURE verify_user_dislike();
-
-
-*/
-
-
 
