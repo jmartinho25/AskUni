@@ -4,13 +4,10 @@ SET search_path TO lbaw24153;
 -- Populate the database
 --------------------------------
 
--- Insert roles
 INSERT INTO roles (name) VALUES 
 ('admin'), 
 ('moderator');
 
-
--- Insert users
 INSERT INTO users (username, name, email, password, description, score) VALUES 
 ('john_doe', 'John Doe', 'john_doe@fe.up.pt', 'hashed_password_1', 'A regular user.', 50),
 ('jane_smith', 'Jane Smith', 'jane_smith@fe.up.pt', 'hashed_password_2', 'An avid contributor.', 70),
@@ -43,16 +40,13 @@ INSERT INTO users (username, name, email, password, description, score) VALUES
 ('zach_orange', 'Zach Orange', 'zach_orange@fe.up.pt', 'hashed_password_28', 'A software developer.', 80),
 ('brian_cyan', 'Brian Cyan', 'brian_cyan@fe.up.pt', 'hashed_password_30', 'A volunteer.', 65);
 
--- Insert users_roles
 INSERT INTO users_roles (users_id, roles_id) VALUES 
-(3, 1),  -- admin_user é um admin
-(2, 2),  -- jane_smith é uma moderadora
-(6, 1),  -- charlie_white é um admin
-(10, 2), -- grace_pink é uma moderadora
-(11, 2); -- henry_gray é um moderador
+(3, 1),
+(2, 2),
+(6, 1),
+(10, 2),
+(11, 2);
 
-
--- Insert posts
 INSERT INTO posts (content, date, users_id) VALUES 
 ('What are the most effective study techniques for mastering engineering mathematics? I struggle with calculus and differential equations and would love some guidance.', now(), 1),
 ('Hello fellow engineers! Can anyone recommend reliable resources for understanding circuit analysis? I need help grasping complex concepts and theorems.', now(), 1),
@@ -74,7 +68,6 @@ INSERT INTO posts (content, date, users_id) VALUES
 ('How do I improve my teamwork skills for group engineering projects? Collaboration is essential, and I’d like tips on how to work better with peers.', now(), 9),
 ('What’s the best way to prepare for an engineering internship? Any advice on what skills to focus on or how to impress employers?', now(), 10),
 ('Can someone explain the importance of ethics in engineering practice? I want to ensure I’m making responsible and informed decisions.', now(), 10),
-
 ('To master engineering mathematics, practice is key. Try solving a variety of problems regularly and use online platforms like Khan Academy for additional tutorials.', now(), 11),
 ('For circuit analysis, I recommend the textbook *Fundamentals of Electric Circuits* by Alexander and Sadiku, which provides clear explanations and examples.', now(), 12),
 ('Newton’s laws are fundamental in engineering; they explain how forces affect the motion of objects. Understanding their application in scenarios like vehicle dynamics is essential.', now(), 13),
@@ -106,8 +99,6 @@ INSERT INTO posts (content, date, users_id) VALUES
 ('Approach complex engineering problems by defining the problem, breaking it down into smaller parts, and using tools like flowcharts or systems diagrams for clarity.', now(), 9),
 ('The finite element method is essential for analyzing complex structures and systems; it allows for simulations of how materials will behave under various conditions.', now(), 10);
 
-
--- Insert tags
 INSERT INTO tags (name) VALUES 
 ('LEIC'), 
 ('MEIC'), 
@@ -127,7 +118,6 @@ INSERT INTO tags (name) VALUES
 ('PROJ'),
 ('ETHICS');
 
--- Insert super tags
 INSERT INTO super_tags (tags_id) VALUES 
 (1), 
 (2),
@@ -138,48 +128,43 @@ INSERT INTO super_tags (tags_id) VALUES
 (9),
 (10);
 
--- Insert users joining super tags
 INSERT INTO users_join_super_tags (users_id, super_tags_id) VALUES 
 (1, 1), 
 (2, 2), 
 (3, 1);
 
--- Insert users following tags
 INSERT INTO users_follow_tags (users_id, tags_id) VALUES 
 (1, 1), 
 (2, 2), 
 (3, 3);
 
--- Insert posts_tags (postagens associadas a tags)
 INSERT INTO posts_tags (posts_id, tags_id) VALUES 
-(1, 12),  -- Effective study techniques for mathematics
-(2, 8),   -- Resources for circuit analysis
-(3, 6),   -- Newton's laws of motion
-(4, 11),  -- Key concepts in thermodynamics
-(5, 7),   -- Static and dynamic equilibrium
-(6, 9),  -- Learning programming languages
-(7, 6),   -- Designing mechanical systems
-(8, 1),   -- Technical writing skills
-(9, 5),   -- Solving complex engineering problems
-(10, 10), -- Finite element method in engineering design
-(11, 9),  -- Understanding control systems
-(12, 13),  -- Basics of fluid mechanics
-(13, 8),  -- Time management in projects
-(14, 6),  -- Conducting failure analysis
-(15, 9),  -- Project management significance
-(16, 10), -- Mastering materials science
-(17, 6),  -- Designing structural components
-(18, 1),  -- Teamwork skills for projects
-(19, 1),  -- Internship preparation
-(20, 17); -- Importance of ethics in engineering
+(1, 12),
+(2, 8),
+(3, 6),
+(4, 11),
+(5, 7),
+(6, 9),
+(7, 6),
+(8, 1),
+(9, 5),
+(10, 10),
+(11, 9),
+(12, 13),
+(13, 8),
+(14, 6),
+(15, 9),
+(16, 10),
+(17, 6),
+(18, 1),
+(19, 1),
+(20, 17);
 
--- Insert badges
 INSERT INTO badges (name, description) VALUES 
 ('20 Likes', 'Awarded for receiving 20 likes on a post.'),
 ('First Question', 'Awarded for asking your first question.'),
 ('First Correct Answer', 'Awarded for getting your answer marked as correct.');
 
--- Insert questions
 INSERT INTO questions (posts_id, title) VALUES 
 (1, 'Effective Study Techniques for Engineering Mathematics?'),
 (2, 'Resources for Understanding Circuit Analysis?'),
@@ -202,7 +187,6 @@ INSERT INTO questions (posts_id, title) VALUES
 (19, 'Preparing for an Engineering Internship?'),
 (20, 'Importance of Ethics in Engineering Practice?');
 
--- Insert answers
 INSERT INTO answers (posts_id, questions_id) VALUES 
 (21, 1),
 (22, 2),
@@ -235,10 +219,8 @@ INSERT INTO answers (posts_id, questions_id) VALUES
 (49, 9),
 (50, 10);
 
--- Atualizar coluna answers_id na tabela questions
 UPDATE questions SET answers_id = 21 WHERE posts_id = 1;
 
--- Insert comments
 INSERT INTO comments (content, date, users_id, posts_id) VALUES 
 ('@jane_smith @john_doe I agree.', now(), 3, 3),
 ('I’ve noticed that consistent practice really does help with calculus and differential equations; it’s all about building a solid foundation.', now(), 5, 1),
@@ -252,62 +234,26 @@ INSERT INTO comments (content, date, users_id, posts_id) VALUES
 ('Conducting a thorough failure analysis is such an important step; I think it’s interesting how past failures can lead to future innovations.', now(), 13, 24),
 ('Project management tools really help keep everything organized; I’m curious to know what others find most effective.', now(), 14, 25);
 
--- Insert users_likes_posts
 INSERT INTO users_likes_posts (users_id, posts_id) VALUES 
-(1, 1),  -- john_doe likes his own post
-(2, 1),  -- jane_smith likes john_doe's post
-(3, 2);  -- admin_user likes jane_smith's post
+(1, 1),
+(2, 1),
+(3, 2);
 
--- Insert users_dislikes_posts
 INSERT INTO users_dislikes_posts (users_id, posts_id) VALUES 
-(2, 3),  -- jane_smith dislikes admin_user's post
-(1, 2);  -- john_doe dislikes jane_smith's post
+(2, 3),
+(1, 2);
 
--- Insert users following questions
 INSERT INTO users_follow_questions (users_id, questions_id) VALUES 
 (1, 1), 
 (2, 2);
 
--- Insert comments tagging users
---INSERT INTO comments_tagging_users (comments_id, users_id) VALUES 
---(1, 1), 
---(2, 2);
-
--- Insert notifications
---INSERT INTO notifications (content, read_status, date, users_id) VALUES 
---('You have a new comment.', FALSE, now(), 1), 
---('Your post was liked!', FALSE, now(), 2),
---('You have a new answer.', FALSE, now(), 3);
-
--- Insert comments notifications
---INSERT INTO comments_notifications (notifications_id, comments_id, notifications_type) VALUES 
---(1, 1, 'new_comment');
-
--- Insert questions notifications
---INSERT INTO questions_notifications (notifications_id, questions_id, notifications_type) VALUES 
---(2, 1, 'liked_question'); 
-
--- Insert answers notifications
---INSERT INTO answers_notifications (notifications_id, answers_id, notifications_type) VALUES 
---(3, 3, 'new_answer');
-
--- Insert badges notifications
---INSERT INTO badges_notifications (notifications_id, badges_id) VALUES 
---(1, 1), 
---(2, 2);
-
--- Insert appeal for unblocks
 INSERT INTO appeal_for_unblocks (content, users_id) VALUES 
 ('Please unblock me!', 1), 
 ('Request for review', 2);
 
--- Insert content reports
 INSERT INTO content_reports (report_reason, date, solved, comments_id, posts_id) VALUES 
 ('Inappropriate content', now(), FALSE, 1, NULL), 
 ('Spam', now(), FALSE, NULL, 2);
 
--- Insert edit histories
---INSERT INTO edit_histories (previous_content, new_content, date, posts_id, comments_id) VALUES 
---('Original post content', 'Updated post content', now(), 1, NULL), 
---('Original comment content', 'Edited comment content', now(), NULL, 1);
-
+UPDATE posts SET content = 'What are the most effective study techniques for mastering engineering mathematics? I struggle with calculus and differential equations and would appreciate some guidance.' WHERE id = 1;
+UPDATE comments SET content = 'I’ve noticed that consistent practice really does help with calculus and differential equations; it’s all about building a strong foundation.' WHERE id = 2;
