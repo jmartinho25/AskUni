@@ -745,7 +745,7 @@ BEGIN
     SELECT COUNT(*) INTO question_count
     FROM questions q
     JOIN posts p ON q.posts_id = p.id
-    WHERE p.users_id = (SELECT users_id FROM posts WHERE id = NEW.posts_id);
+    WHERE p.users_id = post_author_id;
 
     IF question_count = 1 THEN
         IF NOT EXISTS (
