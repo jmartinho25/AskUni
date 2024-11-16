@@ -280,7 +280,7 @@ paths:
   
 ### Top Questions ###
 
-  /questions/top:
+  /api/questions/top:
     get:
       operationId: R302
       summary: 'R302: View Top Questions'
@@ -320,26 +320,12 @@ paths:
                   date: "2023-10-06T14:45:00Z"
                   name: "Bob Smith"
 
-### Browse Questions ###
-
-  /questions:
-    get:
-      operationId: R303
-      summary: 'R303: Browse Questions'
-      description: 'List questions for browsing. Access: PUB'
-      tags:
-        - 'M03: Navigation and Browsing'
-      
-      responses:
-        '200':
-          description: 'Ok. Show questions list UI.'
-
 ### Search Questions ###
 
-  /questions/search:
+  /api/questions/search:
     get:
-      operationId: R304
-      summary: 'R304: Search Questions'
+      operationId: R303
+      summary: 'R303: Search Questions'
       description: 'Search for questions using keywords or phrases, supporting both exact matches and full-text search. Returns the results as JSON. Access: PUB'
       tags:
         - 'M03: Navigation and Browsing'
@@ -394,3 +380,807 @@ paths:
  
 
 ################ POSTS ################
+
+### Questions ###
+
+  /questions/{id}:
+    get:
+      operationId: R401
+      summary: 'R401: View Question'
+      description: 'Show the individual question UI. Access: PUB'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show question UI.'
+        '302':
+          description: 'Redirect if question does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'Question does not exist.'
+                  value: '/home'
+
+  /questions:
+    get:
+      operationId: R402
+      summary: 'R402: Browse Questions'
+      description: 'List questions for browsing. Access: PUB'
+      tags:
+        - 'M04: Posts'
+      
+      responses:
+        '200':
+          description: 'Ok. Show questions list UI.'
+    
+  /questions/new:
+    get:
+      operationId: R403
+      summary: 'R403: New Question Form'
+      description: 'Show the question submission form. Access: USR, ADM'
+      tags:
+        - 'M04: Posts'
+
+      responses:
+        '200':
+          description: 'Ok. Show new question form UI.'
+
+    post:
+      operationId: R404
+      summary: 'R404: New Question Action'
+      description: 'Processes the question submission form. Access: USR, ADM'
+      tags:
+        - 'M04: Posts'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+              required:
+                - title
+                - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the question submission.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful question submission. Redirect to question.'
+                  value: '/questions/{id}'
+                302Failure:
+                  description: 'Failed question submission. Redirect to new question form.'
+                  value: '/questions/new'
+
+  /questions/{id}/edit:
+    get:
+      operationId: R405
+      summary: 'R405: Edit Question Form'
+      description: 'Show the question edit form. Access: OWN, ADM'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show edit question UI.'
+        '302':
+          description: 'Redirect if question does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'Question does not exist.'
+                  value: '/home'
+    put:
+      operationId: R406
+      summary: 'R406: Edit Question Action'
+      description: 'Processes the question edit form submission. Access: OWN, ADM'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+              required:
+                - title
+                - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the question edit information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful question edit. Redirect to question.'
+                  value: '/questions/{id}'
+                302Failure:
+                  description: 'Failed question edit. Redirect to edit question form.'
+                  value: '/questions/{id}/edit'
+
+  /users/{id}/questions:
+    get:
+      operationId: R407
+      summary: 'R407: View User Questions'
+      description: 'Show the individual user questions UI. Access: USR'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show user questions UI.'
+        '302':
+          description: 'Redirect if user does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'User does not exist.'
+                  value: '/home'
+
+  /api/users/{id}/questions:
+    get:
+      operationId: R408
+      summary: 'R408: Get User Questions'
+      description: 'List user questions. Returns the results as JSON. Access: USR'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show user questions.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+              example:
+                - id: 1
+                  title: "Effective Study Techniques for Engineering Mathematics?"
+                  content: "What are the most effective study techniques for mastering engineering mathematics? I struggle with calculus and differential equations and would appreciate some guidance."
+                  date: "2023-10-01T12:00:00Z"
+                - id: 2
+                  title: "Resources for Understanding Circuit Analysis?"
+                  content: "Hello fellow engineers! Can anyone recommend reliable resources for understanding circuit analysis? I need help grasping complex concepts and theorems."
+                  date: "2023-10-02T15:30:00Z"
+
+
+  /api/question/{id}:
+    get:
+      operationId: R409
+      summary: 'R409: Get Question'
+      description: 'Show the individual question. Returns the result as JSON. Access: PUB'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show question.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  content:
+                    type: string
+                  date:
+                    type: string
+                    format: date-time
+                  name:
+                    type: string
+              example:
+                id: 1
+                title: "Effective Study Techniques for Engineering Mathematics?"
+                content: "What are the most effective study techniques for mastering engineering mathematics? I struggle with calculus and differential equations and would appreciate some guidance."
+                date: "2023-10-01T12:00:00Z"
+                name: "John Doe"
+
+
+    delete:
+      operationId: R410
+      summary: 'R410: Delete Question'
+      description: 'Processes the question deletion. Access: OWN, ADM'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '302':
+          description: 'Redirect after processing the question deletion.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful question deletion. Redirect to home page.'
+                  value: '/home'
+                302Failure:
+                  description: 'Failed question deletion. Redirect to question.'
+                  value: '/questions/{id}'
+
+### Answers ###
+
+  /questions/{question_id}/answers:
+    get:
+      operationId: R411
+      summary: 'R411: View Answers'
+      description: 'List answers for the specified question. Access: PUB'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: question_id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show answers list UI.'
+
+  /questions/{question_id}/answers/new:
+    get:
+      operationId: R412
+      summary: 'R412: Answer Form'
+      description: 'Show the answer submission form. Access: USR, ADM'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: question_id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show answer form UI.'
+        '302':
+          description: 'Redirect if question does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'Question does not exist.'
+                  value: '/home'
+    
+    post:
+      operationId: R413
+      summary: 'R413: Answer Action'
+      description: 'Processes the answer submission form. Access: USR, ADM'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: question_id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+              required:
+                - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the answer submission.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful answer submission. Redirect to question.'
+                  value: '/questions/{question_id}'
+                302Failure:
+                  description: 'Failed answer submission. Redirect to answer form.'
+                  value: '/questions/{question_id}/answers/new'
+
+
+  /questions/{question_id}/answers/{answer_id}/edit:
+    get:
+      operationId: R414
+      summary: 'R414: Edit Answer Form'
+      description: 'Show the answer edit form. Access: OWN, ADM'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: question_id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: answer_id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show edit answer UI.'
+        '302':
+          description: 'Redirect if answer does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'Answer does not exist.'
+                  value: '/home'
+    put:
+      operationId: R415
+      summary: 'R415: Edit Answer Action'
+      description: 'Processes the answer edit form submission. Access: OWN, ADM'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: question_id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: answer_id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+              required:
+                - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the answer edit information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful answer edit. Redirect to question.'
+                  value: '/questions/{question_id}'
+                302Failure:
+                  description: 'Failed answer edit. Redirect to edit answer form.'
+                  value: '/questions/{question_id}/answers/{answer_id}/edit'
+
+
+  /users/{id}/answers:
+    get:
+      operationId: R416
+      summary: 'R416: View User Answers'
+      description: 'Show the individual user answers UI. Access: USR'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show user answers UI.'
+        '302':
+          description: 'Redirect if user does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'User does not exist.'
+                  value: '/home'
+    
+
+  /api/users/{id}/answers:
+    get:
+      operationId: R417
+      summary: 'R417: Get User Answers'
+      description: 'List user answers. Returns the results as JSON. Access: USR'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show user answers.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    content:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+              example:
+                - id: 21
+                  content: "To master engineering mathematics, practice is key. Try solving a variety of problems regularly and use online platforms like Khan Academy for additional tutorials."
+                  date: "2023-10-01T12:30:00Z"
+                - id: 22
+                  content: "For circuit analysis, I recommend the textbook *Fundamentals of Electric Circuits* by Alexander and Sadiku, which provides clear explanations and examples."
+                  date: "2023-10-01T13:00:00Z"
+
+
+  /api/questions/{question_id}/answers:
+    get:
+      operationId: R418
+      summary: 'R418: Get Answers'
+      description: 'List answers for the specified question. Returns the results as JSON. Access: PUB'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: question_id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show answers.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    content:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+                    name:
+                      type: string
+              example:
+                - id: 21
+                  content: "To master engineering mathematics, practice is key. Try solving a variety of problems regularly and use online platforms like Khan Academy for additional tutorials."
+                  date: "2023-10-01T12:30:00Z"
+                  name: "John Doe"
+                - id: 41
+                  content: "For mastering engineering mathematics, I recommend focusing on understanding the fundamental concepts first. Resources like MIT OpenCourseWare can be very helpful."
+                  date: "2023-10-01T13:00:00Z"
+                  name: "Jane Smith"
+    
+  
+
+  /api/questions/{question_id}/answers/{answer_id}:
+    get:
+      operationId: R419
+      summary: 'R419: Get Answer'
+      description: 'Show the individual answer. Returns the result as JSON. Access: PUB'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: question_id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: answer_id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show answer.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  content:
+                    type: string
+                  date:
+                    type: string
+                    format: date-time
+                  name:
+                    type: string
+              example:
+                id: 21
+                content: "To master engineering mathematics, practice is key. Try solving a variety of problems regularly and use online platforms like Khan Academy for additional tutorials."
+                date: "2023-10-01T12:30:00Z"
+                name: "John Doe"
+
+    delete: 
+      operationId: R420
+      summary: 'R420: Delete Answer'
+      description: 'Processes the answer deletion. Access: OWN, ADM'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: question_id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: answer_id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '302':
+          description: 'Redirect after processing the answer deletion.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful answer deletion. Redirect to question.'
+                  value: '/questions/{question_id}'
+                302Failure:
+                  description: 'Failed answer deletion. Redirect to question.'
+                  value: '/questions/{question_id}'
+
+      
+
+################ NOTIFICATIONS AND INTERACTIONS ################
+
+  /api/notifications/users/{id}:
+    get:
+      operationId: R501
+      summary: 'R501: Get User Notifications'
+      description: 'List user notifications. Returns the results as JSON. Access: USR'
+      tags:
+        - 'M05: Notifications and Interactions'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show user notifications.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    content:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+              example:
+                - id: 1
+                  content: "Your question has received a new answer. "
+                  date: "2023-10-01T12:30:00Z"
+                - id: 2
+                  content: "Congratulations! You have earned a new badge: First Correct Answer!"
+                  date: "2023-10-01T13:00:00Z"
+        '302':
+          description: 'Redirect if user does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'User does not exist.'
+                  value: '/home'
+
+    post:
+      operationId: R502
+      summary: 'R502: Mark Notification as Read'
+      description: 'Processes the notification status update. Access: USR'
+      tags:
+        - 'M05: Notifications and Interactions'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '302':
+          description: 'Redirect after processing the notification status update.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful notification status update. Redirect to user notifications.'
+                  value: '/notifications/users/{id}'
+                302Failure:
+                  description: 'Failed notification status update. Redirect to user notifications.'
+                  value: '/notifications/users/{id}'
+
+
+  /api/users/{id}/score:
+    get:
+      operationId: R503
+      summary: 'R503: Get User Score'
+      description: 'Get the user score. Returns the result as JSON. Access: USR'
+      tags:
+        - 'M05: Notifications and Interactions'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show user score.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  score:
+                    type: integer
+              example:
+                score: 85
+        '302':
+          description: 'Redirect if user does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'User does not exist.'
+                  value: '/home'
+    
+
+    
+
+
+
+
