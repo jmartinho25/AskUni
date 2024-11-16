@@ -14,10 +14,16 @@ externalDocs:
   url: https://gitlab.up.pt/lbaw/lbaw2425/lbaw24153/-/wikis/EAP
 
 tags:
-  - name: 'M01: Authentication and Individual Profile' 
-  - name: 'M02: Navigation and Browsing'
-  - name: 'M03: Posts'
-  - name: 'M04: Notifications and Interactions' 
+  - name: 'M01: Authentication'
+  - name: 'M02: Individual Profile' 
+  - name: 'M03: Navigation and Browsing'
+  - name: 'M04: Posts'
+  - name: 'M05: Notifications and Interactions' 
+
+
+################ AUTHENTICATION ################
+
+### Login ###
 
 paths:
 
@@ -27,7 +33,7 @@ paths:
       summary: 'R101: Login Form'
       description: 'Provide login form. Access: PUB'
       tags:
-        - 'M01: Authentication and Individual Profile'
+        - 'M01: Authentication'
       responses:
         '200':
           description: 'Ok. Show log-in UI'
@@ -36,7 +42,7 @@ paths:
       summary: 'R102: Login Action'
       description: 'Processes the login form submission. Access: PUB'
       tags:
-        - 'M01: Authentication and Individual Profile'
+        - 'M01: Authentication'
  
       requestBody:
         required: true
@@ -62,12 +68,14 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful authentication. Redirect to user profile.'
-                  value: '/users/{id}'
+                  description: 'Successful authentication. Redirect home page.'
+                  value: '/home'
                 302Error:
                   description: 'Failed authentication. Redirect to login form.'
                   value: '/login'
  
+### Logout ###
+
   /logout:
 
     post:
@@ -75,7 +83,7 @@ paths:
       summary: 'R103: Logout Action'
       description: 'Logout the current authenticated used. Access: USR, ADM'
       tags:
-        - 'M01: Authentication and Individual Profile'
+        - 'M01: Authentication'
       responses:
         '302':
           description: 'Redirect after processing logout.'
@@ -88,13 +96,15 @@ paths:
                   description: 'Successful logout. Redirect to login form.'
                   value: '/login'
 
+### REGISTER ###
+
   /register:
     get:
       operationId: R104
       summary: 'R104: Register Form'
       description: 'Provide new user registration form. Access: PUB'
       tags:
-        - 'M01: Authentication and Individual Profile'
+        - 'M01: Authentication'
       responses:
         '200':
           description: 'Ok. Show sign-up UI'
@@ -104,7 +114,7 @@ paths:
       summary: 'R105: Register Action'
       description: 'Processes the new user registration form submission. Access: PUB'
       tags:
-        - 'M01: Authentication and Individual Profile'
+        - 'M01: Authentication'
 
       requestBody:
         required: true
@@ -115,14 +125,20 @@ paths:
               properties:
                 name:
                   type: string
+                username:
+                  type: string
                 email:
                   type: string
-                picture:
+                password:
                   type: string
-                  format: binary
+                confirm_password:
+                  type: string
               required:
+                - name
+                - username
                 - email
                 - password
+                - confirm_password
 
       responses:
         '302':
@@ -133,19 +149,23 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful authentication. Redirect to user profile.'
-                  value: '/users/{id}'
+                  description: 'Successful authentication. Redirect to home page.'
+                  value: '/home'
                 302Failure:
-                  description: 'Failed authentication. Redirect to login form.'
-                  value: '/login'
+                  description: 'Failed authentication. Redirect to register form.'
+                  value: '/register'
+
+################ INDIVIDUAL PROFILE ################
+
+### View Profile ###
 
   /users/{id}:
     get:
-      operationId: R106
-      summary: 'R106: View user profile'
+      operationId: R201
+      summary: 'R201: View user profile'
       description: 'Show the individual user profile. Access: USR'
       tags:
-        - 'M01: Authentication and Individual Profile'
+        - 'M02: Individual Profile'
 
       parameters:
         - in: path
@@ -157,52 +177,119 @@ paths:
       responses:
         '200':
           description: 'Ok. Show view profile UI'
- 
+        '302':
+          description: 'Redirect if not authenticated or if user does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'Profile does not exist or user is not authenticated.'
+                  value: '/home'
 
-  /api/works:
+### Edit Profile ###
+
+  /users/edit-profile:
     get:
       operationId: R202
-      summary: 'R202: Search Works API'
-      description: 'Searches for works and returns the results as JSON. Access: PUB.'
-
-      tags: 
-        - 'M02: Works'
-
-      parameters:
-        - in: query
-          name: query
-          description: String to use for full-text search
-          schema:
-            type: string
-          required: false
-        - in: query
-          name: item
-          description: Category of the works
-          schema:
-            type: string
-          required: false
-        - in: query
-          name: loaned
-          description: Boolean with the loaned flag value
-          schema:
-            type: boolean
-          required: false
-        - in: query
-          name: owner
-          description: Boolean with the owner flag value
-          schema:
-            type: boolean
-          required: false
-        - in: query
-          name: classification
-          description: Integer corresponding to the work classification
-          schema:
-            type: integer
-          required: false
+      summary: 'R202: Edit user profile form'
+      description: 'Show the individual user profile edit form. Access: USR, ADM'
+      tags:
+        - 'M02: Individual Profile'
 
       responses:
         '200':
-          description: Success
+          description: 'Ok. Show edit profile UI.'
+        '401':
+          description: 'Unauthorized. Redirect to user profile.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                401Unauthorized:
+                  description: 'User is not authorized to edit profile.'
+                  value: '/users/{id}'
+        
+    put:
+      operationId: R203
+      summary: 'R203: Edit user profile action'
+      description: 'Processes the user profile edit form submission. Access: USR, ADM'
+      tags:
+        - 'M02: Individual Profile'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                confirm_password:
+                  type: string
+                description:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+              required:
+                - name
+                - username
+                - email
+                - description
+
+      responses:
+        '302':
+          description: 'Redirect after processing the user profile edit information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful profile edit. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed profile edit. Redirect to edit profile form.'
+                  value: '/users/edit'
+
+
+################ NAVIGATION AND BROWSING ################
+
+### Home Page ###
+
+  /home:
+    get:
+      operationId: R301
+      summary: 'R301: View Home Page'
+      description: 'Show the home page. Access: PUB'
+      tags:
+        - 'M03: Navigation and Browsing'
+      responses:
+        '200':
+          description: 'Ok. Show home page UI.'
+  
+### Top Questions ###
+
+  /questions/top:
+    get:
+      operationId: R302
+      summary: 'R302: View Top Questions'
+      description: 'Show the top questions. Returns the results as JSON. Access: PUB'
+      tags:
+        - 'M03: Navigation and Browsing'
+      responses:
+        '200':
+          description: 'Ok. Show top questions.'
           content:
             application/json:
               schema:
@@ -211,27 +298,99 @@ paths:
                   type: object
                   properties:
                     id:
-                      type: string
+                      type: integer
                     title:
                       type: string
-                    obs:
+                    content:
                       type: string
-                    year:
+                    date:
                       type: string
-                    owner:
+                      format: date-time
+                    name:
                       type: string
-                    type:
+              example:
+                - id: 3
+                  title: "How to Prepare for a Technical Interview?"
+                  content: "What are the best ways to prepare for a technical interview in software engineering? Any tips or resources would be appreciated."
+                  date: "2023-10-05T10:00:00Z"
+                  name: "Alice Johnson"
+                - id: 4
+                  title: "Understanding Machine Learning Algorithms"
+                  content: "Can someone explain the basics of machine learning algorithms and how they are used in real-world applications?"
+                  date: "2023-10-06T14:45:00Z"
+                  name: "Bob Smith"
+
+### Browse Questions ###
+
+  /questions:
+    get:
+      operationId: R303
+      summary: 'R303: Browse Questions'
+      description: 'List questions for browsing. Access: PUB'
+      tags:
+        - 'M03: Navigation and Browsing'
+      
+      responses:
+        '200':
+          description: 'Ok. Show questions list UI.'
+
+### Search Questions ###
+
+  /questions/search:
+    get:
+      operationId: R304
+      summary: 'R304: Search Questions'
+      description: 'Search for questions using keywords or phrases, supporting both exact matches and full-text search. Returns the results as JSON. Access: PUB'
+      tags:
+        - 'M03: Navigation and Browsing'
+      parameters:
+        - in: query
+          name: query
+          schema:
+            type: string
+          description: 'Search query for questions. Supports exact phrase matches and full-text search capabilities.'
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: 'Number of questions to skip before starting to collect the result set.'
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: 'Number of search results per page.'
+      responses:
+        '200':
+          description: 'Ok. Show search results UI.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
                       type: string
-                example:
-                  - id: 1
-                    title: Rihanna - Unapologetic
-                    obs: Good pop music album.
-                    year: 2012
-                    owner: Joana Lima
-                    type: MP3
-                  - id: 15
-                    title: Mr. Bean
-                    obs: The best comedy movie.
-                    year: 1995
-                    owner: Manuel Teixeira
-                    type: DVD
+                    content:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+                    name:
+                      type: string
+              example:
+                - id: 1
+                  title: "Effective Study Techniques for Engineering Mathematics?"
+                  content: "What are the most effective study techniques for mastering engineering mathematics? I struggle with calculus and differential equations and would appreciate some guidance."
+                  date: "2023-10-01T12:00:00Z"
+                  name: "John Doe"
+                - id: 2
+                  title: "Resources for Understanding Circuit Analysis?"
+                  content: "Hello fellow engineers! Can anyone recommend reliable resources for understanding circuit analysis? I need help grasping complex concepts and theorems."
+                  date: "2023-10-02T15:30:00Z"
+                  name: "John Doe"
+ 
+
+################ POSTS ################
