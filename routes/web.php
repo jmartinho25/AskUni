@@ -6,6 +6,7 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\ItemController;
 
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -58,6 +59,10 @@ Route::controller(RegisterController::class)->group(function () {
 
 
 // Posts
+
+Route::controller(UserController::class)->group(function () {
+    Route::get('/api/users/{id}/questions', 'getUserQuestionsAPI');
+});
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/api/question/{id}', 'getQuestionAPI');

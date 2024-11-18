@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 // Added to define Eloquent relationships.
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Post extends Model
 {
@@ -31,7 +32,16 @@ class Post extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users_id');
     }
 
+    public function question(): HasOne
+    {
+        return $this->hasOne(Question::class, 'posts_id');
+    }
+
+    public function answer(): HasOne
+    {
+        return $this->hasOne(Answer::class, 'posts_id');
+    }
 }
