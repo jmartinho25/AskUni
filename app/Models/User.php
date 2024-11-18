@@ -24,9 +24,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'username',
         'name',
         'email',
         'password',
+        'description',
+        'photo',
+        'is_blocked',
+        'score',
     ];
 
     /**
@@ -47,13 +52,49 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_blocked' => 'boolean', // perguntar isto
+        'score' => 'integer',
     ];
 
+    
+
     /**
-     * Get the cards for a user.
+     * Get the posts for a user.
      */
-    public function cards(): HasMany
+    public function posts(): HasMany
     {
-        return $this->hasMany(Card::class);
+        return $this->hasMany(Posts::class);
+    }
+
+    /**
+     * Get the questions for a user.
+     */
+    public function questions(): HasMany
+    {
+        return $this->posts()->where('type', 'question');
+    }
+
+    /**
+     * Get the answers for a user.
+     */
+    public function answers(): HasMany
+    {
+        return $this->posts()->where('type', 'answer');
+    }
+
+    /**
+     * Get the notifications for a user.
+     */
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+    
+    /**
+     * Get the roles for a user.
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
     }
 }
