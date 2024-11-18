@@ -621,6 +621,17 @@ paths:
                   title: "Resources for Understanding Circuit Analysis?"
                   content: "Hello fellow engineers! Can anyone recommend reliable resources for understanding circuit analysis? I need help grasping complex concepts and theorems."
                   date: "2023-10-02T15:30:00Z"
+        '404':
+          description: 'Not Found. The user does not exist.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "User not found."
 
 
   /api/question/{id}:
@@ -655,6 +666,8 @@ paths:
                   date:
                     type: string
                     format: date-time
+                  user_id:
+                    type: integer
                   name:
                     type: string
               example:
@@ -662,7 +675,19 @@ paths:
                 title: "Effective Study Techniques for Engineering Mathematics?"
                 content: "What are the most effective study techniques for mastering engineering mathematics? I struggle with calculus and differential equations and would appreciate some guidance."
                 date: "2023-10-01T12:00:00Z"
+                user_id: 1
                 name: "John Doe"
+        '404':
+          description: 'Not Found. The question does not exist.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Question not found."
 
 
     delete:

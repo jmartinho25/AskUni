@@ -63,7 +63,7 @@ class User extends Authenticatable
      */
     public function posts(): HasMany
     {
-        return $this->hasMany(Posts::class);
+        return $this->hasMany(Post::class, 'users_id');
     }
 
     /**
@@ -71,7 +71,7 @@ class User extends Authenticatable
      */
     public function questions(): HasMany
     {
-        return $this->posts()->where('type', 'question');
+        return $this->posts()->whereHas('question')->with('question');
     }
 
     /**
@@ -79,7 +79,7 @@ class User extends Authenticatable
      */
     public function answers(): HasMany
     {
-        return $this->posts()->where('type', 'answer');
+        return $this->posts()->whereHas('answer')->with('answer');
     }
 
     /**

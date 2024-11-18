@@ -98,15 +98,22 @@ class QuestionController extends Controller
      */
     public function getQuestionAPI($id)
     {
-        // Find the question by ID
-        $question = Question::find($id);
+        $question = Question::with('post.user')->find($id);
 
         if (!$question) {
-            // Return a 404 response if the question is not found
-            return response()->json(['error' => 'Question not found'], 404);
+            return response()->json(['error' => 'Question not found.'], 404);
         }
 
-        // Return the question data as JSON
-        return response()->json($question);
+        $post = $question->post;
+        $user = $post->user;
+
+        return response()->json([
+            'id' => $question->posts_id,
+            'title' => $question->title,
+            'content' => $post ? $post->content : null,
+            'date' => $post ? $post->date : null,
+            'user_id' => $user ? $user->id : null,
+            'name' => $user ? $user->name : null,
+        ]);
     }
 }

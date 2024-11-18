@@ -11,6 +11,8 @@ class Question extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'posts_id';
+
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
@@ -26,14 +28,6 @@ class Question extends Model
     ];
 
     /**
-     * Get the user that owns the question.
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
      * Get the answers for the question.
      */
     public function answers(): HasMany
@@ -46,6 +40,11 @@ class Question extends Model
      */
     public function post(): BelongsTo
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Post::class, 'posts_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->post->user();
     }
 }
