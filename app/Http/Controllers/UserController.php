@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -28,7 +29,6 @@ class UserController extends Controller
         
         //$tags = $user->tags()->get();
 
-        // Retornar a view com os dados necessários
         return view('pages.user', compact('user', 'posts', 'answers','questions'));
     }
 
@@ -48,9 +48,10 @@ class UserController extends Controller
 
     // Show edit user page
     public function editUser()
-    {   
-        $this->authorize('editUser', Auth::user());
-        return view('pages.editUser', ['user' => Auth::user()]);
+    {
+        $user = Auth::user();
+        $this->authorize('editUser', $user);
+        return view('pages.editUser', ['user' => $user]);
     }
 
 

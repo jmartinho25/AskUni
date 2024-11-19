@@ -23,9 +23,9 @@
     <body>
         <main>
             <header>
-                <h1><a href="{{ url('/cards') }}">AskUni</a></h1>
-                @if (Auth::check())
-                    <a class="button" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
+                <h1><a href="{{ url('/home') }}">AskUni</a></h1>
+                @if (auth()->check())
+                    <a class="button" href="{{ url('/logout') }}"> Logout </a> <span><a class="button" href="{{ url('/users/' . Auth::user()->id) }}"> {{ Auth::user()->name }} </a></span>
                 @endif
             </header>
             <section id="content">
