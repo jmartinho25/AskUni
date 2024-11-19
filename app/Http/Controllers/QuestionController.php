@@ -129,4 +129,5 @@ class QuestionController extends Controller
 
         return response()->json(['message' => 'Question deleted successfully.']);
     }
+
 }

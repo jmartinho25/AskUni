@@ -159,4 +159,21 @@ body {
   input[type=password]:focus {
     border-color: #9b4dca;
   }
+
+/** our styles **/
+.trending-questions {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+  gap: 10px;
+}
+
+.question-card {
+  flex: 0 0 auto;
+  width: 200px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
   
