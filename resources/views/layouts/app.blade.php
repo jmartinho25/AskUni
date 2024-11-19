@@ -48,7 +48,7 @@
             </div>
 
             <div class="profile">
-                <a href="#">
+                <a href="{{ url('/users/' . Auth::user()->id) }}">
                     <i class="fa fa-user"></i>
                 </a>
             </div>

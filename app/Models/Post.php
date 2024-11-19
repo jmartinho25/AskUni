@@ -34,21 +34,14 @@ class Post extends Model
         return $this->belongsTo(User::class, 'users_id');
     }
 
-    /**
-     * Get the question associated with this post (if exists).
-     */
     public function question(): HasOne
     {
         return $this->hasOne(Question::class, 'posts_id');
     }
 
-    /**
-     * Get all the answers associated with this post.
-     */
-    public function answers(): HasMany
+    public function answer(): HasOne
     {
-        return $this->hasMany(Answer::class, 'posts_id');
+        return $this->hasOne(Answer::class, 'posts_id');
     }
 }
 
-}
