@@ -16,7 +16,7 @@
     </div>
 
     @if (auth()->check() && auth()->user()->id === $user->id)
-    <a href="{{ route('edit-profile') }}" class="btn btn-primary">Edit Profile</a>
+    <a class="button" href="{{ route('edit-profile') }}" class="btn btn-primary">Edit Profile</a>
     @endif
 
     <h2>Answers</h2>

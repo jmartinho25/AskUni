@@ -11,7 +11,6 @@ class Question extends Model
 {
     use HasFactory;
 
-    // Primary key set to 'posts_id' to link with the Post model
     protected $primaryKey = 'posts_id';
 
     // Don't add create and update timestamps in database.
@@ -39,12 +38,9 @@ class Question extends Model
         return $this->belongsTo(Post::class, 'posts_id');
     }
 
-    /**
-     * Get the user who created the post for the question.
-     */
     public function user(): BelongsTo
     {
-        return $this->post->user(); // Accessing the user of the post
+        return $this->post->user();
     }
 }
 
