@@ -987,7 +987,7 @@ INSERT INTO badges (name, description) VALUES
 ('First Correct Answer', 'Awarded for getting your answer marked as correct.');
 
 INSERT INTO users (username, name, email, password, description, score) VALUES 
-('john_doe', 'John Doe', 'john_doe@fe.up.pt', 'hashed_password_1', 'A regular user.', 50),
+('john_doe', 'John Doe', 'john_doe@fe.up.pt', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'A regular user.', 50),
 ('jane_smith', 'Jane Smith', 'jane_smith@fe.up.pt', 'hashed_password_2', 'An avid contributor.', 70),
 ('admin_user', 'Admin User', 'admin_user@fe.up.pt', 'hashed_password_admin', 'Administrator of the platform.', 100),
 ('alice_jones', 'Alice Jones', 'alice_jones@fe.up.pt', 'hashed_password_3', 'Loves to help others.', 60),
