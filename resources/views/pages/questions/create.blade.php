@@ -18,11 +18,6 @@
                 <textarea id="content" name="content" class="form-control" rows="4" required></textarea>
             </div>
 
-            <div class="form-group">
-                <label for="date">Date</label>
-                <input type="datetime-local" id="date" name="date" class="form-control" required>
-            </div>
-
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>

@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 class QuestionController extends Controller
 {
 
+    public function index()
+    {
+        $questions = Question::with('post')->get();
+
+        return view('/pages/questions.index', compact('questions'));
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -23,27 +29,22 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate incoming data
-        $request->validate([
-            'content' => 'required|string|max:255', // Post content
-            'date' => 'required|date', // Post date
-            'title' => 'required|string|max:255', // Question title
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
         ]);
 
-        // Create the Post
         $post = Post::create([
-            'content' => $request->content, // Post content
-            'date' => $request->date, // Post date
-            'users_id' => auth()->user()->id, // Assuming the authenticated user is the owner of the post
+            'content' => $validated['content'],
+            'date' => now(), 
+            'users_id' => auth()->user()->id, 
         ]);
 
-        // Create the Question associated with the Post
-        $question = Question::create([
-            'posts_id' => $post->id, // Relationship with the Post
-            'title' => $request->title, // Question title
+        Question::create([
+            'posts_id' => $post->id,
+            'title' => $validated['title'],
         ]);
 
-        // Redirect to the questions index page with a success message
         return redirect()->route('questions.index')->with('success', 'Question created successfully');
     }
 
