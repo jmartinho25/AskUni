@@ -23,7 +23,7 @@
     <header class="top-nav">
         <div class="logo">
             <a href="{{ url('/home') }}">
-                <img src="logo.png" alt="Logo" />
+                <img src="{{ asset('img/logo.png') }}" alt="Logo" />
             </a>
         </div>
         
@@ -55,7 +55,6 @@
 
             @if (Auth::check())
                 <a class="button" href="{{ url('/logout') }}">Logout</a> 
-                <span>{{ Auth::user()->name }}</span>
             @endif
         </div>
     </header>
