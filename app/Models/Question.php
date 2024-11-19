@@ -11,20 +11,16 @@ class Question extends Model
 {
     use HasFactory;
 
+    // Primary key set to 'posts_id' to link with the Post model
     protected $primaryKey = 'posts_id';
 
     // Don't add create and update timestamps in database.
-    public $timestamps  = false;
+    public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // Define the fillable fields for mass assignment
     protected $fillable = [
-        'title',
-        'content',
-        'users_id',
+        'posts_id', // Relationship with the Post
+        'title',    // Question title
     ];
 
     /**
@@ -43,8 +39,12 @@ class Question extends Model
         return $this->belongsTo(Post::class, 'posts_id');
     }
 
+    /**
+     * Get the user who created the post for the question.
+     */
     public function user(): BelongsTo
     {
-        return $this->post->user();
+        return $this->post->user(); // Accessing the user of the post
     }
 }
+

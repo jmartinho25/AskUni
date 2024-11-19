@@ -176,4 +176,70 @@ body {
   border-radius: 5px;
   background-color: #f9f9f9;
 }
-  
+
+
+
+
+
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f4f4f4;
+  width: 100%;
+}
+
+.top-nav .logo {
+  flex: 0 1 auto;
+}
+
+.top-nav .search {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.top-nav .search input {
+  width: 60%; 
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.top-nav .nav-items {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.top-nav .nav-items a {
+  text-decoration: none;
+  color: #333;
+}
+
+.top-nav .button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.top-nav .notifications i,
+.top-nav .profile i {
+  font-size: 1.5em;
+}
+
+@media (max-width: 768px) {
+  .top-nav .search input {
+      width: 80%; 
+  }
+
+  .top-nav .nav-items {
+      gap: 10px; 
+  }
+}
