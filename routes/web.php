@@ -82,11 +82,5 @@ Route::controller(QuestionController::class)->group(function () {
 });
 
 // Question Routes (Web)
-Route::controller(QuestionController::class)->group(function () {
-    Route::get('/questions/create', 'create')->name('questions.create');
-    Route::post('/questions', 'store')->name('questions.store');
-    Route::get('/questions/{question}', 'show')->name('questions.show');
-    Route::get('/questions/{question}/edit', 'edit')->name('questions.edit');
-    Route::put('/questions/{question}', 'update')->name('questions.update');
-    Route::delete('/questions/{question}', 'destroy')->name('questions.destroy');
-});
+
+Route::resource('questions', QuestionController::class);
