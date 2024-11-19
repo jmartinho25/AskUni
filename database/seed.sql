@@ -60,7 +60,7 @@ CREATE TABLE users (
     email TEXT NOT NULL UNIQUE CHECK (email ~* '^[^@]+@fe\.up\.pt$'),
     password TEXT NOT NULL,
     description TEXT,
-    photo TEXT DEFAULT 'profilePictures/default.jpg',
+    photo TEXT DEFAULT 'profilePictures/default.png',
     is_blocked BOOLEAN DEFAULT FALSE,
     remember_token TEXT DEFAULT NULL,
     score INTEGER CHECK (score >= 0 AND score <= 100)
@@ -970,6 +970,45 @@ FOR EACH ROW
 WHEN (OLD.content IS DISTINCT FROM NEW.content)
 EXECUTE FUNCTION mark_post_as_edited();
 
+-- Fix timestamp format
+
+CREATE OR REPLACE FUNCTION format_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.date := TO_TIMESTAMP(TO_CHAR(NEW.date, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS');
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER format_timestamp_trigger_posts
+BEFORE INSERT OR UPDATE ON posts
+FOR EACH ROW
+EXECUTE FUNCTION format_timestamp();
+
+CREATE TRIGGER format_timestamp_trigger_comments
+BEFORE INSERT OR UPDATE ON comments
+FOR EACH ROW
+EXECUTE FUNCTION format_timestamp();
+
+CREATE TRIGGER format_timestamp_trigger_notifications
+BEFORE INSERT OR UPDATE ON notifications
+FOR EACH ROW
+EXECUTE FUNCTION format_timestamp();
+
+CREATE TRIGGER format_timestamp_trigger_earned_badges
+BEFORE INSERT OR UPDATE ON earned_badges
+FOR EACH ROW
+EXECUTE FUNCTION format_timestamp();
+
+CREATE TRIGGER format_timestamp_trigger_content_reports
+BEFORE INSERT OR UPDATE ON content_reports
+FOR EACH ROW
+EXECUTE FUNCTION format_timestamp();
+
+CREATE TRIGGER format_timestamp_trigger_edit_histories
+BEFORE INSERT OR UPDATE ON edit_histories
+FOR EACH ROW
+EXECUTE FUNCTION format_timestamp();
 
 SET search_path TO lbaw24153;
 
