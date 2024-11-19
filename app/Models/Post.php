@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-// Added to define Eloquent relationships.
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -14,17 +12,18 @@ class Post extends Model
 {
     use HasFactory;
 
-    // Don't add create and update timestamps in database.
+    // Don't add timestamps for created_at and updated_at in the database.
     public $timestamps  = false;
 
     /**
-     *
+     * Fillable fields for the post model.
+     * 
      * @var array<int, string>
      */
     protected $fillable = [
         'content',
         'date',
-        'users_id',     //fillable foreign key?
+        'users_id',     // Foreign key for the user
     ];
 
     /**
@@ -35,13 +34,21 @@ class Post extends Model
         return $this->belongsTo(User::class, 'users_id');
     }
 
+    /**
+     * Get the question associated with this post (if exists).
+     */
     public function question(): HasOne
     {
         return $this->hasOne(Question::class, 'posts_id');
     }
 
-    public function answer(): HasOne
+    /**
+     * Get all the answers associated with this post.
+     */
+    public function answers(): HasMany
     {
-        return $this->hasOne(Answer::class, 'posts_id');
+        return $this->hasMany(Answer::class, 'posts_id');
     }
+}
+
 }

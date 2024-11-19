@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -14,7 +15,7 @@ class QuestionController extends Controller
     public function create()
     {
         // Return a view for creating a new question
-        return view('questions.create');
+        return view('pages/questions.create');
     }
 
     /**
@@ -22,23 +23,31 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
+        // Validate incoming data
         $request->validate([
-            'posts_id' => 'required|exists:posts,id', 
-            'title' => 'required|string|max:255',
-            'answers_id' => 'nullable|exists:answers,id', 
+            'content' => 'required|string|max:255', // Post content
+            'date' => 'required|date', // Post date
+            'title' => 'required|string|max:255', // Question title
         ]);
 
-        // Create a new question in the database
+        // Create the Post
+        $post = Post::create([
+            'content' => $request->content, // Post content
+            'date' => $request->date, // Post date
+            'users_id' => auth()->user()->id, // Assuming the authenticated user is the owner of the post
+        ]);
+
+        // Create the Question associated with the Post
         $question = Question::create([
-            'posts_id' => $request->posts_id,
-            'title' => $request->title,
-            'answers_id' => $request->answers_id, // Optional
+            'posts_id' => $post->id, // Relationship with the Post
+            'title' => $request->title, // Question title
         ]);
 
         // Redirect to the questions index page with a success message
         return redirect()->route('questions.index')->with('success', 'Question created successfully');
     }
+
+    
 
     /**
      * Display the specified resource.
@@ -131,3 +140,4 @@ class QuestionController extends Controller
     }
 
 }
+
