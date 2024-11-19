@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +23,12 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
-// Home
+// Root
 Route::redirect('/', '/login');
+
+
+//Home
+Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
 // Cards
 Route::controller(CardController::class)->group(function () {
