@@ -116,4 +116,17 @@ class QuestionController extends Controller
             'name' => $user ? $user->name : null,
         ]);
     }
+
+    public function deleteQuestionAPI($id)
+    {
+        $question = Question::find($id);
+
+        if (!$question) {
+            return response()->json(['error' => 'Question not found.'], 404);
+        }
+
+        $question->delete();
+
+        return response()->json(['message' => 'Question deleted successfully.']);
+    }
 }
