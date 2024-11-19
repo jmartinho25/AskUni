@@ -47,13 +47,14 @@
                 </a>
             </div>
 
-            <div class="profile">
-                <a href="{{ url('/users/' . Auth::user()->id) }}">
-                    <i class="fa fa-user"></i>
-                </a>
-            </div>
+        
 
             @if (Auth::check())
+                <div class="profile">
+                    <a href="{{ url('/users/' . Auth::user()->id) }}">
+                        <i class="fa fa-user"></i>
+                    </a>
+                </div>
                 <a class="button" href="{{ url('/logout') }}">Logout</a> 
                 <span>{{ Auth::user()->name }}</span>
             @endif
