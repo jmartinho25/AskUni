@@ -84,3 +84,4 @@ Route::controller(QuestionController::class)->group(function () {
 // Question Routes (Web)
 
 Route::resource('questions', QuestionController::class);
+Route::get('/questions/{id}', [QuestionController::class, 'show'])->name('questions.show');
