@@ -53,7 +53,7 @@ class QuestionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Question $question)
+    public function show($id)
     {
         $question->load('post');
         // Return a view to display the details of a specific question
