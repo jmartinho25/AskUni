@@ -55,8 +55,8 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $question->load('post');
-        // Return a view to display the details of a specific question
+        $question = Question::with('post')->findOrFail($id);
+        
         return view('pages.question', compact('question'));
     }
 
