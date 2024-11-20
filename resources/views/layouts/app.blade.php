@@ -55,7 +55,9 @@
                         <i class="fa fa-user"></i>
                     </a>
                 </div>
-                <a class="button" href="{{ url('/logout') }}">Logout</a> 
+                <a class="button" href="{{ url('/logout') }}">Logout</a>
+            @else
+                <a class="button" href="{{ url('/login') }}">Login</a>
             @endif
         </div>
     </header>

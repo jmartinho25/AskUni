@@ -24,11 +24,11 @@ use App\Http\Controllers\HomeController;
 */
 
 // Root
-Route::redirect('/', '/login');
+Route::redirect('/', '/home');
 
 
 //Home
-Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Cards
 Route::controller(CardController::class)->group(function () {
