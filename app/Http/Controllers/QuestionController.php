@@ -57,7 +57,7 @@ class QuestionController extends Controller
     {
         $question = Question::with('post')->findOrFail($id);
         
-        return view('pages.question', compact('question'));
+        return view('pages.questions.show', compact('question'));
     }
 
     /**

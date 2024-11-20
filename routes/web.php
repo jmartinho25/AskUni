@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CardController;
@@ -7,6 +6,7 @@ use App\Http\Controllers\ItemController;
 
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AnswerController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -26,8 +26,7 @@ use App\Http\Controllers\HomeController;
 // Root
 Route::redirect('/', '/home');
 
-
-//Home
+// Home
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Cards
@@ -35,7 +34,6 @@ Route::controller(CardController::class)->group(function () {
     Route::get('/cards', 'list')->name('cards');
     Route::get('/cards/{id}', 'show');
 });
-
 
 // API
 Route::controller(CardController::class)->group(function () {
@@ -48,7 +46,6 @@ Route::controller(ItemController::class)->group(function () {
     Route::post('/api/item/{id}', 'update');
     Route::delete('/api/item/{id}', 'delete');
 });
-
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
@@ -63,7 +60,6 @@ Route::controller(RegisterController::class)->group(function () {
 });
 
 // Profile
-
 Route::controller(UserController::class)->group(function () {
     Route::get('/users/edit-profile', 'editUser')->name('edit-profile');
     Route::put('/users/edit-profile', 'updateUser')->name('update-profile');
@@ -71,10 +67,10 @@ Route::controller(UserController::class)->group(function () {
 });
 
 // Posts
-
 Route::controller(UserController::class)->group(function () {
     Route::get('/api/users/{id}/questions', 'getUserQuestionsAPI');
 });
+
 // Question Routes (API)
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/api/question/{id}', 'getQuestionAPI');
@@ -83,6 +79,8 @@ Route::controller(QuestionController::class)->group(function () {
 });
 
 // Question Routes (Web)
-
 Route::resource('questions', QuestionController::class);
-Route::get('/questions/{id}', [QuestionController::class, 'show'])->name('questions.show');
+Route::get('questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
+
+Route::get('questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
+Route::post('/answers/{question}', [AnswerController::class, 'store'])->name('answers.store');
