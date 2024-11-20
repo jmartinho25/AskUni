@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
@@ -54,51 +56,38 @@ class UserController extends Controller
         return view('pages.editUser', ['user' => $user]);
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    // Handle user edit
-    public function edit(Request $request, User $user)
+    public function updateUser(Request $request)
     {
-        $this->authorize('edit', User::class);
+        $user = Auth::user();
 
-        // Validate the forms entries
         $request->validate([
-            'name' => 'max:255',
-            'username' => 'unique:users,username,' . $user->id . '|max:255',
-            'email' => 'email|unique:users,email,' . $user->id . '|max:255',
-            'description' => 'max:255',
-            'score' => 'nullable|integer|min:0|max:100' 
+            'name' => 'required|string|max:100',
+            'username' => 'required|string|max:50|unique:users,username,' . $user->id,
+            'email' => 'required|email|max:100|unique:users,email,' . $user->id . '|regex:/^[^@]+@fe\.up\.pt$/',
+            'password' => 'nullable|string|min:8|confirmed',
+            'description' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        if ($request->password) {
-            $request->validate([
-                'password' => 'string|min:6|confirmed',
-            ]);
-            $user->password = bcrypt($request->password);
-        }
-
-        
-        if ($request->file('photo')) {
-            if (!in_array(pathinfo($request->file('photo')->getClientOriginalName(), PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png'])) {
-                return redirect('user/edit')->with('error', 'File not supported');
-            }
-            // Call the controller to update the photo provided
-            ImageController::update($user->id, 'profile', $request);
-        }
-
         
         $user->name = $request->input('name');
         $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->description = $request->input('description');
-        $user->score = $request->input('score') ? $request->input('score') : $user->score; 
-        $user->is_blocked = $request->input('is_blocked') ? true : false; 
-        $user->save()   ;
 
-        // Redirect to user's page
-        return redirect('user/' . $user->id);
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('profilePictures'), $filename);
+            $user->photo = 'profilePictures/' . $filename;
+        }
+
+        $user->save();
+
+        return redirect()->route('profile', $user->id)->with('success', 'Profile updated successfully.');
     }
     
     /**

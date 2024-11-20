@@ -318,7 +318,7 @@ CREATE INDEX comments_search_idx ON comments USING GIN(tsvectors);
 
 
 -- Users Full-text Search
-
+/*
 ALTER TABLE users ADD COLUMN tsvectors TSVECTOR;
 
 CREATE OR REPLACE FUNCTION users_search_update() RETURNS trigger AS $$
@@ -344,7 +344,7 @@ CREATE TRIGGER users_search_update BEFORE INSERT OR UPDATE ON users
     FOR EACH ROW EXECUTE PROCEDURE users_search_update();
 
 CREATE INDEX users_search_idx ON users USING GIN(tsvectors);
-
+*/
 
 -- Tags Full-text Search
 
