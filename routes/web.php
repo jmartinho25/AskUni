@@ -8,6 +8,8 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AnswerController;
 
+use App\Http\Controllers\NotificationController;
+
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
@@ -69,6 +71,8 @@ Route::controller(UserController::class)->group(function () {
 // Posts
 Route::controller(UserController::class)->group(function () {
     Route::get('/api/users/{id}/questions', 'getUserQuestionsAPI');
+
+    Route::get('/api/notifications', 'getNotificationsAPI');
 });
 
 // Question Routes (API)
@@ -80,7 +84,12 @@ Route::controller(QuestionController::class)->group(function () {
 
 // Question Routes (Web)
 Route::resource('questions', QuestionController::class);
-Route::get('questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
+Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
 
 Route::get('questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
 Route::post('/answers/{question}', [AnswerController::class, 'store'])->name('answers.store');
+
+Route::controller(NotificationController::class)->group(function () {
+
+    Route::put('/api/notifications/{id}', 'markAsReadAPI')->name('notifications.read');
+});

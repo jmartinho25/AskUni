@@ -127,4 +127,23 @@ class UserController extends Controller
 
         return response()->json($result);
     }
+
+    public function getNotificationsAPI()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'User not found.'], 404);
+        }
+        $notifications = $user->notifications()->where('read_status', false)->get();
+
+        $result = $notifications->map(function ($notification) {
+            return [
+                'id' => $notification->id,
+                'content' => $notification->content,
+                'date' => $notification->date,
+            ];
+        });
+
+        return response()->json($result);
+    }
 }

@@ -1089,20 +1089,13 @@ paths:
 
 ################ NOTIFICATIONS AND INTERACTIONS ################
 
-  /api/notifications/users/{id}:
+  /api/notifications:
     get:
       operationId: R501
       summary: 'R501: Get User Notifications'
       description: 'List user notifications. Returns the results as JSON. Access: USR'
       tags:
         - 'M05: Notifications and Interactions'
-
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
 
       responses:
         '200':
@@ -1128,18 +1121,20 @@ paths:
                 - id: 2
                   content: "Congratulations! You have earned a new badge: First Correct Answer!"
                   date: "2023-10-01T13:00:00Z"
-        '302':
-          description: 'Redirect if user does not exist.'
-          headers:
-            Location:
+        '404':
+          description: 'User not found.'
+          content:
+            application/json:
               schema:
-                type: string
-              examples:
-                302Failure:
-                  description: 'User does not exist.'
-                  value: '/home'
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "User not found."
 
-    post:
+  /api/notifications/{id}:
+    put:
       operationId: R502
       summary: 'R502: Mark Notification as Read'
       description: 'Processes the notification status update. Access: USR'
@@ -1154,61 +1149,28 @@ paths:
           required: true
 
       responses:
-        '302':
-          description: 'Redirect after processing the notification status update.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful notification status update. Redirect to user notifications.'
-                  value: '/notifications/users/{id}'
-                302Failure:
-                  description: 'Failed notification status update. Redirect to user notifications.'
-                  value: '/notifications/users/{id}'
-
-
-  /api/users/{id}/score:
-    get:
-      operationId: R503
-      summary: 'R503: Get User Score'
-      description: 'Get the user score. Returns the result as JSON. Access: USR'
-      tags:
-        - 'M05: Notifications and Interactions'
-
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-
-      responses:
         '200':
-          description: 'Ok. Show user score.'
+          description: 'Notification marked as read successfully.'
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  score:
-                    type: integer
+                  message:
+                    type: string
               example:
-                score: 85
-        '302':
-          description: 'Redirect if user does not exist.'
-          headers:
-            Location:
+                message: 'Notification marked as read.'
+        '404':
+          description: 'Notification not found or unauthorized.'
+          content:
+            application/json:
               schema:
-                type: string
-              examples:
-                302Failure:
-                  description: 'User does not exist.'
-                  value: '/home'
-    
-
-    
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: 'Notification not found or unauthorized.'
 
 
 
