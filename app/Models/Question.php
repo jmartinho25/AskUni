@@ -27,7 +27,7 @@ class Question extends Model
      */
     public function answers(): HasMany
     {
-        return $this->hasMany(Answer::class, 'questions_id');
+        return $this->hasMany(Answer::class, 'questions_id', 'posts_id');
     }
 
     /**
@@ -40,7 +40,12 @@ class Question extends Model
 
     public function user(): BelongsTo
     {
-        return $this->post->user();
+        return $this->belongsTo(User::class, 'users_id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'posts_id', 'posts_id');
     }
 }
 

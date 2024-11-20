@@ -38,25 +38,44 @@
         </form>
     @endcan
 
-    <hr>
+    <h2>Answers</h2>
+    @if ($question->answers->isEmpty())
+        <p>No answers available.</p>
+    @else
+    @foreach ($question->answers as $answer)
+        <div class="answer">
+            <p>{{ $answer->post->content }}</p>
+            <p>Answered by: <a href="{{ route('profile', $answer->post->user->id) }}">{{ $answer->post->user->name }}</a></p>
+            <p>Date: {{ $answer->post->date }}</p>
 
-    <h2>Answers:</h2>
-    @forelse($question->answers as $answer)
-        <div class="card mb-3">
-            <div class="card-body">
-                <p>{{ $answer->post->content }}</p>
-                <p>Created by: <a href="{{ route('profile', $answer->post->user->id) }}">{{ $answer->post->user->name }}</a></p>
-                <p>Date:
-                    @if($answer->post->date instanceof \Carbon\Carbon)
-                        {{ $answer->post->date->format('d/m/Y H:i') }}
-                    @else
-                        {{ $answer->post->date }}
-                    @endif
-                </p>
-            </div>
+            @if (!$answer->comments->isEmpty())
+            <h3>Comments</h3>
+            <ul class="comments">
+                        @foreach ($answer->comments as $comment)
+                            <li class="comment">
+                                <p>{{ $comment->content }}</p>
+                                <p>Commented by: <a href="{{ route('profile', $comment->user->id) }}">{{ $comment->user->name }}</a></p>
+                                <p>Date: {{ $comment->date }}</p>
+                            </li>
+                        @endforeach
+            </ul>
+            @endif
         </div>
-    @empty
-        <p>No answers yet. Be the first to answer!</p>
-    @endforelse
-</div>
-@endsection
+    @endforeach
+    @endif
+
+    <h2>Comments</h2>
+    @if ($question->comments->isEmpty())
+        <p>No comments available.</p>
+    @else
+    @foreach ($question->comments as $comment)
+        <div class="comment">
+            <p>{{ $comment->content }}</p>
+            <p>Commented by: <a href="{{ route('profile', $comment->user->id) }}">{{ $comment->user->name }}</a></p>
+            <p>Date: {{ $comment->date }}</p>
+        </div>
+    @endforeach
+    @endif
+
+    </div>
+    @endsection

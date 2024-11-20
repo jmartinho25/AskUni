@@ -20,7 +20,7 @@
             @foreach($questions as $question)
                 <li>
                     <a href="{{ route('questions.show', $question) }}">{{ $question->title }}</a><br>
-                    <small>Publicado em: {{ $question->created_at->format('d/m/Y H:i') }}</small>
+                    <small>Publicado em: {{ $question->post->date }}</small>
                 </li>
             @endforeach
         </ul>
