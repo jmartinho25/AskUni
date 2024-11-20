@@ -43,5 +43,10 @@ class Post extends Model
     {
         return $this->hasOne(Answer::class, 'posts_id');
     }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'posts_id');
+    }
 }
 

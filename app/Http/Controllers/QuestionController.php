@@ -11,7 +11,7 @@ class QuestionController extends Controller
 
     public function index()
     {
-        $questions = Question::with('post')->get();
+        $questions = Question::with('post')->paginate(10);
 
         return view('/pages/questions.index', compact('questions'));
     }
@@ -55,7 +55,7 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $question = Question::with('post')->findOrFail($id);
+        $question = Question::with(['post', 'answers.comments', 'comments'])->findOrFail($id);
         
         return view('pages.questions.show', compact('question'));
     }
