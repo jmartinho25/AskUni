@@ -2,6 +2,12 @@
 
 @section('content')
 <div class="container">
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <h1>{{ $user->name }}'s Profile</h1>
     <p>Username: {{ $user->username }}</p>
     <p>Email: {{ $user->email }}</p>

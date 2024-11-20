@@ -66,7 +66,8 @@ Route::controller(RegisterController::class)->group(function () {
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/users/edit-profile', 'editUser')->name('edit-profile');
-    Route::get('/users/{id}', 'show');
+    Route::put('/users/edit-profile', 'updateUser')->name('update-profile');
+    Route::get('/users/{id}', 'show')->name('profile');
 });
 
 // Posts

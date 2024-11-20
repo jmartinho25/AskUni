@@ -51,7 +51,7 @@
 
             @if (Auth::check())
                 <div class="profile">
-                    <a href="{{ url('/users/' . Auth::user()->id) }}">
+                    <a href="{{ route('profile', Auth::user()->id) }}">
                         <i class="fa fa-user"></i>
                     </a>
                 </div>
