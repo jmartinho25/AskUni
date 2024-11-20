@@ -92,6 +92,12 @@ Route::resource('questions', QuestionController::class);
 Route::get('/questions/{id}', [QuestionController::class, 'show'])->name('questions.show');
 
 
+
+
+
+
+
+
 Route::controller(NotificationController::class)->group(function () {
 
     Route::put('/api/notifications/{id}', 'markAsReadAPI')->name('notifications.read');
