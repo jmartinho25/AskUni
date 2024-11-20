@@ -19,7 +19,7 @@ class Question extends Model
     // Define the fillable fields for mass assignment
     protected $fillable = [
         'posts_id', // Relationship with the Post
-        'title',    // Question title
+        'title',// Question title
     ];
 
     /**

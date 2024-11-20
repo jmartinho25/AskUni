@@ -55,8 +55,9 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
+        $question->load('post');
         // Return a view to display the details of a specific question
-        return view('questions.show', compact('question'));
+        return view('pages.question', compact('question'));
     }
 
     /**
@@ -64,8 +65,9 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
-        // Return a view to edit the specified question
-        return view('questions.edit', compact('question'));
+        $this->authorize('update', $question);
+
+        return view('pages.editQuestion', compact('question'));
     }
 
     /**
@@ -73,6 +75,8 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
+        $this->authorize('update', $question);
+
         // Validate the request data
         $request->validate([
             'posts_id' => 'required|exists:posts,id',
@@ -87,8 +91,8 @@ class QuestionController extends Controller
             'answers_id' => $request->answers_id,
         ]);
 
-        // Redirect to the questions index page with a success message
-        return redirect()->route('questions.index')->with('success', 'Question updated successfully');
+        // Redirect to the question page with a success message
+        return redirect()->route('questions.show',$question->posts_id)->with('success', 'Question updated successfully');
     }
 
     /**
@@ -96,6 +100,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
+        $this->authorize('delete', $question);
         // Delete the question from the database
         $question->delete();
 
