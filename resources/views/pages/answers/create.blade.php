@@ -12,9 +12,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit Answer</button>
         </form>
-        <p>{{ route('answers.store', $question->posts_id) }}</p>
-
+        
         <a href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary mt-3">Back to Question</a>
     </div>
 @endsection
-

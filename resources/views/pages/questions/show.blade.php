@@ -24,7 +24,7 @@
 
     <a class="button" href="{{ route('home') }}" class="btn btn-secondary mb-3">Back to Home Page</a>
 
-    <a class= "button" href="{{ route('answers.create', $question) }}" class="btn btn-primary mb-3">Add Answer</a>
+    <a class="button" href="{{ route('answers.create', $question) }}" class="btn btn-primary mb-3">Add Answer</a>
 
     @can('update', $question)
         <a href="{{ route('questions.edit', $question) }}" class="btn btn-primary">Edit Question</a>
@@ -38,5 +38,25 @@
         </form>
     @endcan
 
-    </div>
-    @endsection
+    <hr>
+
+    <h2>Answers:</h2>
+    @forelse($question->answers as $answer)
+        <div class="card mb-3">
+            <div class="card-body">
+                <p>{{ $answer->post->content }}</p>
+                <p>Created by: <a href="{{ route('profile', $answer->post->user->id) }}">{{ $answer->post->user->name }}</a></p>
+                <p>Date:
+                    @if($answer->post->date instanceof \Carbon\Carbon)
+                        {{ $answer->post->date->format('d/m/Y H:i') }}
+                    @else
+                        {{ $answer->post->date }}
+                    @endif
+                </p>
+            </div>
+        </div>
+    @empty
+        <p>No answers yet. Be the first to answer!</p>
+    @endforelse
+</div>
+@endsection

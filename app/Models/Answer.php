@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Answer extends Model
 {
     use HasFactory;
-
     protected $primaryKey = 'posts_id';
 
     // Don't add create and update timestamps in database.
@@ -21,8 +20,7 @@ class Answer extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'content',
-        'users_id',
+        'posts_id',
         'questions_id',
     ];
 
@@ -39,11 +37,10 @@ class Answer extends Model
      */
     public function post(): BelongsTo
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Post::class, 'posts_id');
     }
 
     public function user(): BelongsTo
     {
         return $this->post->user();
-    }
-}
+    }}
