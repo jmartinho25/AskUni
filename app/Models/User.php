@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+
 
 // Added to define Eloquent relationships.
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -69,9 +71,9 @@ class User extends Authenticatable
     /**
      * Get the questions for a user.
      */
-    public function questions(): HasMany
+    public function questions(): HasManyThrough
     {
-        return $this->posts()->whereHas('question')->with('question');
+        return $this->hasManyThrough(Question::class, Post::class, 'users_id', 'posts_id');
     }
 
     /**

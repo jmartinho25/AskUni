@@ -37,8 +37,9 @@
     @foreach ($questions as $question)
         <div>
             <h3>{{ $question->title }}</h3>
-            <p>{{ $question->content }}</p>
-            <p>Date: {{ $question->date }}</p>
+            <p>{{ $question->post->content }}</p>
+            <p>Date: {{ $question->post->date }}</p>
+            <a href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
         </div>
     @endforeach
 </div>
