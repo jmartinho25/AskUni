@@ -53,9 +53,10 @@ class QuestionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Question $question)
+    public function show($id)
     {
-        // Return a view to display the details of a specific question
+        $question = Question::findOrFail($id);
+
         return view('questions.show', compact('question'));
     }
 
