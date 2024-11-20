@@ -12,7 +12,7 @@
             <div class="question-card">
                 <h3>{{ $question->title }}</h3>
                 <p>{{ $question->description }}</p>
-                <a href="{{ url('question.show' , $question->id) }}">Read More</a>
+                <a href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
             </div>
         @endforeach
     @else
