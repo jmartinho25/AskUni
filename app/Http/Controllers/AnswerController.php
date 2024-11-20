@@ -4,39 +4,62 @@ namespace App\Http\Controllers;
 
 use App\Models\Answer;
 use Illuminate\Http\Request;
-
+use App\Models\Post;
+use App\Models\Question;
 class AnswerController extends Controller
 {
+    public function index()
+    {
+        // Retrieve all answers from the database
+        $answers = Answer::all();
+
+        // Return a view to display all answers
+        return view('answers.index', compact('answers'));
+    }
 
     /**
      * Show the form for creating a new answer.
      */
-    public function create()
+    public function create(Question $question)
     {
-        // Return a view for creating a new answer
-        return view('answers.create');
+        return view('pages/answers.create', compact('question'));
     }
+
 
     /**
      * Store a newly created answer in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $postId)
     {
-        // Validate the request data
+        
+
         $request->validate([
-            'posts_id' => 'required|exists:posts,id', // The post must exist
-            'questions_id' => 'nullable|exists:questions,id', // The question must exist if provided
+            'content' => 'required|string',
         ]);
 
-        // Create a new answer in the database
-        $answer = Answer::create([
-            'posts_id' => $request->posts_id,
-            'questions_id' => $request->questions_id, // Optional
+        $question = Question::where('posts_id', $postId)->first();
+
+        if (!$question) {
+            return redirect()->route('questions.index')->with('error', 'Question not found.');
+        }
+
+        $post = Post::create([
+            'content' => $request->content,
+            'date' => now(),
+            'users_id' => auth()->user()->id,
         ]);
 
-        // Redirect to the answers index page with a success message
-        return redirect()->route('answers.index')->with('success', 'Answer created successfully');
+        Answer::create([
+            'posts_id' => $post->id,         
+            'questions_id' => $question->posts_id,  
+        ]);
+
+        return redirect()->route('questions.show', $postId)->with('success', 'Answer added successfully!');
     }
+
+
+
+
 
     /**
      * Display the specified answer.
@@ -61,19 +84,16 @@ class AnswerController extends Controller
      */
     public function update(Request $request, Answer $answer)
     {
-        // Validate the request data
         $request->validate([
-            'posts_id' => 'required|exists:posts,id', // The post must exist
-            'questions_id' => 'nullable|exists:questions,id', // The question must exist if provided
+            'post_id' => 'required|exists:posts,id',
+            'question_id' => 'nullable|exists:questions,id',
         ]);
 
-        // Update the answer in the database
         $answer->update([
-            'posts_id' => $request->posts_id,
-            'questions_id' => $request->questions_id, // Optional
+            'post_id' => $request->post_id,
+            'question_id' => $request->question_id,
         ]);
 
-        // Redirect to the answers index page with a success message
         return redirect()->route('answers.index')->with('success', 'Answer updated successfully');
     }
 

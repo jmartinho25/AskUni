@@ -256,3 +256,22 @@ body {
       gap: 10px; 
   }
 }
+
+
+.answer, .comment {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.comments {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+
+.comment:first-child {
+  border-top: none;
+}
