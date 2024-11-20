@@ -7,6 +7,7 @@ use App\Http\Controllers\ItemController;
 
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NotificationController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -74,6 +75,8 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/api/users/{id}/questions', 'getUserQuestionsAPI');
+
+    Route::get('/api/notifications', 'getNotificationsAPI');
 });
 // Question Routes (API)
 Route::controller(QuestionController::class)->group(function () {
@@ -86,3 +89,9 @@ Route::controller(QuestionController::class)->group(function () {
 
 Route::resource('questions', QuestionController::class);
 Route::get('/questions/{id}', [QuestionController::class, 'show'])->name('questions.show');
+
+
+Route::controller(NotificationController::class)->group(function () {
+
+    Route::put('/api/notifications/{id}', 'markAsReadAPI')->name('notifications.read');
+});

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -100,12 +101,18 @@ class NotificationController extends Controller
     /**
      * Mark a notification as read via API.
      */
-    public function markAsRead(Notification $notification)
+    public function markAsReadAPI($id)
     {
-        // Mark the notification as read
-        $notification->update(['read_status' => true]);
+        $user = Auth::user();
+        $notification = Notification::find($id);
 
-        // Return a JSON response
+        if (!$notification || $notification->users_id !== $user->id) {
+            return response()->json(['error' => 'Notification not found or unauthorized.'], 404);
+        }
+
+        $notification->read_status = true;
+        $notification->save();
+
         return response()->json(['message' => 'Notification marked as read.']);
     }
 }
