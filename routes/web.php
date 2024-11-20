@@ -91,12 +91,8 @@ Route::controller(QuestionController::class)->group(function () {
 Route::resource('questions', QuestionController::class);
 Route::get('/questions/{id}', [QuestionController::class, 'show'])->name('questions.show');
 
-
-
-
-
-
-
+Route::get('questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
+Route::post('/answers/{question}', [AnswerController::class, 'store'])->name('answers.store');
 
 Route::controller(NotificationController::class)->group(function () {
 
