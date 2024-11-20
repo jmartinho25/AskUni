@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Answer extends Model
 {
     use HasFactory;
-
     protected $primaryKey = 'posts_id';
 
     // Don't add create and update timestamps in database.
@@ -22,8 +21,7 @@ class Answer extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'content',
-        'users_id',
+        'posts_id',
         'questions_id',
     ];
 

@@ -24,7 +24,7 @@
 
     <a class="button" href="{{ route('home') }}" class="btn btn-secondary mb-3">Back to Home Page</a>
 
-    <a class= "button" href="{{ route('answers.create', $question) }}" class="btn btn-primary mb-3">Add Answer</a>
+    <a class="button" href="{{ route('answers.create', $question) }}" class="btn btn-primary mb-3">Add Answer</a>
 
     @can('update', $question)
         <a href="{{ route('questions.edit', $question) }}" class="btn btn-primary">Edit Question</a>
