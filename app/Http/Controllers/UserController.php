@@ -31,7 +31,7 @@ class UserController extends Controller
         
         //$tags = $user->tags()->get();
 
-        return view('pages.user', compact('user', 'posts', 'answers','questions'));
+        return view('pages.user.user', compact('user', 'posts', 'answers','questions'));
     }
 
     // Show search page
@@ -53,7 +53,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $this->authorize('editUser', $user);
-        return view('pages.editUser', ['user' => $user]);
+        return view('pages.user.editUser', ['user' => $user]);
     }
 
     public function updateUser(Request $request)
