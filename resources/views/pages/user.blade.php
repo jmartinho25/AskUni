@@ -36,6 +36,9 @@
                 <div class="tab-panels">
                     <section id="questions" class="tab-panel">
                         <h2>Questions</h2>
+                        @if ($questions->isEmpty())
+                            <p>No questions available.</p>
+                        @else
                         @foreach ($questions as $question)
                             <div>
                                 <h3>{{ $question->title }}</h3>
@@ -44,15 +47,30 @@
                                 <a href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
                             </div>
                         @endforeach
+                        @endif
                     </section>
                     <section id="answers" class="tab-panel">
                         <h2>Answers</h2>
+                        @if ($answers->isEmpty())
+                            <p>No answers available.</p>
+                        @else
                         @foreach ($answers as $answer)
                             <div>
                                 <p>{{ $answer->content }}</p>
                                 <p>Date: {{ $answer->date }}</p>
+
+                                @if (auth()->check() && auth()->user()->id === $answer->users_id)
+                                    <a href="{{ route('answers.edit', $answer->id) }}" class="btn btn-secondary">Edit Answer</a>
+                                    <form action="{{ route('answers.destroy', $answer->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete Answer</button>
+                                    </form>
+                                @endif
+
                             </div>
                         @endforeach
+                        @endif
                     </section>
                 </div>
             </div>
