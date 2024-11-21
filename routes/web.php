@@ -88,8 +88,6 @@ Route::controller(QuestionController::class)->group(function () {
 Route::resource('questions', QuestionController::class);
 Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
 
-Route::get('questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
-Route::post('/answers/{question}', [AnswerController::class, 'store'])->name('answers.store');
 
 Route::controller(NotificationController::class)->group(function () {
     Route::put('/api/notifications/mark-all-read', 'markAllReadAPI')->name('notifications.read.all');
@@ -98,4 +96,9 @@ Route::controller(NotificationController::class)->group(function () {
 
 Route::get('/feed', [FeedController::class, 'index'])->name('feed');
 
-Route::resource('answers', AnswerController::class)->except(['index', 'show']);
+
+Route::get('questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
+Route::post('questions/{question}/answers', [AnswerController::class, 'store'])->name('answers.store');
+Route::get('answers/{answer}/edit', [AnswerController::class, 'edit'])->name('answers.edit');
+Route::put('answers/{answer}', [AnswerController::class, 'update'])->name('answers.update');
+Route::delete('answers/{answer}', [AnswerController::class, 'destroy'])->name('answers.destroy');
