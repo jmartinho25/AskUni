@@ -1026,36 +1026,36 @@ INSERT INTO badges (name, description) VALUES
 ('First Correct Answer', 'Awarded for getting your answer marked as correct.');
 
 INSERT INTO users (username, name, email, password, description, score) VALUES 
-('john_doe', 'John Doe', 'john_doe@fe.up.pt', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'A regular user.', 50),
-('jane_smith', 'Jane Smith', 'jane_smith@fe.up.pt', 'hashed_password_2', 'An avid contributor.', 70),
-('admin_user', 'Admin User', 'admin_user@fe.up.pt', 'hashed_password_admin', 'Administrator of the platform.', 100),
-('alice_jones', 'Alice Jones', 'alice_jones@fe.up.pt', 'hashed_password_3', 'Loves to help others.', 60),
-('bob_brown', 'Bob Brown', 'bob_brown@fe.up.pt', 'hashed_password_4', 'A tech enthusiast.', 55),
-('charlie_white', 'Charlie White', 'charlie_white@fe.up.pt', 'hashed_password_5', 'A passionate coder.', 65),
-('david_black', 'David Black', 'david_black@fe.up.pt', 'hashed_password_6', 'Enjoys hiking and outdoor activities.', 40),
-('emma_green', 'Emma Green', 'emma_green@fe.up.pt', 'hashed_password_7', 'A graphic designer.', 75),
-('frank_yellow', 'Frank Yellow', 'frank_yellow@fe.up.pt', 'hashed_password_8', 'A photographer.', 80),
-('grace_pink', 'Grace Pink', 'grace_pink@fe.up.pt', 'hashed_password_9', 'A music lover.', 45),
-('henry_gray', 'Henry Gray', 'henry_gray@fe.up.pt', 'hashed_password_10', 'An avid reader.', 50),
-('isla_blue', 'Isla Blue', 'isla_blue@fe.up.pt', 'hashed_password_11', 'A traveler at heart.', 70),
-('jack_red', 'Jack Red', 'jack_red@fe.up.pt', 'hashed_password_12', 'Enjoys sports and fitness.', 55),
-('kate_violet', 'Kate Violet', 'kate_violet@fe.up.pt', 'hashed_password_13', 'An aspiring chef.', 60),
-('liam_orange', 'Liam Orange', 'liam_orange@fe.up.pt', 'hashed_password_14', 'A movie buff.', 65),
-('mona_cyan', 'Mona Cyan', 'mona_cyan@fe.up.pt', 'hashed_password_15', 'A passionate writer.', 50),
-('noah_teal', 'Noah Teal', 'noah_teal@fe.up.pt', 'hashed_password_16', 'A gamer.', 45),
-('olivia_magenta', 'Olivia Magenta', 'olivia_magenta@fe.up.pt', 'hashed_password_17', 'Loves yoga and meditation.', 80),
-('peter_brown', 'Peter Brown', 'peter_brown@fe.up.pt', 'hashed_password_18', 'A nature lover.', 50),
-('quinn_aqua', 'Quinn Aqua', 'quinn_aqua@fe.up.pt', 'hashed_password_19', 'A fashion enthusiast.', 65),
-('ryan_purple', 'Ryan Purple', 'ryan_purple@fe.up.pt', 'hashed_password_20', 'An aspiring musician.', 55),
-('sara_black', 'Sara Black', 'sara_black@fe.up.pt', 'hashed_password_21', 'A data scientist.', 90),
-('tina_white', 'Tina White', 'tina_white@fe.up.pt', 'hashed_password_22', 'Loves cooking and baking.', 75),
-('ursula_red', 'Ursula Red', 'ursula_red@fe.up.pt', 'hashed_password_23', 'A pet lover.', 60),
-('victor_yellow', 'Victor Yellow', 'victor_yellow@fe.up.pt', 'hashed_password_24', 'A fitness trainer.', 85),
-('wendy_green', 'Wendy Green', 'wendy_green@fe.up.pt', 'hashed_password_25', 'An environmentalist.', 70),
-('xander_gray', 'Xander Gray', 'xander_gray@fe.up.pt', 'hashed_password_26', 'A digital marketer.', 55),
-('yara_blue', 'Yara Blue', 'yara_blue@fe.up.pt', 'hashed_password_27', 'A student.', 45),
-('zach_orange', 'Zach Orange', 'zach_orange@fe.up.pt', 'hashed_password_28', 'A software developer.', 80),
-('brian_cyan', 'Brian Cyan', 'brian_cyan@fe.up.pt', 'hashed_password_30', 'A volunteer.', 65);
+('john_doe', 'John Doe', 'john_doe@fe.up.pt', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'A regular user.', 50), --1234
+('jane_smith', 'Jane Smith', 'jane_smith@fe.up.pt', '$2y$10$F0jHnUherAO3ll53.jiB/etved2.UfmiJHVowhupYEyqS1TlrtYTS', 'An avid contributor.', 70),--hashed_password_2
+('admin_user', 'Admin User', 'admin_user@fe.up.pt', '$2y$10$Cbb5aNlO0zDpXgfZNa1JGOpI7DfeItgylXReM0dli2iHqZrPznJJy', 'Administrator of the platform.', 100),--hashed_password_admin
+('alice_jones', 'Alice Jones', 'alice_jones@fe.up.pt', '$2y$10$ta0Nrzvzvuw7VEJJjV9MP.tJlt.QcpkfKx7F1fQgf5xcmiXJNiRva', 'Loves to help others.', 60),--hashed_password_3
+('bob_brown', 'Bob Brown', 'bob_brown@fe.up.pt', '$2y$10$GAX4QzJZ7x30GLCYRXH4QOsx30IztCO3Db.jsLPkzgleeAkj4S8da', 'A tech enthusiast.', 55),--hashed_password_4
+('charlie_white', 'Charlie White', 'charlie_white@fe.up.pt', '$2y$10$w6Q4sOQGR.Ov3NsesS2Y3ufzLQwjGbfBIKelwyRI2veEssjNZWs7K', 'A passionate coder.', 65),--hashed_password_5
+('david_black', 'David Black', 'david_black@fe.up.pt', '$2y$10$M5fK90GsQPJe8PKDmU5qlurb3zxmMb863WmuSsEdN4NLxQcyb2CoW', 'Enjoys hiking and outdoor activities.', 40),--hashed_password_6
+('emma_green', 'Emma Green', 'emma_green@fe.up.pt', '$2y$10$CELvfDn9A5MMre2Uv4AEJ.ynYbKwtyN3gSdXFMiIqGeCqsAGkgx8a', 'A graphic designer.', 75),--hashed_password_7
+('frank_yellow', 'Frank Yellow', 'frank_yellow@fe.up.pt', '$2y$10$GlK1KjBmzmUXYUEtnMibKu5qmRbKH7dOSOSufj7ozBTCFf/yOyp.i', 'A photographer.', 80),--hashed_password_8
+('grace_pink', 'Grace Pink', 'grace_pink@fe.up.pt', '$2y$10$wZMl79RIQCmFOh47M9Vtqug5mruig/0suH8ZfR17pETPGD.ECjGDa', 'A music lover.', 45),--hashed_password_9
+('henry_gray', 'Henry Gray', 'henry_gray@fe.up.pt', '$2y$10$yA4QV84in6XY5w3Ons4/K.ewajvbbkmA./SanSUKRevIEVzGEjfW6', 'An avid reader.', 50),--hashed_password_10
+('isla_blue', 'Isla Blue', 'isla_blue@fe.up.pt', '$2y$10$fEShMQwgV3s41jBhe/bfXu6A.ZV9QRJvZmXDDVEc/408dRQ7OI4HS', 'A traveler at heart.', 70),--hashed_password_11
+('jack_red', 'Jack Red', 'jack_red@fe.up.pt', '$2y$10$nbSbottbERzGLv1finlb3e5RnuC/m1FoNuE4oCbXS.WpjxkciNFVG', 'Enjoys sports and fitness.', 55),--hashed_password_12
+('kate_violet', 'Kate Violet', 'kate_violet@fe.up.pt', '$2y$10$X4aLF2Uc8Mur1nzTLk0ZtuETvzS1Qi5C0.VrKs6t5YgzwuDPhFB5q', 'An aspiring chef.', 60),--hashed_password_13
+('liam_orange', 'Liam Orange', 'liam_orange@fe.up.pt', '$2y$10$BupdHXDT86lXVzysFWe6pOb.xJuGOumzkS2G0KgJ3q9WiTHwX3VXO', 'A movie buff.', 65),--hashed_password_14
+('mona_cyan', 'Mona Cyan', 'mona_cyan@fe.up.pt', '$2y$10$6dVwiNvaIWWkjxMRu9BNfOwg/4U0Uj5Jj6AdvoyhcSizzlcfBFNAC', 'A passionate writer.', 50),--hashed_password_15
+('noah_teal', 'Noah Teal', 'noah_teal@fe.up.pt', '$2y$10$IYckpqhh.JbwBqM3qvbr/un0mLYwS4WKzK4CkfgxSLI3kuCIuHqFK', 'A gamer.', 45),--hashed_password_16
+('olivia_magenta', 'Olivia Magenta', 'olivia_magenta@fe.up.pt', '$2y$10$UBgeh4z9O9qHcSM8R10ZzOckjN4TkGVKW0tGs/GKoUNuOGIRdepra', 'Loves yoga and meditation.', 80),--hashed_password_17
+('peter_brown', 'Peter Brown', 'peter_brown@fe.up.pt', '$2y$10$jOsPVE2DJG2dlYUGzaLGp.IJiySCjxdZ53Qorq3NZFDmsr2RnSjjq', 'A nature lover.', 50),--hashed_password_18
+('quinn_aqua', 'Quinn Aqua', 'quinn_aqua@fe.up.pt', '$2y$10$jyD9bG64R1Xmfvp6/WmRXe9O3pDr6vBpjppTvi./RU2Ut6xqjw5D2', 'A fashion enthusiast.', 65),--hashed_password_19
+('ryan_purple', 'Ryan Purple', 'ryan_purple@fe.up.pt', '$2y$10$AbyEuSyp81MEijQmvaeuo.i8MXF3k.nA2nluVxOxKgwWM0kO00XRW', 'An aspiring musician.', 55),--hashed_password_20
+('sara_black', 'Sara Black', 'sara_black@fe.up.pt', '$2y$10$w1Bpn4ylv0mTtY5XdegTWO2bA8kh.CAZ5dm6eyaAKlDl3dRMdD6q2', 'A data scientist.', 90),--hashed_password_21
+('tina_white', 'Tina White', 'tina_white@fe.up.pt', '$2y$10$PkFfFGmiqNYvr/aAq8rD7eG64mfI7pXR/BfC0Hv6Dpph7lZQ96yzm', 'Loves cooking and baking.', 75),--hashed_password_22
+('ursula_red', 'Ursula Red', 'ursula_red@fe.up.pt', '$2y$10$HHX/YJ0ibdgrJmNSO2blNO7VhYUjgCZzTWbsSvqqiPrevjqAj1QVi', 'A pet lover.', 60),--hashed_password_23
+('victor_yellow', 'Victor Yellow', 'victor_yellow@fe.up.pt', '$2y$10$M.cRHwN1Nnf68RSvo4xbruGnlXiSY9vzSQnb9h8eARkqXsdzviJ9y', 'A fitness trainer.', 85),--hashed_password_24
+('wendy_green', 'Wendy Green', 'wendy_green@fe.up.pt', '$2y$10$c81Yv3hTsVJg92v3ba4de.NvpNp1Mr3ww7TKvWM5AYfQouGJ3t2Gq', 'An environmentalist.', 70),--hashed_password_25
+('xander_gray', 'Xander Gray', 'xander_gray@fe.up.pt', '$2y$10$AWWc3K3O5pkJq/q2eXsvcecwuCAyKpElzNuKf3tBjNC.Yx9EMyRp2', 'A digital marketer.', 55),--hashed_password_26
+('yara_blue', 'Yara Blue', 'yara_blue@fe.up.pt', '$2y$10$5Dpe2B8t4xsNaZ.Fs5kHX.oVaJThLSkztSlPOdNgWgDA88GC/Sul2', 'A student.', 45),--hashed_password_27
+('zach_orange', 'Zach Orange', 'zach_orange@fe.up.pt', '$2y$10$w9ciwpmCrs6x/L0v4aLPEOKtQwxV0LtGZwSzloqKTRLBaMF9CMWhq', 'A software developer.', 80),--hashed_password_28
+('brian_cyan', 'Brian Cyan', 'brian_cyan@fe.up.pt', '$2y$10$xYTdOw7.w5U6cxuNltQuquHBUlde/ugk2n9taLNAWeuFe/LwK3k46', 'A volunteer.', 65);--hashed_password_30
 
 INSERT INTO users_roles (users_id, roles_id) VALUES 
 (3, 1),
