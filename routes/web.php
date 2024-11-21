@@ -92,7 +92,7 @@ Route::get('questions/{question}/answers/create', [AnswerController::class, 'cre
 Route::post('/answers/{question}', [AnswerController::class, 'store'])->name('answers.store');
 
 Route::controller(NotificationController::class)->group(function () {
-
+    Route::put('/api/notifications/mark-all-read', 'markAllReadAPI')->name('notifications.read.all');
     Route::put('/api/notifications/{id}', 'markAsReadAPI')->name('notifications.read');
 });
 

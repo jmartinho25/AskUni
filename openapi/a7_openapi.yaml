@@ -1172,6 +1172,36 @@ paths:
               example:
                 error: 'Notification not found or unauthorized.'
 
+  /api/notifications/mark-all-read:
+    put:
+      operationId: R503
+      summary: 'R503: Mark All Notifications as Read'
+      description: 'Marks all user notifications as read. Access: USR'
+      tags:
+        - 'M05: Notifications and Interactions'
+      responses:
+        '200':
+          description: 'All notifications marked as read successfully.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: 'All notifications marked as read.'
+        '404':
+          description: 'No notifications found.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: 'No notifications found.'
 
 
 
