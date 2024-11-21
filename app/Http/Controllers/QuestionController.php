@@ -79,16 +79,17 @@ class QuestionController extends Controller
 
         // Validate the request data
         $request->validate([
-            'posts_id' => 'required|exists:posts,id',
             'title' => 'required|string|max:255',
-            'answers_id' => 'nullable|exists:answers,id',
+            'content' => 'required|string',
         ]);
 
         // Update the question in the database
         $question->update([
-            'posts_id' => $request->posts_id,
             'title' => $request->title,
-            'answers_id' => $request->answers_id,
+        ]);
+
+        $question->post->update([
+            'content' => $request->input('content'),
         ]);
 
         // Redirect to the question page with a success message

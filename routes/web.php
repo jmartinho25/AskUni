@@ -97,3 +97,5 @@ Route::controller(NotificationController::class)->group(function () {
 });
 
 Route::get('/feed', [FeedController::class, 'index'])->name('feed');
+
+Route::resource('answers', AnswerController::class)->except(['index', 'show']);

@@ -75,8 +75,9 @@ class AnswerController extends Controller
      */
     public function edit(Answer $answer)
     {
+        $this->authorize('update', $answer);
         // Return a view to edit the specified answer
-        return view('answers.edit', compact('answer'));
+        return view('pages.editAnswer', compact('answer'));
     }
 
     /**
@@ -84,17 +85,17 @@ class AnswerController extends Controller
      */
     public function update(Request $request, Answer $answer)
     {
+        $this->authorize('update', $answer);
+
         $request->validate([
-            'post_id' => 'required|exists:posts,id',
-            'question_id' => 'nullable|exists:questions,id',
+            'content' => 'required|string',
         ]);
 
-        $answer->update([
-            'post_id' => $request->post_id,
-            'question_id' => $request->question_id,
+        $answer->post->update([
+            'content' => $request->input('content'),
         ]);
 
-        return redirect()->route('answers.index')->with('success', 'Answer updated successfully');
+        return redirect()->route('questions.show', $answer->question->posts_id)->with('success', 'Answer updated successfully');
     }
 
     /**
@@ -102,10 +103,13 @@ class AnswerController extends Controller
      */
     public function destroy(Answer $answer)
     {
+        $this->authorize('delete', $answer);
+
+        $question_id = $answer->question->posts_id;
         // Delete the answer from the database
         $answer->delete();
 
         // Redirect to the answers index page with a success message
-        return redirect()->route('answers.index')->with('success', 'Answer deleted successfully');
+        return redirect()->route('questions.show', $question_id)->with('success', 'Answer deleted successfully');
     }
 }
