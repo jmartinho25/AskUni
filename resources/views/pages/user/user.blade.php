@@ -23,6 +23,9 @@
             @if (auth()->check() && auth()->user()->id === $user->id)
             <a class="button" href="{{ route('edit-profile') }}" class="btn btn-primary">Edit Profile</a>
             @endif
+            @if (auth()->check() && auth()->user()->roles->contains('name', 'admin'))
+                <a class="button" href="{{ route('admin.dashboard') }}" class="btn btn-warning">Admin Dashboard</a>
+            @endif
         </div>
 
         <div class="profile-content">
