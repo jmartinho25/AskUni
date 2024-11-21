@@ -24,7 +24,7 @@
     <main>
     <header class="top-nav">
         <div class="logo">
-            <a href="{{ url('/home') }}">
+            <a href="{{ Auth::check() ? url('/feed') : url('/home') }}">
                 <img src="{{ asset('img/logo.png') }}" alt="Logo" />
             </a>
         </div>

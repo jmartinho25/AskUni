@@ -178,13 +178,13 @@ body {
   background-color: #f9f9f9;
 }
 
-.all-questions {
+.all-questions, .relevant-questions {
   display: flex;
   flex-direction: column; 
   padding: 10px;
   gap: 10px;
 }
-.all-questions .question-card {
+.all-questions .question-card, .relevant-questions .question-card {
   width: 100%; 
   border: 1px solid #007bff; 
   padding: 15px;

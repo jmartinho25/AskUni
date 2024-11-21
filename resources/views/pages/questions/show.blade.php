@@ -22,6 +22,12 @@
         @endif
     </p>
 
+    <p>
+        @foreach ($question->tags as $tag)
+             <span class="tag">#{{ $tag->name }}</span>
+        @endforeach
+    </p>
+
     <a class="button" href="{{ route('home') }}" class="btn btn-secondary mb-3">Back to Home Page</a>
 
     <a class="button" href="{{ route('answers.create', $question) }}" class="btn btn-primary mb-3">Add Answer</a>

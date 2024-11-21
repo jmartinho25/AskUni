@@ -14,6 +14,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 
+use App\Http\Controllers\FeedController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -93,3 +95,5 @@ Route::controller(NotificationController::class)->group(function () {
 
     Route::put('/api/notifications/{id}', 'markAsReadAPI')->name('notifications.read');
 });
+
+Route::get('/feed', [FeedController::class, 'index'])->name('feed');
