@@ -1,12 +1,12 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\CardController;
-use App\Http\Controllers\ItemController;
+
 
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\NotificationController;
 
@@ -15,6 +15,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\FeedController;
+use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,23 +35,6 @@ Route::redirect('/', '/home');
 // Home
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// Cards
-Route::controller(CardController::class)->group(function () {
-    Route::get('/cards', 'list')->name('cards');
-    Route::get('/cards/{id}', 'show');
-});
-
-// API
-Route::controller(CardController::class)->group(function () {
-    Route::put('/api/cards', 'create');
-    Route::delete('/api/cards/{card_id}', 'delete');
-});
-
-Route::controller(ItemController::class)->group(function () {
-    Route::put('/api/cards/{card_id}', 'create');
-    Route::post('/api/item/{id}', 'update');
-    Route::delete('/api/item/{id}', 'delete');
-});
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
@@ -102,3 +87,12 @@ Route::post('questions/{question}/answers', [AnswerController::class, 'store'])-
 Route::get('answers/{answer}/edit', [AnswerController::class, 'edit'])->name('answers.edit');
 Route::put('answers/{answer}', [AnswerController::class, 'update'])->name('answers.update');
 Route::delete('answers/{answer}', [AnswerController::class, 'destroy'])->name('answers.destroy');
+Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/admin/posts', [QuestionController::class, 'index'])->name('posts.index');
+
+Route::middleware('admin')->get('/admin/users', [UserController::class, 'index'])->name('users.index');
+Route::middleware('admin')->delete('/admin/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+Route::get('/admin/dashboard', [AdminController::class, 'index'])
+    ->name('admin.dashboard')
+    ->middleware('admin');
