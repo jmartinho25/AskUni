@@ -46,7 +46,7 @@
 
             <div class="notifications">
                 <a href="#" id="notification-bell">
-                    <i class="fa fa-bell"></i>
+                    <i id="notification-icon" class="fa-regular fa-bell"></i>
                 </a>
                 <div class="notifications-dropdown" id="notifications-dropdown">
                     <button id="mark-all-as-read" class="btn btn-primary btn-sm">Mark All as Read</button>

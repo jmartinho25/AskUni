@@ -115,4 +115,21 @@ class NotificationController extends Controller
 
         return response()->json(['message' => 'Notification marked as read.']);
     }
+
+    public function markAllReadAPI()
+    {
+        $user = Auth::user();
+        $notifications = Notification::where('users_id', $user->id)->where('read_status', false)->get();
+
+        if (!$user || $notifications->isEmpty()) {
+            return response()->json(['error' => 'No notifications found.'], 404);
+        }
+
+        foreach ($notifications as $notification) {
+            $notification->read_status = true;
+            $notification->save();
+        }
+
+        return response()->json(['message' => 'All notifications marked as read.']);
+    }
 }
