@@ -19,6 +19,7 @@
 
 
     <script type="text/javascript" src="{{ url('js/app.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url('js/notifications.js') }}" defer></script>
 </head>
 <body>
     <main>
@@ -44,9 +45,15 @@
             </div>
 
             <div class="notifications">
-                <a href="#">
+                <a href="#" id="notification-bell">
                     <i class="fa fa-bell"></i>
                 </a>
+                <div class="notifications-dropdown" id="notifications-dropdown">
+                    <button id="mark-all-as-read" class="btn btn-primary btn-sm">Mark All as Read</button>
+                    <ul id="notifications-list">
+
+                    </ul>
+                </div>
             </div>
 
         

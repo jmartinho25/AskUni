@@ -275,3 +275,46 @@ body {
 .comment:first-child {
   border-top: none;
 }
+
+
+
+
+
+
+
+
+
+/* Notificaiton */
+
+.notifications {
+  position: relative;
+}
+.notifications-dropdown {
+  display: none;
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%;
+  z-index: 1000;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 1em;
+}
+.notifications-dropdown.active {
+  display: block;
+}
+.notifications-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.notifications-dropdown li {
+  padding: 10px;
+  border-bottom: 1px solid #aaaaaa;
+}
+.notifications-dropdown li:last-child {
+  border-bottom: none;
+}
