@@ -92,6 +92,7 @@ Route::get('/admin/posts', [QuestionController::class, 'index'])->name('posts.in
 
 Route::middleware('admin')->get('/admin/users', [UserController::class, 'index'])->name('users.index');
 Route::middleware('admin')->delete('/admin/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
 Route::get('/admin/dashboard', [AdminController::class, 'index'])
     ->name('admin.dashboard')
