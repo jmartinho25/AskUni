@@ -42,9 +42,13 @@
         </form>
 
         <div class="nav-items">
+            
+        @if (Auth::check())
             <div class="explore-tags">
                 <a href="#">Explore Tags</a>
             </div>
+
+        
 
             <div class="add-question">
                 <a href="{{ route('questions.create') }}">
@@ -63,17 +67,19 @@
                 </div>
             </div>
 
-        
-
-            @if (Auth::check())
                 <div class="profile">
                     <a href="{{ route('profile', Auth::user()->id) }}">
                         <i class="fa fa-user"></i>
                     </a>
                 </div>
-                <a class="button" href="{{ url('/logout') }}">Logout</a>
+                <a href="{{ url('/logout') }}">
+                    <button id="log">Logout </button>
+
+                </a>
             @else
-                <a class="button" href="{{ url('/login') }}">Login</a>
+                <a href="{{ url('/login') }}">
+                    <button id="log">Login </button>
+                </a>
             @endif
         </div>
     </header>

@@ -1,6 +1,6 @@
 body {
     background-color: #ffffff;
-    color: #9b4dca;
+    color: #000000;
   }
   main > header {
     display: grid;
@@ -17,11 +17,13 @@ body {
     margin: 1em;
     justify-self: center;
   }
+
   main > header span {
     margin: 1em;
     justify-self: center;
   }
-  #cards {
+  
+  /*#cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
@@ -78,7 +80,7 @@ body {
   #cards article.card input[type=text] {
     background-color: white;
     margin: 0;
-  }
+  }*/
   #content label {
     font-weight: normal;
   }
@@ -86,7 +88,7 @@ body {
     margin: 0 auto;
     padding: 1em;
     max-width: 20em;
-    border: 1px solid #d2afe7;
+    border: 1px solid #0784d2;
   }
   #content > form .error {
     font-weight: bold;
@@ -94,11 +96,12 @@ body {
   }
   #content > form .success {
     font-weight: bold;
-    color: #106af1;
+    color: #0bc60e;
   }
   #content > form input {
     background-color: white;
   }
+
   @media (max-width: 70em) {
     #cards {
       grid-template-columns: repeat(2, 1fr);
@@ -141,27 +144,42 @@ body {
    * Some styles might be missing
    **/
   button {
-    background-color: #9b4dca;
-    border-color: #9b4dca;
+    background-color: #0784d2;
+    border-color: #0784d2;
   }
+
+  button:hover {
+    background-color: #005fa3;
+    border-color: #005fa3;
+  }
+
+
   a.button {
-    background-color: #9b4dca;
-    border-color: #9b4dca;
+    background-color: #0784d2;
+    border-color: #0784d2;
   }
   a.button.button-outline {
-    color: #9b4dca;
+    color: #0784d2;
   }
+
+  a.button.button-outline:hover {
+    color: #005fa3;
+    border-color: #005fa3;
+  }
+  
   a {
-    color: #9b4dca;
+    color: #0784d2;
   }
   input[type=text]:focus,
   input[type=email]:focus,
   input[type=password]:focus {
-    border-color: #9b4dca;
+    border-color: #0784d2;
   }
 
-/** our styles **/
-/** HOME PAGE **/
+  
+
+
+/*********************************** HOME PAGE/FEED *************************************/
 .trending-questions {
   display: flex;
   overflow-x: auto;
@@ -169,13 +187,17 @@ body {
   gap: 10px;
 }
 
-.question-card {
+.trending-questions .question-card {
   flex: 0 0 auto;
   width: 200px;
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
   background-color: #f9f9f9;
+}
+
+.trending-questions .question-card h3 {
+  font-size: 1.7em;
 }
 
 .all-questions, .relevant-questions {
@@ -194,14 +216,16 @@ body {
 
 
 
-
+/**********************Barra**************************/
 .top-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 10px 20px;
   background-color: #f4f4f4;
   width: 100%;
+  margin: 0;
+  margin-bottom: 20px;
 }
 
 .top-nav .logo {
@@ -234,12 +258,14 @@ body {
   color: #333;
 }
 
-.top-nav .button {
-  background-color: #007bff;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 4px;
-  text-decoration: none;
+#log{
+  background-color: #ff8800;
+  border-color: #ff8800;
+}
+
+#log:hover {
+  background-color: #cc6600;
+  border-color: #cc6600;
 }
 
 .top-nav .notifications i,
@@ -257,6 +283,7 @@ body {
   }
 }
 
+/**************************************************************/
 
 .answer, .comment {
   border: 1px solid #ccc;
