@@ -146,5 +146,40 @@ class QuestionController extends Controller
         return response()->json(['message' => 'Question deleted successfully.']);
     }
 
+    public function search(Request $request)
+    {
+        $query = $this->sanitizeQuery($request->input('query'));
+        $exactMatch = $request->input('exact_match');
+        $offset = 10;
+
+        if ($exactMatch) {
+            // Exact matches only
+            $results = Question::where('title', 'ILIKE', "%{$query}%")->paginate($offset);
+        } else {
+            // Full-text search
+            $results = Question::query()
+            ->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query])
+            ->orderByRaw("ts_rank(tsvectors, to_tsquery('english', ?)) DESC", [$query])
+            ->union(
+                Question::query()->where('title', 'ILIKE', "%{$query}%")
+            )
+            ->paginate($offset);
+        }
+    
+        return view('pages.search', [
+            'query' => $query,
+            'results' => $results,
+        ]);
+    }
+
+    protected function sanitizeQuery($query)
+    {
+        $query = preg_replace('/[^\w\s]/u', '', $query);
+        $query = preg_replace('/\s+/', ' ', $query);
+        $query = trim($query);
+        $query = str_replace(' ', ' & ', $query);
+        $query = substr($query, 0, 255);
+        return $query;
+    }
 }
 
