@@ -30,9 +30,16 @@
             </a>
         </div>
         
-        <div class="search">
-            <input type="text" placeholder="Pesquisar...">
-        </div>
+        <form action="{{ route('questions.search') }}" method="GET" id="search-bar">
+            <input type="text" name="query" id="search-input" placeholder="Search...">
+            <label for="exact-match" class="exact-match-label">
+                <input type="checkbox" name="exact_match" id="exact-match">
+                <i class="fa-solid fa-spell-check" title="Exact Match Search"></i>
+            </label>
+            <button type="submit" id="search-button">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
 
         <div class="nav-items">
             <div class="explore-tags">

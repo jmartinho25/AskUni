@@ -384,3 +384,52 @@ body {
   padding: 2em 0;
   border-top: 1px solid #ccc;
 }
+
+
+
+/* Search bar */
+
+#search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+#search-input {
+  width: 30em;
+  padding-right: 0em;
+}
+
+#search-button {
+  font-size: 1.5em;
+  position: absolute;
+  right: 0.5em;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: black;
+  padding: 0;
+  transition: color 0.3s;
+}
+
+.exact-match-label input[type="checkbox"] {
+  display: none;
+}
+
+.exact-match-label {
+  position: absolute;
+  right: 3em;
+  padding: 0;
+  cursor: pointer;
+}
+
+.exact-match-label i {
+  color: #aaa;
+  transition: color 0.3s;
+}
+
+.exact-match-label i:hover, .exact-match-label input[type="checkbox"]:checked + i {
+  color: #333;
+}
