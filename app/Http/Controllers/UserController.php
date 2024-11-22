@@ -98,13 +98,14 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return redirect()->back()->with('error', 'User not found.');
+            return redirect()->route('admin.dashboard')->with('error', 'User not found.');
         }
 
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('admin.dashboard')->with('success', 'User deleted successfully.');
     }
+
 
     public function score($id)
     {
