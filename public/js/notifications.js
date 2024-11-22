@@ -31,28 +31,26 @@ document.addEventListener('DOMContentLoaded', function() {
         event.stopPropagation(); // prevent closing the dropdown
     });
 
-    document.getElementById('mark-all-as-read').addEventListener('click', function(event) {
+    document.getElementById('mark-all-as-read').addEventListener('click', async function (event) {
         event.preventDefault();
-        markAllNotificationsRead();
+        await markAllNotificationsRead();
     });
 
     setInterval(fetchNotifications, 15000);
 });
 
-function fetchNotifications() {
+async function fetchNotifications() {
     isLoading = true;
-    fetch('/api/notifications')
-        .then(response => response.json())
-        .then(data => {
-            notificationsData = data;
-            isLoading = false;
-            updateNotificationsIcon();
-            populateNotifications();
-        })
-        .catch(error => {
-            console.error('Error fetching notifications:', error);
-            isLoading = false;
-        });
+    try {
+        const response = await fetch('/api/notifications');
+        notificationsData = await response.json();
+        updateNotificationsIcon();
+        populateNotifications();
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    } finally {
+        isLoading = false;
+    }
 }
 
 function showLoadingIndicator() {
@@ -81,59 +79,60 @@ function populateNotifications() {
         });
 
         document.querySelectorAll('.mark-as-read').forEach(button => {
-            button.addEventListener('click', function(event) {
+            button.addEventListener('click', async function(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                let notificationId = this.getAttribute('data-id');
-
-                notificationsData = notificationsData.filter(notification => notification.id != notificationId);
-                populateNotifications();
-                updateNotificationsIcon();
-
-                fetch(`/api/notifications/${notificationId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.message) {
-                        fetchNotifications();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    fetchNotifications();
-                });
+                const notificationId = this.getAttribute('data-id');
+                await markNotificationAsRead(notificationId);
             });
         });
     }
 }
 
-function markAllNotificationsRead() {
+async function markNotificationAsRead(notificationId) {
+    notificationsData = notificationsData.filter(notification => notification.id != notificationId);
+    populateNotifications();
+    updateNotificationsIcon();
+
+    try {
+        const response = await fetch(`/api/notifications/${notificationId}`, {
+            method: 'PUT',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        if (!data.message) {
+            await fetchNotifications();
+        }
+    } catch (error) {
+        console.error('Error marking notification as read:', error);
+        await fetchNotifications();
+    }
+}
+
+async function markAllNotificationsRead() {
     notificationsData = [];
     populateNotifications();
     updateNotificationsIcon();
 
-    fetch('/api/notifications/mark-all-read', {
-        method: 'PUT',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken,
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
+    try {
+        const response = await fetch('/api/notifications/mark-all-read', {
+            method: 'PUT',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
         if (!data.message) {
-            fetchNotifications();
+            await fetchNotifications();
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        fetchNotifications();
-    });
+    } catch (error) {
+        console.error('Error marking all notifications as read:', error);
+        await fetchNotifications();
+    }
 }
 
 function updateNotificationsIcon() {

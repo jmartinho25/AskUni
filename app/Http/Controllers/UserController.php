@@ -79,6 +79,9 @@ class UserController extends Controller
         }
 
         if ($request->hasFile('photo')) {
+            if ($user->photo && $user->photo !== 'profilePictures/default.png' && file_exists(public_path($user->photo))) {
+                unlink(public_path($user->photo));
+            }
             $file = $request->file('photo');
             $filename = uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('profilePictures'), $filename);

@@ -152,24 +152,55 @@ class QuestionController extends Controller
         $exactMatch = $request->input('exact_match');
         $offset = 10;
 
-        if ($exactMatch) {
-            // Exact matches only
-            $results = Question::where('title', 'ILIKE', "%{$query}%")->paginate($offset);
-        } else {
-            // Full-text search
-            $results = Question::query()
-            ->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query])
-            ->orderByRaw("ts_rank(tsvectors, to_tsquery('english', ?)) DESC", [$query])
-            ->union(
-                Question::query()->where('title', 'ILIKE', "%{$query}%")
-            )
-            ->paginate($offset);
-        }
-    
+        $results = $this->performSearch($query, $exactMatch, $offset);
+
         return view('pages.search', [
             'query' => $query,
             'results' => $results,
         ]);
+    }
+
+    public function searchAPI(Request $request)
+    {
+        $query = $this->sanitizeQuery($request->input('query'));
+        $exactMatch = $request->input('exact_match');
+        $offset = 10;
+    
+        $results = $this->performSearch($query, $exactMatch, $offset);
+    
+        $results->getCollection()->transform(function ($question) {
+            return [
+                'posts_id' => $question->posts_id,
+                'title' => $question->title,
+                'date' => $question->post->date,
+                'user_id' => $question->post->user->id,
+                'username' => $question->post->user->username,
+            ];
+        });
+    
+        return response()->json([
+            'results' => $results->items(),
+            'pagination' => (string) $results->appends(['query' => $query, 'exact_match' => $exactMatch])->links()
+        ]);
+    }
+
+    protected function performSearch($query, $exactMatch, $offset)
+    {
+        if ($exactMatch) {
+            // Exact matches only
+            return Question::with('post.user')
+                ->where('title', 'ILIKE', "%{$query}%")
+                ->paginate($offset);
+        } else {
+            // Full-text search
+            return Question::with('post.user')
+                ->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query])
+                ->orderByRaw("ts_rank(tsvectors, to_tsquery('english', ?)) DESC", [$query])
+                ->union(
+                    Question::query()->where('title', 'ILIKE', "%{$query}%")
+                )
+                ->paginate($offset);
+        }
     }
 
     protected function sanitizeQuery($query)

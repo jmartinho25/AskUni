@@ -65,6 +65,7 @@ Route::controller(UserController::class)->group(function () {
 // Question Routes (API)
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/search', 'search')->name('questions.search');
+    Route::get('/api/questions/search', 'searchAPI')->name('api.questions.search');
     Route::get('/api/question/{id}', 'getQuestionAPI');
     Route::delete('/api/question/{id}', 'deleteQuestionAPI');
     Route::get('/questions/top', [HomeController::class, 'topQuestions'])->name('questions.top');
