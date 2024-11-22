@@ -30,14 +30,25 @@
             </a>
         </div>
         
-        <div class="search">
-            <input type="text" placeholder="Pesquisar...">
-        </div>
+        <form action="{{ route('questions.search') }}" method="GET" id="search-bar">
+            <input type="text" name="query" id="search-input" placeholder="Search...">
+            <label for="exact-match" class="exact-match-label">
+                <input type="checkbox" name="exact_match" id="exact-match">
+                <i class="fa-solid fa-spell-check" title="Exact Match Search"></i>
+            </label>
+            <button type="submit" id="search-button">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
 
         <div class="nav-items">
+            
+        @if (Auth::check())
             <div class="explore-tags">
                 <a href="#">Explore Tags</a>
             </div>
+
+        
 
             <div class="add-question">
                 <a href="{{ route('questions.create') }}">
@@ -56,17 +67,19 @@
                 </div>
             </div>
 
-        
-
-            @if (Auth::check())
                 <div class="profile">
                     <a href="{{ route('profile', Auth::user()->id) }}">
                         <i class="fa fa-user"></i>
                     </a>
                 </div>
-                <a class="button" href="{{ url('/logout') }}">Logout</a>
+                <a href="{{ url('/logout') }}">
+                    <button id="log">Logout </button>
+
+                </a>
             @else
-                <a class="button" href="{{ url('/login') }}">Login</a>
+                <a href="{{ url('/login') }}">
+                    <button id="log">Login </button>
+                </a>
             @endif
         </div>
     </header>

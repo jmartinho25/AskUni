@@ -290,6 +290,33 @@ CREATE TRIGGER posts_search_update BEFORE INSERT OR UPDATE ON posts
 CREATE INDEX posts_search_idx ON posts USING GIN(tsvectors);
 
 
+-- Full-text search on the title of the question 
+
+ALTER TABLE questions ADD COLUMN tsvectors TSVECTOR;
+
+CREATE OR REPLACE FUNCTION questions_search_update() RETURNS trigger AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors := setweight(to_tsvector('english', coalesce(NEW.title, '')), 'A');
+        RETURN NEW;
+    END IF;
+
+    IF TG_OP = 'UPDATE' THEN
+        IF NEW.title <> OLD.title THEN
+            NEW.tsvectors := setweight(to_tsvector('english', coalesce(NEW.title, '')), 'A');
+            RETURN NEW;
+        END IF;
+    END IF;
+
+    RETURN NULL;
+END $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER questions_search_update BEFORE INSERT OR UPDATE ON questions
+    FOR EACH ROW EXECUTE PROCEDURE questions_search_update();
+
+CREATE INDEX questions_search_idx ON questions USING GIN(tsvectors);
+
+
 -- Comments Full-text Search
 
 ALTER TABLE comments ADD COLUMN tsvectors TSVECTOR;
