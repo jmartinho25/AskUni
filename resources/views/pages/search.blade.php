@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>Search Results</h1>
-    <div class="all-questions">
+    <div id="results-container" class="all-questions">
         @if($results->isEmpty())
             <p>No results found for "{{ $query }}".</p>
         @else
@@ -17,10 +17,8 @@
         @endif
     </div>
 
-    @if ($results->total() > $results->perPage())
     <div id="pagination-container">
         {{ $results->appends(['query' => $query, 'exact_match' => request()->input('exact_match')])->links() }}
     </div>
-    @endif
 </div>
 @endsection

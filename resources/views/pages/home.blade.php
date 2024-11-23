@@ -31,5 +31,12 @@
             <p>No questions available.</p>
         @endif
     </div>
+
+    @if ($allQuestions->total() > $allQuestions->perPage())
+    <div class="pagination">
+        {{ $allQuestions->links() }}
+    </div>
+    @endif
+
 </div>
 @endsection

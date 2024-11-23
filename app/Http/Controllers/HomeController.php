@@ -10,10 +10,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Buscar as perguntas mais populares diretamente do banco de dados
         $trendingQuestions = Question::orderBy('posts_id', 'desc')->take(10)->get();
 
-        $allQuestions = Question::orderBy('posts_id', 'desc')->get();
+        $allQuestions = Question::orderBy('posts_id', 'desc')->paginate(10);
 
         return view('pages.home', compact('trendingQuestions','allQuestions'));
     }

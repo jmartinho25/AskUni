@@ -286,6 +286,10 @@ body {
   background-color: #e9ecef;
 }
 
+.delete-form {
+  display: inline;
+}
+
 .all-questions, .relevant-questions{
   margin-bottom: 20px;
 }
@@ -338,7 +342,7 @@ body {
   color: white;
   margin-bottom: 15px;
 }
-/**********************Barra**************************/
+/**********************NAV**************************/
 .top-nav {
   display: flex;
   justify-content: space-between;
@@ -626,15 +630,6 @@ body {
 
 /* Search Results */
 
-.results-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.result-item {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
 
 .result-title {
   color: #000000;

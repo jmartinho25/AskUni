@@ -31,14 +31,16 @@
 
     <a class="button" href="{{ route('home') }}" class="btn btn-secondary mb-3">Back to Home Page</a>
 
+    @if (Auth::check())
     <a class="button" href="{{ route('answers.create', $question) }}" class="btn btn-primary mb-3">Add Answer</a>
+    @endif
 
     @can('update', $question)
         <a class="button" href="{{ route('questions.edit', $question) }}" class="btn btn-primary">Edit Question</a>
     @endcan
 
     @can('delete', $question)
-        <form action="{{ route('questions.destroy', $question) }}" method="POST" style="display:inline;">
+        <form action="{{ route('questions.destroy', $question) }}" method="POST" class="delete-form">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger">Delete Question</button>
@@ -55,6 +57,16 @@
             <p>{{ $answer->post->content }}</p>
             <p>Answered by: <a href="{{ route('profile', $answer->post->user->id) }}">{{ $answer->post->user->name }}</a></p>
             <p>Date: {{ $answer->post->date }}</p>
+            @can('update', $answer)
+                <a class="button" href="{{ route('answers.edit', $answer) }}" class="btn btn-primary">Edit Answer</a>
+            @endcan
+            @can('delete', $answer)
+                <form action="{{ route('answers.destroy', $answer) }}" method="POST" class="delete-form">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete Answer</button>
+                </form>
+            @endcan
 
             @if (!$answer->comments->isEmpty())
             <h3>Comments</h3>

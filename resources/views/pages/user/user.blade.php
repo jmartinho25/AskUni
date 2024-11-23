@@ -21,9 +21,9 @@
             <p>Description: {{ $user->description }}</p>
             <p>Score: {{ $user->score }}</p>
 
-            @if (auth()->check() && auth()->user()->id === $user->id)
-            <a class="button" href="{{ route('edit-profile') }}" class="btn btn-primary">Edit Profile</a>
-            @endif
+            @can ('editUser', $user)
+                <a class="button" href="{{ route('edit-profile') }}" class="btn btn-primary">Edit Profile</a>
+            @endcan
             @if (auth()->check() && auth()->user()->roles->contains('name', 'admin'))
                 <a class="button" href="{{ route('admin.dashboard') }}" class="btn btn-warning">Admin Dashboard</a>
             @endif

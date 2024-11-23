@@ -10,32 +10,31 @@ function displayResults(data, query, resultsContainer, paginationContainer) {
     if (data.results.length === 0) {
         resultsContainer.innerHTML = `<p>No results found for "${query}".</p>`;
     } else {
-        const ul = document.createElement('ul');
-        ul.classList.add('results-list');
         data.results.forEach(result => {
-            const li = document.createElement('li');
-            li.classList.add('result-item');
+            const questionCard = document.createElement('div');
+            questionCard.classList.add('question-card');
 
+            const title = document.createElement('h3');
             const questionLink = document.createElement('a');
             questionLink.href = `/questions/${result.posts_id}`;
             questionLink.textContent = result.title;
             questionLink.classList.add('result-title');
-            li.appendChild(questionLink);
+            title.appendChild(questionLink);
+            questionCard.appendChild(title);
 
             const userLink = document.createElement('a');
             userLink.href = `/users/${result.user_id}`;
             userLink.textContent = result.username;
             userLink.classList.add('result-username');
-            li.appendChild(userLink);
+            questionCard.appendChild(userLink);
 
             const date = document.createElement('small');
             date.textContent = ` Published on: ${result.date}`;
             date.classList.add('result-date');
-            li.appendChild(date);
+            questionCard.appendChild(date);
 
-            ul.appendChild(li);
+            resultsContainer.appendChild(questionCard);
         });
-        resultsContainer.appendChild(ul);
     }
     paginationContainer.innerHTML = data.pagination;
     addPaginationEventListeners();
