@@ -56,7 +56,7 @@ class QuestionController extends Controller
     {
         $question = Question::with([
             'post.user' => function ($query) {
-                $query->withTrashed(); // Inclui usuários soft deleted
+                $query->withTrashed(); 
             },
             'answers.comments',
             'comments',
