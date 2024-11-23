@@ -33,7 +33,9 @@ use Illuminate\Support\Facades\Auth;
 Route::redirect('/', '/home');
 
 // Home
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/home', 'index')->name('home');
+});
 
 
 // Authentication
@@ -53,12 +55,11 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/edit-profile', 'editUser')->name('edit-profile');
     Route::put('/users/edit-profile', 'updateUser')->name('update-profile');
     Route::get('/users/{id}', 'show')->name('profile');
+    Route::delete('/users/{id}', 'destroy')->name('users.destroy');
 });
 
 // Posts
 Route::controller(UserController::class)->group(function () {
-    Route::get('/api/users/{id}/questions', 'getUserQuestionsAPI');
-
     Route::get('/api/notifications', 'getNotificationsAPI');
 });
 
@@ -66,14 +67,10 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/search', 'search')->name('questions.search');
     Route::get('/api/questions/search', 'searchAPI')->name('api.questions.search');
-    Route::get('/api/question/{id}', 'getQuestionAPI');
-    Route::delete('/api/question/{id}', 'deleteQuestionAPI');
-    Route::get('/questions/top', [HomeController::class, 'topQuestions'])->name('questions.top');
 });
 
 // Question Routes (Web)
 Route::resource('questions', QuestionController::class);
-Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
 
 
 Route::controller(NotificationController::class)->group(function () {
@@ -83,18 +80,19 @@ Route::controller(NotificationController::class)->group(function () {
 
 Route::get('/feed', [FeedController::class, 'index'])->name('feed');
 
+Route::controller(AnswerController::class)->group(function () {
+    Route::get('/questions/{question}/answers/create', 'create')->name('answers.create');
+    Route::post('/questions/{question}/answers', 'store')->name('answers.store');
+    Route::get('/answers/{answer}/edit', 'edit')->name('answers.edit');
+    Route::put('/answers/{answer}', 'update')->name('answers.update');
+    Route::delete('/answers/{answer}', 'destroy')->name('answers.destroy');
+});
 
-Route::get('questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
-Route::post('questions/{question}/answers', [AnswerController::class, 'store'])->name('answers.store');
-Route::get('answers/{answer}/edit', [AnswerController::class, 'edit'])->name('answers.edit');
-Route::put('answers/{answer}', [AnswerController::class, 'update'])->name('answers.update');
-Route::delete('answers/{answer}', [AnswerController::class, 'destroy'])->name('answers.destroy');
 Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/admin/posts', [QuestionController::class, 'index'])->name('posts.index');
 
 Route::middleware('admin')->get('/admin/users', [UserController::class, 'index'])->name('users.index');
 Route::middleware('admin')->delete('/admin/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
 Route::get('/admin/dashboard', [AdminController::class, 'index'])
     ->name('admin.dashboard')

@@ -18,10 +18,4 @@ class HomeController extends Controller
         return view('pages.home', compact('trendingQuestions','allQuestions'));
     }
 
-    public function topQuestions()
-    {
-        $trendingQuestions = Question::orderBy('posts_id', 'desc')->take(10)->get();
-
-        return response()->json($trendingQuestions);
-    }
 }

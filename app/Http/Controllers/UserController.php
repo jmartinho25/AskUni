@@ -116,26 +116,6 @@ class UserController extends Controller
         return response()->json(['score' => $user->score]);
     }
 
-    public function getUserQuestionsAPI($id)
-    {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(['error' => 'User not found.'], 404);
-        }
-        $questions = $user->questions()->get();
-
-        $result = $questions->map(function ($question) {
-            return [
-                'id' => $question->question->posts_id,
-                'title' => $question->question->title,
-                'content' => $question->content,
-                'date' => $question->date,
-            ];
-        });
-
-        return response()->json($result);
-    }
-
     public function getNotificationsAPI()
     {
         $user = Auth::user();
