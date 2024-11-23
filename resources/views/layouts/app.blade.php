@@ -55,7 +55,7 @@
 
             <div class="add-question">
                 <a href="{{ route('questions.create') }}">
-                    <button>Adicionar Pergunta</button>
+                    <button>Add Question</button>
             </div>
 
             <div class="notifications">
@@ -91,6 +91,10 @@
         <section id="content">
             @yield('content')
         </section>
+
+    <footer class="footer">
+        <p>@AskUni</p>
+    </footer>
     </main>
 </body>
 </html>

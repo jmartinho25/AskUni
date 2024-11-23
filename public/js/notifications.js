@@ -73,7 +73,7 @@ function populateNotifications() {
             let listItem = document.createElement('li');
             listItem.innerHTML = `
                 ${notification.content}
-                <button class="btn btn-primary btn-sm mark-as-read" data-id="${notification.id}">Mark as Read</button>
+                <button id="mark-as-read" class="btn btn-primary btn-sm mark-as-read" data-id="${notification.id}">Mark as Read</button>
             `;
             notificationsList.appendChild(listItem);
         });

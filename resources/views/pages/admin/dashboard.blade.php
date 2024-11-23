@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    @if(session('success'))
-        <div class="alert alert-success">
+@if(session('success'))
+        <div class="alert-success">
             {{ session('success') }}
         </div>
-    @endif
+@endif
+<div class="container">
+
 
     <h1>Admin Dashboard</h1>
     <p>Welcome, {{ Auth::user()->name }}! Here you can manage the platform.</p>

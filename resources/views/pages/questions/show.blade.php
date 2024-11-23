@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    @if (session('success'))
-        <div class="alert alert-success">
+@if (session('success'))
+        <div class="alert-success">
             {{ session('success') }}
         </div>
     @endif
+<div class="container">
+    
 
     <h1>{{ $question->title }}</h1>
 
@@ -33,7 +34,7 @@
     <a class="button" href="{{ route('answers.create', $question) }}" class="btn btn-primary mb-3">Add Answer</a>
 
     @can('update', $question)
-        <a href="{{ route('questions.edit', $question) }}" class="btn btn-primary">Edit Question</a>
+        <a class="button" href="{{ route('questions.edit', $question) }}" class="btn btn-primary">Edit Question</a>
     @endcan
 
     @can('delete', $question)
@@ -45,43 +46,46 @@
     @endcan
 
     <h2>Answers</h2>
+    <div class="all-questions">
     @if ($question->answers->isEmpty())
         <p>No answers available.</p>
     @else
     @foreach ($question->answers as $answer)
-        <div class="answer">
+        <div class="answer-card">
             <p>{{ $answer->post->content }}</p>
             <p>Answered by: <a href="{{ route('profile', $answer->post->user->id) }}">{{ $answer->post->user->name }}</a></p>
             <p>Date: {{ $answer->post->date }}</p>
 
             @if (!$answer->comments->isEmpty())
             <h3>Comments</h3>
-            <ul class="comments">
+            <ul class="question-card">
                         @foreach ($answer->comments as $comment)
-                            <li class="comment">
+                            
                                 <p>{{ $comment->content }}</p>
                                 <p>Commented by: <a href="{{ route('profile', $comment->user->id) }}">{{ $comment->user->name }}</a></p>
                                 <p>Date: {{ $comment->date }}</p>
-                            </li>
+                            
                         @endforeach
             </ul>
             @endif
         </div>
     @endforeach
+    </div>
     @endif
 
     <h2>Comments</h2>
+    <div class="all-questions">
     @if ($question->comments->isEmpty())
         <p>No comments available.</p>
     @else
     @foreach ($question->comments as $comment)
-        <div class="comment">
+        <div class="question-card">
             <p>{{ $comment->content }}</p>
             <p>Commented by: <a href="{{ route('profile', $comment->user->id) }}">{{ $comment->user->name }}</a></p>
             <p>Date: {{ $comment->date }}</p>
         </div>
     @endforeach
     @endif
-
+    </div>
     </div>
     @endsection

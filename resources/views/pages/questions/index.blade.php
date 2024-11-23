@@ -1,32 +1,35 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h2>Lista de Perguntas</h2>
-
-        @if(session('success'))
+@if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
+    <div class="container">
+        <h2>Questions List</h2>
 
-        <div class="add-question mb-3">
-            <a href="{{ route('questions.create') }}">
-                <button>Adicionar Pergunta</button>
-            </a>
+
+
+
+        <div class="all-questions">
+        @if (!empty($questions))
+            @foreach ($questions as $question)
+                <div class="question-card">
+                    <h3>{{ $question->title }}</h3>
+                    <a href="{{ route('profile', $question->post->user->id) }}" class="question-user-name">{{ $question->post->user->name }}</a>
+                    <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
+                </div>
+            @endforeach
+        @else
+            <p>No questions available.</p>
+        @endif
         </div>
 
-        <ul>
-            @foreach($questions as $question)
-                <li>
-                    <a href="{{ route('questions.show', $question) }}">{{ $question->title }}</a><br>
-                    <small>Published on: {{ $question->post->date }}</small>
-                </li>
-            @endforeach
-        </ul>
-
+        @if ($questions->total() > $questions->perPage())
         <div class="pagination">
             {{ $questions->links() }}
         </div>
+        @endif
     </div>
 @endsection

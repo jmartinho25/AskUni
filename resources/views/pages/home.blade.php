@@ -10,7 +10,7 @@
             <div class="question-card">
                 <h3>{{ $question->title }}</h3>
                 <p>{{ $question->description }}</p>
-                <a href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
+                <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
             </div>
         @endforeach
     @else
@@ -24,7 +24,7 @@
             @foreach ($allQuestions as $question)
                 <div class="question-card">
                     <h3>{{ $question->title }}</h3>
-                    <a href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
+                    <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
                 </div>
             @endforeach
         @else

@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="container">
 <h2>Trending Questions</h2>
     <div class="trending-questions">
@@ -9,7 +14,7 @@
             <div class="question-card">
                 <h3>{{ $question->title }}</h3>
                 <p>{{ $question->description }}</p>
-                <a href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
+                <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
             </div>
         @endforeach
     @else
@@ -30,14 +35,15 @@
                             <span class="tag">#{{ $tag->name }}</span>
                         @endforeach
                     </div>
-                    <a href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
+                    <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
                 </div>
             @endforeach
     </div>
-
-        <div class="pagination">
+    @if ($relevantQuestions->total() > $relevantQuestions->perPage())
+    <div class="pagination">
             {{ $relevantQuestions->links() }}
-        </div>
+    </div>
+    @endif
     @endif
 
     <h3 class="view-all-questions">

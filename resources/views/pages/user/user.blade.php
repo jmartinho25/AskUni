@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    @if (session('success'))
-        <div class="alert alert-success">
+@if (session('success'))
+        <div class="alert-success">
             {{ session('success') }}
         </div>
     @endif
+<div class="container">
+    
 
     <div class="profile-container">
         <div class="profile-sidebar">
@@ -39,31 +40,34 @@
                 <div class="tab-panels">
                     <section id="questions" class="tab-panel">
                         <h2>Questions</h2>
+                        <div class="all-questions">
                         @if ($questions->isEmpty())
                             <p>No questions available.</p>
                         @else
                         @foreach ($questions as $question)
-                            <div>
+                            <div class="question-card">
                                 <h3>{{ $question->title }}</h3>
                                 <p>{{ $question->post->content }}</p>
                                 <p>Date: {{ $question->post->date }}</p>
-                                <a href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
+                                <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
                             </div>
                         @endforeach
                         @endif
+                        </div>
                     </section>
                     <section id="answers" class="tab-panel">
                         <h2>Answers</h2>
+                        <div class="all-questions">
                         @if ($answers->isEmpty())
                             <p>No answers available.</p>
                         @else
                         @foreach ($answers as $answer)
-                            <div>
+                            <div class="answer-card">
                                 <p>{{ $answer->content }}</p>
                                 <p>Date: {{ $answer->date }}</p>
 
                                 @if (auth()->check() && auth()->user()->id === $answer->users_id)
-                                    <a href="{{ route('answers.edit', $answer->id) }}" class="btn btn-secondary">Edit Answer</a>
+                                    <a class="button" href="{{ route('answers.edit', $answer->id) }}" class="btn btn-danger">Edit Answer</a>
                                     <form action="{{ route('answers.destroy', $answer->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
@@ -74,6 +78,7 @@
                             </div>
                         @endforeach
                         @endif
+                        </div>
                     </section>
                 </div>
             </div>
