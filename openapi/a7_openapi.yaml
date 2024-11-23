@@ -56,9 +56,9 @@ paths:
             schema:
               type: object
               properties:
-                email:          # <!--- form field name
+                email:
                   type: string
-                password:    # <!--- form field name
+                password:
                   type: string
               required:
                 - email
@@ -82,7 +82,6 @@ paths:
 ### Logout ###
 
   /logout:
-
     post:
       operationId: R103
       summary: 'R103: Logout Action'
@@ -168,7 +167,7 @@ paths:
     get:
       operationId: R201
       summary: 'R201: View user profile'
-      description: 'Show the individual user profile. Access: USR'
+      description: 'Show the individual user profile. Access: PUB'
       tags:
         - 'M02: Individual Profile'
 
@@ -181,16 +180,16 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show view profile UI'
+          description: 'Ok. Show profile UI'
         '302':
-          description: 'Redirect if not authenticated or if user does not exist.'
+          description: 'Redirect if user does not exist.'
           headers:
             Location:
               schema:
                 type: string
               examples:
                 302Failure:
-                  description: 'Profile does not exist or user is not authenticated.'
+                  description: 'User not found.'
                   value: '/home'
     
     delete:
@@ -228,7 +227,7 @@ paths:
     get:
       operationId: R203
       summary: 'R203: Edit user profile form'
-      description: 'Show the individual user profile edit form. Access: USR, ADM'
+      description: 'Show the individual user profile edit form. Access: OWN, ADM'
       tags:
         - 'M02: Individual Profile'
 
@@ -249,7 +248,7 @@ paths:
     put:
       operationId: R204
       summary: 'R204: Edit user profile action'
-      description: 'Processes the user profile edit form submission. Access: USR, ADM'
+      description: 'Processes the user profile edit form submission. Access: OWN, ADM'
       tags:
         - 'M02: Individual Profile'
 
@@ -294,7 +293,7 @@ paths:
                   value: '/users/{id}'
                 302Failure:
                   description: 'Failed profile edit. Redirect to edit profile form.'
-                  value: '/users/edit'
+                  value: '/users/edit-profile'
 
 
 ################ NAVIGATION AND BROWSING ################
@@ -316,7 +315,7 @@ paths:
     get:
       operationId: R302
       summary: 'R302: View Feed'
-      description: 'Show the feed page. Access: USR'
+      description: 'Show the feed page. Access: USR, ADM'
       tags:
         - 'M03: Navigation and Browsing'
       responses:
@@ -381,7 +380,7 @@ paths:
           description: 'Page number for pagination.'
       responses:
         '200':
-          description: 'Ok. Show search results UI.'
+          description: 'Ok. Show search results as JSON.'
           content:
             application/json:
               schema:
@@ -451,7 +450,7 @@ paths:
     put:
       operationId: R402
       summary: 'R402: Edit Question Action'
-      description: 'Processes the question edit form submission. Access: OWN, ADM'
+      description: 'Processes the question edit form submission. Access: OWN'
       tags:
         - 'M04: Posts'
 
@@ -494,7 +493,7 @@ paths:
     delete:
       operationId: R403
       summary: 'R403: Delete Question'
-      description: 'Processes the question deletion. Access: OWN, ADM'
+      description: 'Processes the question deletion. Access: OWN'
       tags:
         - 'M04: Posts'
 
@@ -514,8 +513,8 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful question deletion. Redirect to home page.'
-                  value: '/home'
+                  description: 'Successful question deletion. Redirect to questions page.'
+                  value: '/questions'
                 302Failure:
                   description: 'Failed question deletion. Redirect to question.'
                   value: '/questions/{id}'
@@ -564,11 +563,11 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful question submission. Redirect to question.'
-                  value: '/questions/{id}'
+                  description: 'Successful question submission. Redirect to questions.'
+                  value: '/questions'
                 302Failure:
                   description: 'Failed question submission. Redirect to new question form.'
-                  value: '/questions/new'
+                  value: '/questions/create'
     
   /questions/create:
     get:
@@ -586,7 +585,7 @@ paths:
     get:
       operationId: R407
       summary: 'R407: Edit Question Form'
-      description: 'Show the question edit form. Access: OWN, ADM'
+      description: 'Show the question edit form. Access: OWN'
       tags:
         - 'M04: Posts'
 
@@ -600,16 +599,11 @@ paths:
       responses:
         '200':
           description: 'Ok. Show edit question UI.'
-        '302':
-          description: 'Redirect if question does not exist.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Failure:
-                  description: 'Question does not exist.'
-                  value: '/home'
+        '403':
+          description: 'Forbidden. User is not authorized to edit question.'
+        '404':
+          description: 'Not Found. Question does not exist.'
+
 
 ### Answers ###
 
@@ -653,7 +647,7 @@ paths:
                   value: '/questions/{question_id}'
                 302Failure:
                   description: 'Failed answer submission. Redirect to answer form.'
-                  value: '/questions/{question_id}/answers/new'
+                  value: '/questions/{question_id}/answers/create'
 
   /questions/{id}/answers/create:
     get:
@@ -673,33 +667,20 @@ paths:
       responses:
         '200':
           description: 'Ok. Show answer form UI.'
-        '302':
-          description: 'Redirect if question does not exist.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Failure:
-                  description: 'Question does not exist.'
-                  value: '/home'
+        '404':
+          description: 'Not Found. Question does not exist.'
 
   /answers/{id}:
     put:
       operationId: R410
       summary: 'R410: Edit Answer Action'
-      description: 'Processes the answer edit form submission. Access: OWN, ADM'
+      description: 'Processes the answer edit form submission. Access: OWN'
       tags:
         - 'M04: Posts'
 
       parameters:
         - in: path
-          name: question_id
-          schema:
-            type: integer
-          required: true
-        - in: path
-          name: answer_id
+          name: id
           schema:
             type: integer
           required: true
@@ -729,23 +710,18 @@ paths:
                   value: '/questions/{question_id}'
                 302Failure:
                   description: 'Failed answer edit. Redirect to edit answer form.'
-                  value: '/questions/{question_id}/answers/{answer_id}/edit'
+                  value: '/answers/{id}/edit'
     
     delete:
       operationId: R411
       summary: 'R411: Delete Answer'
-      description: 'Processes the answer deletion. Access: OWN, ADM'
+      description: 'Processes the answer deletion. Access: OWN'
       tags:
         - 'M04: Posts'
 
       parameters:
         - in: path
-          name: question_id
-          schema:
-            type: integer
-          required: true
-        - in: path
-          name: answer_id
+          name: id
           schema:
             type: integer
           required: true
@@ -770,18 +746,13 @@ paths:
     get:
       operationId: R412
       summary: 'R412: Edit Answer Form'
-      description: 'Show the answer edit form. Access: OWN, ADM'
+      description: 'Show the answer edit form. Access: OWN'
       tags:
         - 'M04: Posts'
 
       parameters:
         - in: path
-          name: question_id
-          schema:
-            type: integer
-          required: true
-        - in: path
-          name: answer_id
+          name: id
           schema:
             type: integer
           required: true
@@ -789,16 +760,10 @@ paths:
       responses:
         '200':
           description: 'Ok. Show edit answer UI.'
-        '302':
-          description: 'Redirect if answer does not exist.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Failure:
-                  description: 'Answer does not exist.'
-                  value: '/home'
+        '403':
+          description: 'Forbidden. User is not authorized to edit answer.'
+        '404':
+          description: 'Not Found. Answer does not exist.'
 
       
 
@@ -808,7 +773,7 @@ paths:
     get:
       operationId: R501
       summary: 'R501: Get User Notifications'
-      description: 'List user notifications. Returns the results as JSON. Access: USR'
+      description: 'List user notifications. Returns the results as JSON. Access: USR, ADM'
       tags:
         - 'M05: Notifications and Interactions'
 
@@ -832,10 +797,10 @@ paths:
               example:
                 - id: 1
                   content: "Your question has received a new answer. "
-                  date: "2023-10-01T12:30:00Z"
+                  date: "2023-10-01 12:30:00"
                 - id: 2
                   content: "Congratulations! You have earned a new badge: First Correct Answer!"
-                  date: "2023-10-01T13:00:00Z"
+                  date: "2023-10-01 13:00:00"
         '404':
           description: 'User not found.'
           content:
@@ -852,7 +817,7 @@ paths:
     put:
       operationId: R502
       summary: 'R502: Mark Notification as Read'
-      description: 'Processes the notification status update. Access: USR'
+      description: 'Processes the notification status update. Access: USR, ADM'
       tags:
         - 'M05: Notifications and Interactions'
 
@@ -891,7 +856,7 @@ paths:
     put:
       operationId: R503
       summary: 'R503: Mark All Notifications as Read'
-      description: 'Marks all user notifications as read. Access: USR'
+      description: 'Marks all user notifications as read. Access: USR, ADM'
       tags:
         - 'M05: Notifications and Interactions'
       responses:
@@ -921,76 +886,10 @@ paths:
 
 ################ ADMINISTRATION ################
 
-  /admin/users:
-    get:
-      operationId: R601
-      summary: 'R601: List Users'
-      description: 'List all users. Access: ADM'
-      tags:
-        - 'M06: Administration'
-      responses:
-        '200':
-          description: 'Ok. Show users list UI.'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    email:
-                      type: string
-              example:
-                - id: 1
-                  name: "John Doe"
-                  email: "john.doe@example.com"
-                - id: 2
-                  name: "Jane Smith"
-                  email: "jane.smith@example.com"
-        '403':
-          description: 'Forbidden. User is not authorized to access this resource.'
-
-  /admin/posts:
-    get:
-      operationId: R602
-      summary: 'R602: List Posts'
-      description: 'List all posts. Access: ADM'
-      tags:
-        - 'M06: Administration'
-      responses:
-        '200':
-          description: 'Ok. Show posts list UI.'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    title:
-                      type: string
-                    content:
-                      type: string
-              example:
-                - id: 1
-                  title: "Effective Study Techniques for Engineering Mathematics?"
-                  content: "What are the most effective study techniques for mastering engineering mathematics?"
-                - id: 2
-                  title: "Resources for Understanding Circuit Analysis?"
-                  content: "Can anyone recommend reliable resources for understanding circuit analysis?"
-        '403':
-          description: 'Forbidden. User is not authorized to access this resource.'
-
   /admin/users/{id}:
     delete:
-      operationId: R603
-      summary: 'R603: Delete User'
+      operationId: R601
+      summary: 'R601: Delete User'
       description: 'Delete a user by ID. Access: ADM'
       tags:
         - 'M06: Administration'
@@ -1002,26 +901,24 @@ paths:
           required: true
           description: 'ID of the user to delete'
       responses:
-        '200':
-          description: 'User deleted successfully.'
-          content:
-            application/json:
+        '302':
+          description: 'Redirect after processing the user deletion.'
+          headers:
+            Location:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: 'User deleted successfully.'
-        '403':
-          description: 'Forbidden. User is not authorized to access this resource.'
-        '404':
-          description: 'Not Found. User does not exist.'
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful user deletion. Redirect to dashboard.'
+                  value: '/admin/dashboard'
+                302Failure:
+                  description: 'Failed user deletion. Redirect to dashboard.'
+                  value: '/admin/dashboard'
 
   /admin/dashboard:
     get:
-      operationId: R604
-      summary: 'R604: Admin Dashboard'
+      operationId: R602
+      summary: 'R602: Admin Dashboard'
       description: 'Show the admin dashboard. Access: ADM'
       tags:
         - 'M06: Administration'

@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if (!$user) {
-            return redirect()->back(); 
+            return redirect()->route('home')->with('error', 'User not found.'); 
         }
         
         $posts = $user->posts()->get();

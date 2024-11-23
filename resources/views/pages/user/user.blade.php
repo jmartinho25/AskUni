@@ -32,10 +32,18 @@
         <div class="profile-content">
             <div class="tabset">
                 <input type="radio" name="tabset" id="tab1" aria-controls="questions" checked>
+                @if (auth()->check() && auth()->user()->id === $user->id)
                 <label for="tab1">My Questions</label>
+                @else
+                <label for="tab1">Questions</label>
+                @endif
 
                 <input type="radio" name="tabset" id="tab2" aria-controls="answers">
+                @if (auth()->check() && auth()->user()->id === $user->id)
                 <label for="tab2">My Answers</label>
+                @else
+                <label for="tab2">Answers</label>
+                @endif
                 
                 <div class="tab-panels">
                     <section id="questions" class="tab-panel">

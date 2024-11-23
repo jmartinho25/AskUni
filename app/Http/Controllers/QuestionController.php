@@ -54,7 +54,11 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $question = Question::with(['post', 'answers.comments', 'comments'])->findOrFail($id);
+        $question = Question::with(['post', 'answers.comments', 'comments'])->find($id);
+
+        if (!$question) {
+            return redirect()->route('home')->with('error', 'Question does not exist.');
+        }
         
         return view('pages.questions.show', compact('question'));
     }
