@@ -13,7 +13,17 @@
 
     <p>{{ $question->post->content }}</p>
 
-    <p>Created by: <a href="{{ route('profile', $question->post->user->id) }}">{{ $question->post->user->name }}</a></p>
+    <p>Created by: 
+        @if ($question->post->user)
+            @if ($question->post->user->trashed())
+                <span>Deleted User</span>
+            @else
+                <a href="{{ route('profile', $question->post->user->id) }}">{{ $question->post->user->name }}</a>
+            @endif
+        @else
+            <span>Deleted User</span>
+        @endif
+    </p>
 
     <p>Date:
         @if($question->post->date instanceof \Carbon\Carbon)
