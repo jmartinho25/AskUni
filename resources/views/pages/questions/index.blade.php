@@ -15,11 +15,20 @@
         <div class="all-questions">
         @if (!empty($questions))
             @foreach ($questions as $question)
-                <div class="question-card">
-                    <h3>{{ $question->title }}</h3>
-                    <a href="{{ route('profile', $question->post->user->id) }}" class="question-user-name">{{ $question->post->user->name }}</a>
-                    <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
-                </div>
+            <div class="question-card">
+                <h3>{{ $question->title }}</h3>
+                
+                @if ($question->post->user)
+                    <a href="{{ route('profile', $question->post->user->id) }}" class="question-user-name">
+                        {{ $question->post->user->name }}
+                    </a>
+                @else
+                    <span class="question-user-name">[Deleted User]</span>
+                @endif
+                
+                <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
+            </div>
+
             @endforeach
         @else
             <p>No questions available.</p>

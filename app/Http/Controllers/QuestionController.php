@@ -54,10 +54,18 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $question = Question::with(['post', 'answers.comments', 'comments'])->findOrFail($id);
-        
+        $question = Question::with([
+            'post.user' => function ($query) {
+                $query->withTrashed(); // Inclui usuários soft deleted
+            },
+            'answers.comments',
+            'comments',
+            'tags',
+        ])->findOrFail($id);
+
         return view('pages.questions.show', compact('question'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
