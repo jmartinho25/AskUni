@@ -33,64 +33,6 @@ body {
     justify-self: center;
   }
   
-  /*#cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  #cards article.card {
-    display: flex;
-    flex-direction: column;
-    background-color: #d3edc3;
-    padding: 1em;
-    margin: 1em;
-  }
-  #cards article.card header {
-    display: flex;
-    align-items: center;
-  }
-  #cards article.card header h2 {
-    flex-grow: 1;
-  }
-  #cards article.card header a.delete {
-    display: none;
-    font-size: 2.6rem;
-    margin-top: .5rem;
-    margin-bottom: 2.5rem;
-    line-height: 1.25;
-  }
-  #cards article.card header:hover a.delete {
-    display: inline;
-  }
-  #cards article.card li {
-    list-style-type: none;
-  }
-  #cards article.card li label {
-    display: flex;
-    align-items: baseline;
-  }
-  #cards article.card li label span {
-    margin-left: .5em;
-    flex-grow: 1;
-  }
-  #cards article.card li label a {
-    display: none;
-  }
-  #cards article.card li label:hover a {
-    display: inline;
-  }
-  #cards article.card input:checked + span {
-    text-decoration: var(--primary-color) solid line-through;
-  }
-  #cards article.card ul {
-    margin: 0;
-  }
-  #cards article.card form {
-    margin: 0;
-  }
-  #cards article.card input[type=text] {
-    background-color: white;
-    margin: 0;
-  }*/
 
   h2{
     margin-top: 20px;
@@ -110,6 +52,7 @@ body {
     max-width: 20em;
     border: 1px solid #0784d2;
   }
+
   form .error {
     color: #ff3333;
     margin-bottom: 20px;
@@ -119,6 +62,7 @@ body {
     font-weight: bold;
     color: #0bc60e;
   }
+
   #content > form input {
     background-color: white;
   }
@@ -294,6 +238,7 @@ body {
   margin-bottom: 20px;
 }
 
+/**************************************FOOTER**************************************/
 .footer {
   background-color: #f4f4f4;
   color: #333;
@@ -304,7 +249,7 @@ body {
   bottom: 0;
   left: 0;
   display: flex;
-  justify-content: center; /* Centraliza o conteúdo horizontalmente */
+  justify-content: center; 
   margin-top: 20px;
 }
 
@@ -342,6 +287,7 @@ body {
   color: white;
   margin-bottom: 15px;
 }
+
 /**********************NAV**************************/
 .top-nav {
   display: flex;
@@ -408,26 +354,6 @@ body {
   }
 }
 
-/**************************************************************/
-
-/*.answer, .comment {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.comments {
-  list-style-type: none;
-  padding-left: 0;
-}*/
-
-
-/*.comment:first-child {
-  border-top: none;
-}*/
-
 .view-all-questions a{
   color: #000000;
 }
@@ -436,7 +362,7 @@ body {
   color: #cc6600;
 }
 
-/* Notificaiton */
+/************************************* Notification ***************************************/
 
 .notifications {
   position: relative;
@@ -479,7 +405,7 @@ body {
 
 .notifications-dropdown #mark-as-read {
   display: block;
-  margin: 10px auto 0; /* Centraliza o botão horizontalmente */
+  margin: 10px auto 0;
   padding: 0px 20px;
   background-color: #0784d2;
   color: white;
@@ -510,7 +436,7 @@ body {
   border-top: 1px solid #aaaaaa;
 }
 
-/* Profile */
+/**************************************** Profile **************************************/
 
 .profile-container {
   display: grid;
@@ -537,7 +463,7 @@ body {
   object-fit: cover;
 }
 
-/* Profile Tab */
+/****************************************** Profile Tab ************************************/
 
 .tabset > input[type="radio"] {
   position: absolute;
@@ -580,7 +506,7 @@ body {
 
 
 
-/* Search bar */
+/**************************************** Search bar ***********************************/
 
 #search-bar {
   position: relative;
@@ -628,7 +554,7 @@ body {
 }
 
 
-/* Search Results */
+/********************************** Search Results ********************************/
 
 
 .result-title {
@@ -660,7 +586,7 @@ body {
 }
 
 
-/* Pagination */
+/********************************** Pagination ***********************************/
 
 #pagination-container, .pagination {
   display: flex;
