@@ -21,7 +21,7 @@
       </span>
     @endif
 
-    <label for="email">E-Mail Address</label>
+    <label for="email">E-Mail Address (@fe.up.pt)</label>
     <input id="email" type="email" name="email" value="{{ old('email') }}" required>
     @if ($errors->has('email'))
       <span class="error">

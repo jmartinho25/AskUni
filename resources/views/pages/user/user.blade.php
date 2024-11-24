@@ -18,7 +18,9 @@
             <h1>{{ $user->name }}'s Profile</h1>
             <p>Username: {{ $user->username }}</p>
             <p>Email: {{ $user->email }}</p>
+            @if ($user->description)
             <p>Description: {{ $user->description }}</p>
+            @endif
             <p>Score: {{ $user->score }}</p>
 
             @can ('editUser', $user)
@@ -73,6 +75,7 @@
                             <div class="answer-card">
                                 <p>{{ $answer->content }}</p>
                                 <p>Date: {{ $answer->date }}</p>
+                                <a class="button" href="{{ route('questions.show', $answer->answer->questions_id) }}" class="btn btn-secondary">View Question</a>
 
                                 @if (auth()->check() && auth()->user()->id === $answer->users_id)
                                     <a class="button" href="{{ route('answers.edit', $answer->id) }}" class="btn btn-danger">Edit Answer</a>
