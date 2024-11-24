@@ -147,8 +147,8 @@ class QuestionController extends Controller
                 'posts_id' => $question->posts_id,
                 'title' => $question->title,
                 'date' => $question->post->date,
-                'user_id' => $question->post->user->id,
-                'username' => $question->post->user->username,
+                'user_id' => $question->post->user ? $question->post->user->id : null,
+                'username' => $question->post->user ? $question->post->user->username : 'Deleted User',
             ];
         });
     

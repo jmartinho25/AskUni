@@ -13,7 +13,7 @@
                         @if($result->post->user)
                            <a href="{{ route('profile', $result->post->user->id) }}" class="question-user-name">{{ $result->post->user->name }}</a>     
                         @else
-                            <span class="question-user-name">[Deleted User]</span>
+                            <span class="question-user-name">Deleted User</span>
                         @endif
                         <small class="result-date">Published on: {{ $result->post->date }}</small>
                     </div>

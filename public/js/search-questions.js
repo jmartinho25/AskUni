@@ -22,11 +22,18 @@ function displayResults(data, query, resultsContainer, paginationContainer) {
             title.appendChild(questionLink);
             questionCard.appendChild(title);
 
-            const userLink = document.createElement('a');
-            userLink.href = `/users/${result.user_id}`;
-            userLink.textContent = result.username;
-            userLink.classList.add('result-username');
-            questionCard.appendChild(userLink);
+            if (result.user_id && result.username) {
+                const userLink = document.createElement('a');
+                userLink.href = `/users/${result.user_id}`;
+                userLink.textContent = result.username;
+                userLink.classList.add('result-username');
+                questionCard.appendChild(userLink);
+            } else {
+                const deletedUserSpan = document.createElement('span');
+                deletedUserSpan.textContent = 'Deleted User';
+                deletedUserSpan.classList.add('question-user-name');
+                questionCard.appendChild(deletedUserSpan);
+            }
 
             const date = document.createElement('small');
             date.textContent = ` Published on: ${result.date}`;
