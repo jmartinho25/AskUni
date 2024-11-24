@@ -5,13 +5,9 @@ info:
   title: 'AskUni Web API'
   description: 'Web Resources Specification (A7) for AskUni'
 
-#servers:
-#- url: https://lbaw.24153.lbaw.fe.up.pt
-#  description: Production server
-
 servers:
-- url: http://localhost:8000/
-  description: Local server
+- url: https://lbaw.24153.lbaw.fe.up.pt
+  description: Production server
 
 externalDocs:
   description: Find more info here.

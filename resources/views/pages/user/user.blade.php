@@ -24,7 +24,7 @@
             @can ('editUser', $user)
                 <a class="button" href="{{ route('edit-profile') }}" class="btn btn-primary">Edit Profile</a>
             @endcan
-            @if (auth()->check() && auth()->user()->roles->contains('name', 'admin'))
+            @if (auth()->check() && auth()->user()->roles->contains('name', 'admin') && auth()->user()->id === $user->id)
                 <a class="button" href="{{ route('admin.dashboard') }}" class="btn btn-warning">Admin Dashboard</a>
             @endif
         </div>

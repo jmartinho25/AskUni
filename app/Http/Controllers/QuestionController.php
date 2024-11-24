@@ -61,7 +61,11 @@ class QuestionController extends Controller
             'answers.comments',
             'comments',
             'tags',
-        ])->findOrFail($id);
+        ])->find($id);
+
+        if (!$question) {
+            return redirect()->route('home')->with('error', 'Question does not exist.');
+        }
 
         return view('pages.questions.show', compact('question'));
     }
