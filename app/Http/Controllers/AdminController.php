@@ -9,12 +9,12 @@ class AdminController extends Controller
 {
     public function index()
     {
-        if (!Auth::check() || !Auth::user()->roles->contains('name', 'admin')) {
-            abort(403, 'Unauthorized');
-        }
-
-        $users = User::all();
-
+        
+        // Get all users that are not marked as deleted
+        $users = User::whereNull('deleted_at')->get();
+        
+        // Pass users to the view
         return view('pages.admin.dashboard', compact('users'));
     }
+
 }

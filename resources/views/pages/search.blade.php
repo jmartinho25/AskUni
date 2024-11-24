@@ -10,7 +10,11 @@
                 @foreach($results as $result)
                     <div class="question-card">
                         <h3><a href="{{ route('questions.show', $result->posts_id) }}" class="result-title">{{ $result->title }}</a></h3>
-                        <a href="{{ route('profile', $result->post->user->id) }}" class="result-username">{{ $result->post->user->username }}</a>
+                        @if($result->post->user)
+                           <a href="{{ route('profile', $result->post->user->id) }}" class="question-user-name">{{ $result->post->user->name }}</a>     
+                        @else
+                            <span class="question-user-name">[Deleted User]</span>
+                        @endif
                         <small class="result-date">Published on: {{ $result->post->date }}</small>
                     </div>
                 @endforeach
@@ -19,6 +23,6 @@
 
     <div id="pagination-container">
         {{ $results->appends(['query' => $query, 'exact_match' => request()->input('exact_match')])->links() }}
-    </div>
+    </div>  
 </div>
 @endsection

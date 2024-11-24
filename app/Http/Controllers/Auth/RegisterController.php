@@ -15,11 +15,15 @@ use App\Models\User;
 class RegisterController extends Controller
 {
     /**
-     * Display a login form.
+     * Display a Register form.
      */
-    public function showRegistrationForm(): View
+    public function showRegistrationForm()
     {
-        return view('auth.register');
+        if (Auth::check()) {
+            return redirect('/feed');
+        } else {
+            return view('auth.register');
+        }
     }
 
     /**

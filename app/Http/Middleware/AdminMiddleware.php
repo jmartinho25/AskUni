@@ -10,14 +10,13 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            return response('User Not Authenticated', 401);
+            return redirect()->route('home')->with('error', 'Unauthorized access');
         }
 
-        if (Auth::user()->roles->contains('name', 'admin')) {
-            return $next($request);
+        if (!Auth::user()->roles->contains('name', 'admin')) {
+            return redirect()->route('feed')->with('error', 'Unauthorized access');
         }
 
-        return response('Unauthorized', 403);
+        return $next($request);
     }
-
 }

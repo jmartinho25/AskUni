@@ -63,8 +63,10 @@ CREATE TABLE users (
     photo TEXT DEFAULT 'profilePictures/default.png',
     is_blocked BOOLEAN DEFAULT FALSE,
     remember_token TEXT DEFAULT NULL,
-    score INTEGER CHECK (score >= 0 AND score <= 100)
+    score INTEGER CHECK (score >= 0 AND score <= 100) DEFAULT 0,
+    deleted_at TIMESTAMP NULL DEFAULT NULL CHECK (deleted_at IS NULL OR deleted_at <= now())
 );
+
 
 CREATE TABLE roles (
     id SERIAL PRIMARY KEY,

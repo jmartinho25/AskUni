@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
-{
+{   
+    
     
     /**
      * Display the specified resource.
@@ -99,16 +100,29 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-
-        if (!$user) {
-            return redirect()->route('admin.dashboard')->with('error', 'User not found.');
+         
+        if ($user) {
+            $user->deleted_at = now();
+            $user->save();
+            return redirect()->route('admin.dashboard')->with('success', 'User deleted successfully.');
         }
 
-        $user->delete();
-
-        return redirect()->route('admin.dashboard')->with('success', 'User deleted successfully.');
+        return back()->with('error', 'User not found.');
     }
 
+
+    public function restore($id)
+    {
+        $user = User::whereNotNull('deleted_at')->find($id); 
+
+        if ($user) {
+            $user->deleted_at = null; 
+            $user->save();
+            return redirect()->route('admin.dashboard')->with('success', 'User restored successfully.');
+        }
+
+        return back()->with('error', 'User not found.');
+    }
 
     public function score($id)
     {

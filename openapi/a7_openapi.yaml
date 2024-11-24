@@ -921,6 +921,15 @@ paths:
       responses:
         '200':
           description: 'Ok. Show admin dashboard UI.'
-        '403':
-          description: 'Forbidden. User is not authorized to access this resource.'
+        '302':
+          description: 'Redirect if user is not an admin.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Unauthorized:
+                  description: 'User is not an admin.'
+                  value: '/home'
+
 

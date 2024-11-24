@@ -2,25 +2,22 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+// Necessary traits and base classes
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
-
-// Added to define Eloquent relationships.
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-    // Don't add create and update timestamps in database.
-    public $timestamps  = false;
+    // Disable default timestamps for this model.
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -39,7 +36,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * The attributes that should be hidden when serialized.
      *
      * @var array<int, string>
      */
@@ -49,21 +46,21 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_blocked' => 'boolean', // perguntar isto
+        'is_blocked' => 'boolean',
         'score' => 'integer',
     ];
 
-    
-
     /**
-     * Get the posts for a user.
+     * Get the posts associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function posts(): HasMany
     {
@@ -71,7 +68,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the questions for a user.
+     * Get the questions associated with the user's posts.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function questions(): HasManyThrough
     {
@@ -79,7 +78,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the answers for a user.
+     * Get the answers associated with the user's posts.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function answers(): HasMany
     {
@@ -87,21 +88,34 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the notifications for a user.
+     * Get the notifications associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class, 'users_id');
     }
-    
+
     /**
-     * Get the roles for a user.
+     * Get the roles assigned to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles()
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'users_roles', 'users_id', 'roles_id');
     }
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
 
+    /**
+     * Get the tags followed by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'users_follow_tags', 'users_id', 'tags_id');

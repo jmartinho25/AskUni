@@ -65,11 +65,23 @@
     @foreach ($question->answers as $answer)
         <div class="answer-card">
             <p>{{ $answer->post->content }}</p>
-            <p>Answered by: <a href="{{ route('profile', $answer->post->user->id) }}">{{ $answer->post->user->name }}</a></p>
+            <p>Answered by: 
+                @if ($answer->post->user)
+                    @if ($answer->post->user->trashed())
+                        <span>Deleted User</span>
+                    @else
+                        <a href="{{ route('profile', $answer->post->user->id) }}">{{ $answer->post->user->name }}</a>
+                    @endif
+                @else
+                    <span>Deleted User</span>
+                @endif
+            </p>
             <p>Date: {{ $answer->post->date }}</p>
+
             @can('update', $answer)
                 <a class="button" href="{{ route('answers.edit', $answer) }}" class="btn btn-primary">Edit Answer</a>
             @endcan
+
             @can('delete', $answer)
                 <form action="{{ route('answers.destroy', $answer) }}" method="POST" class="delete-form">
                     @csrf
@@ -79,35 +91,54 @@
             @endcan
 
             @if (!$answer->comments->isEmpty())
-            <h3>Comments</h3>
-            <ul class="question-card">
-                        @foreach ($answer->comments as $comment)
-                            
-                                <p>{{ $comment->content }}</p>
-                                <p>Commented by: <a href="{{ route('profile', $comment->user->id) }}">{{ $comment->user->name }}</a></p>
-                                <p>Date: {{ $comment->date }}</p>
-                            
-                        @endforeach
-            </ul>
+                <h3>Comments</h3>
+                <ul class="question-card">
+                    @foreach ($answer->comments as $comment)
+                        <p>{{ $comment->content }}</p>
+                        <p>Commented by: 
+                            @if ($comment->user)
+                                @if ($comment->user->trashed())
+                                    <span>Deleted User</span>
+                                @else
+                                    <a href="{{ route('profile', $comment->user->id) }}">{{ $comment->user->name }}</a>
+                                @endif
+                            @else
+                                <span>Deleted User</span>
+                            @endif
+                        </p>
+                        <p>Date: {{ $comment->date }}</p>
+                    @endforeach
+                </ul>
             @endif
         </div>
     @endforeach
+
     </div>
     @endif
 
     <h2>Comments</h2>
     <div class="all-questions">
-    @if ($question->comments->isEmpty())
-        <p>No comments available.</p>
-    @else
-    @foreach ($question->comments as $comment)
-        <div class="question-card">
-            <p>{{ $comment->content }}</p>
-            <p>Commented by: <a href="{{ route('profile', $comment->user->id) }}">{{ $comment->user->name }}</a></p>
-            <p>Date: {{ $comment->date }}</p>
-        </div>
-    @endforeach
-    @endif
+        @if ($question->comments->isEmpty())
+            <p>No comments available.</p>
+        @else
+            @foreach ($question->comments as $comment)
+                <div class="question-card">
+                    <p>{{ $comment->content }}</p>
+                    <p>Commented by: 
+                        @if ($comment->user)
+                            @if ($comment->user->trashed())
+                                <span>Deleted User</span>
+                            @else
+                                <a href="{{ route('profile', $comment->user->id) }}">{{ $comment->user->name }}</a>
+                            @endif
+                        @else
+                            <span>Deleted User</span>
+                        @endif
+                    </p>
+                    <p>Date: {{ $comment->date }}</p>
+                </div>
+            @endforeach
+        @endif
     </div>
     </div>
     @endsection
