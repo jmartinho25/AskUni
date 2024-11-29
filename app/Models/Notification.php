@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Notification extends Model
 {
@@ -31,6 +32,16 @@ class Notification extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'users_id');
+    }
+
+    public function questionNotification()
+    {
+        return $this->hasOne(QuestionNotification::class, 'notifications_id');
+    }
+
+    public function answerNotification()
+    {
+        return $this->hasOne(AnswerNotification::class, 'notifications_id');
     }
 
 }

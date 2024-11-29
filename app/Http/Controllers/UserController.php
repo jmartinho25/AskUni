@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Notification;
+use App\Models\QuestionNotification;
+use App\Models\AnswerNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -27,12 +30,14 @@ class UserController extends Controller
         $answers = $user->answers()->get();
 
         $questions = $user->questions()->get();
+
+        $badges = $user->badges()->get();
         
         //$comments = $user->comments()->get();
         
         //$tags = $user->tags()->get();
 
-        return view('pages.user.user', compact('user', 'posts', 'answers','questions'));
+        return view('pages.user.user', compact('user', 'posts', 'answers','questions', 'badges'));
     }
 
     // Show search page
@@ -136,16 +141,27 @@ class UserController extends Controller
         if (!$user) {
             return response()->json(['error' => 'User not found.'], 404);
         }
-        $notifications = $user->notifications()->where('read_status', false)->get();
-
+        $notifications = $user->notifications()->with(['questionNotification', 'answerNotification'])->where('read_status', false)->get();
+        
         $result = $notifications->map(function ($notification) {
+            $url = null;
+
+            if ($notification->questionNotification) {
+                $url = route('questions.show', $notification->questionNotification->questions_id);
+            } elseif ($notification->answerNotification) {
+                $question_id = $notification->answerNotification->answer->question->posts_id;
+                $answer_id = $notification->answerNotification->answers_id;
+                $url = route('questions.show', $question_id) . '#answer-' . $answer_id;
+            }
+    
             return [
                 'id' => $notification->id,
                 'content' => $notification->content,
                 'date' => $notification->date,
+                'url' => $url,
             ];
         });
-
+    
         return response()->json($result);
     }
 }

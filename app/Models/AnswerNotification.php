@@ -4,27 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class AnswersNotification extends Model
+class AnswerNotification extends Model
 {
     use HasFactory;
 
-    // No automatic timestamps.
     public $timestamps = false;
+    protected $primaryKey = 'notifications_id';
+    protected $table = 'answers_notifications';
 
-    /**
-     * Get the notification associated with the answer notification.
-     */
     public function notification()
     {
-        return $this->belongsTo(Notification::class);
+        return $this->belongsTo(Notification::class, 'notifications_id');
     }
 
-    /**
-     * Get the answer associated with the answer notification.
-     */
     public function answer()
     {
-        return $this->belongsTo(Answer::class);
+        return $this->belongsTo(Answer::class, 'answers_id');
     }
 }

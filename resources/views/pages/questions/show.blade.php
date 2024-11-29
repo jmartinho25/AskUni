@@ -63,7 +63,7 @@
         <p>No answers available.</p>
     @else
     @foreach ($question->answers as $answer)
-        <div class="answer-card">
+        <div class="answer-card" id="answer-{{ $answer->posts_id }}">
             <p>{{ $answer->post->content }}</p>
             <p>Answered by: 
                 @if ($answer->post->user)

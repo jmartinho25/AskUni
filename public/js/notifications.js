@@ -73,6 +73,7 @@ function populateNotifications() {
             let listItem = document.createElement('li');
             listItem.innerHTML = `
                 ${notification.content}
+                ${notification.url ? `<a href="${notification.url}" class="btn btn-primary btn-sm">View</a>` : ''}
                 <button id="mark-as-read" class="btn btn-primary btn-sm mark-as-read" data-id="${notification.id}">Mark as Read</button>
             `;
             notificationsList.appendChild(listItem);
