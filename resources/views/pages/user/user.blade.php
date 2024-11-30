@@ -29,23 +29,23 @@
             @if (auth()->check() && auth()->user()->roles->contains('name', 'admin') && auth()->user()->id === $user->id)
                 <a class="button" href="{{ route('admin.dashboard') }}" class="btn btn-warning">Admin Dashboard</a>
             @endif
+            @if (!$badges->isEmpty())
             <section id="badges" class="tab-panel">
-                <h2>Badges</h2>
+                <h2>Achievements</h2>
                 <div class="all-badges">
-                    @if ($badges->isEmpty())
-                        <p>No badges available.</p>
-                    @else
                     @foreach ($badges as $badge)
-                        <div class="badge-card">
+                    <div class="badge-card">
+                        <img src="{{ asset($badge->icon) }}" alt="{{ $badge->name }}'s Badge" class="badge-picture">
+                        <div class="badge-tooltip">
                             <h3>{{ $badge->name }}</h3>
                             <p>{{ $badge->description }}</p>
-                            <p>{{ $badge->pivot->date }}</p>
-                            <img src="{{ asset($badge->icon) }}" alt="{{ $badge->name }}'s Badge" class="badge-picture">
+                            <p>{{ date('Y-m-d', strtotime($badge->pivot->date)) }}</p>
                         </div>
+                    </div>
                     @endforeach
-                    @endif
                 </div>
             </section>
+            @endif
                 
         </div>
 

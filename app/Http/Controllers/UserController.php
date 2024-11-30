@@ -143,7 +143,7 @@ class UserController extends Controller
         }
         $notifications = $user->notifications()->with(['questionNotification', 'answerNotification'])->where('read_status', false)->get();
         
-        $result = $notifications->map(function ($notification) {
+        $result = $notifications->map(function ($notification) use ($user) {
             $url = null;
 
             if ($notification->questionNotification) {
@@ -152,6 +152,8 @@ class UserController extends Controller
                 $question_id = $notification->answerNotification->answer->question->posts_id;
                 $answer_id = $notification->answerNotification->answers_id;
                 $url = route('questions.show', $question_id) . '#answer-' . $answer_id;
+            } elseif ($notification->badgeNotification) {
+                $url = route('profile', $user->id) . '#badges';
             }
     
             return [

@@ -44,4 +44,9 @@ class Notification extends Model
         return $this->hasOne(AnswerNotification::class, 'notifications_id');
     }
 
+    public function badgeNotification()
+    {
+        return $this->hasOne(BadgeNotification::class, 'notifications_id');
+    }
+
 }
