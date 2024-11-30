@@ -432,10 +432,6 @@ body {
   border-bottom: none;
 }
 
-#notifications-list :first-child {
-  border-top: 1px solid #aaaaaa;
-}
-
 /**************************************** Profile **************************************/
 
 .profile-container {
