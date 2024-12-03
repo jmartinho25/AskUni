@@ -76,7 +76,8 @@ async function fetchAndDisplay(url, query, resultsContainer, paginationContainer
 function performSearch() {
     const query = document.getElementById('search-input').value;
     const exactMatch = document.getElementById('exact-match').checked;
-    const url = `/api/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch ? 1 : 0}`;
+    const order = document.getElementById('order').value;
+    const url = `/api/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch ? 1 : 0}&order=${order}`;
 
     const resultsContainer = document.getElementById('results-container');
     const paginationContainer = document.getElementById('pagination-container');
@@ -93,6 +94,7 @@ function searchWithDelay() {
 
 document.getElementById('search-input').addEventListener('input', searchWithDelay);
 document.getElementById('exact-match').addEventListener('change', performSearch);
+document.getElementById('order').addEventListener('change', performSearch);
 document.getElementById('search-bar').addEventListener('submit', function(event) {
     event.preventDefault();
     navigateToSearchPage();
@@ -106,7 +108,8 @@ document.getElementById('search-button').addEventListener('click', function(even
 function navigateToSearchPage() {
     const query = document.getElementById('search-input').value;
     const exactMatch = document.getElementById('exact-match').checked;
-    const searchPageUrl = `/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch ? 1 : 0}`;
+    const order = document.getElementById('order').value;
+    const searchPageUrl = `/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch ? 1 : 0}&order=${order}`;
 
     if (window.location.pathname !== '/questions/search') {
         window.location.href = searchPageUrl;
@@ -122,8 +125,9 @@ function addPaginationEventListeners() {
             const urlParams = new URLSearchParams(this.search);
             const query = urlParams.get('query');
             const exactMatch = urlParams.get('exact_match');
+            const order = urlParams.get('order');
             const page = urlParams.get('page');
-            const url = `/api/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch}&page=${page}`;
+            const url = `/api/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch}&order=${order}&page=${page}`;
 
             const resultsContainer = document.getElementById('results-container');
             const paginationContainer = document.getElementById('pagination-container');

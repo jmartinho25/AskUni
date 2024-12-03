@@ -118,9 +118,70 @@ body {
     border-color: #005fa3;
   }
 
-  button.btn.btn-danger:hover {
-    background-color: #f44336;
-    border-color: #f44336;
+  button.btn.btn-danger {
+    background:none;
+    border: none;
+    color:#0784d2;
+    font-size: 2rem;
+  }
+
+  button.btn.btn-danger:hover{
+    color: red;
+  }
+
+  #btn-edit {
+    background:none;
+    border: none;
+    color:#0784d2;
+    font-size: 2rem;
+  }
+
+
+.btn-like[disabled] {
+  cursor: not-allowed; 
+  opacity: 0.6; 
+}
+
+  #btn-edit:hover , button.btn.btn-edit:hover{
+    color: #ff8800;
+  }
+
+  button.btn.btn-edit {
+    background:none;
+    border: none;
+  }
+
+  button.btn.btn-like {
+    background:none;
+    border: none;
+    color:#0784d2;
+    font-size: 2rem;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 400;
+  }
+
+
+  .btn-like i.fas.fa-thumbs-up,
+  .btn-like i.fas.fa-thumbs-down,
+  .btn-like i.far.fa-thumbs-up,
+  .btn-like i.far.fa-thumbs-down
+   {
+    color: #0784d2; /* Cor do ícone */
+    font-size: 2rem;
+  }
+
+  span.btn-like{
+    font-size: 2rem;
+    cursor: default; /* Remove o cursor de ponteiro para spans não clicáveis */
+    display: inline-flex; /* Garante que o span e o ícone estejam na mesma linha */
+    align-items: center;
+  }
+
+  .btn-like:hover:not([disabled]) i.fas.fa-thumbs-up,
+  .btn-like:hover:not([disabled]) i.fas.fa-thumbs-down,
+  .btn-like:hover:not([disabled]) i.far.fa-thumbs-up,
+  .btn-like:hover:not([disabled]) i.far.fa-thumbs-down {
+    color: #ff8800; /* Cor do ícone quando em hover */
   }
 
 
@@ -520,7 +581,8 @@ body {
 }
 
 .tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
-.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2) {
+.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
+.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3){
   display: block;
 }
 

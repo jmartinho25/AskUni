@@ -10,8 +10,20 @@ class Comment extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = ['content', 'date', 'posts_id', 'users_id'];
 
+    public function question()
+    {
+        return $this->belongsTo(Question::class, 'posts_id', 'posts_id');
+    }
+
+    public function answer()
+    {
+        return $this->belongsTo(Answer::class, 'posts_id', 'posts_id');
+    }
+    
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class, 'posts_id');

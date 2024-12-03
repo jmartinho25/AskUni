@@ -4,8 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AnswerController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\CommentController;
+
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\DislikeController;
+
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
@@ -82,6 +86,23 @@ Route::controller(AnswerController::class)->group(function () {
     Route::delete('/answers/{answer}', 'destroy')->name('answers.destroy');
 });
 
+
+Route::middleware('auth')->group(function () {
+    Route::get('{type}/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
+    Route::post('{type}/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::post('posts/{id}/like', [LikeController::class, 'store'])->name('like.store');
+    Route::delete('posts/{id}/like', [LikeController::class, 'destroy'])->name('like.destroy');
+    Route::post('posts/{id}/dislike', [DislikeController::class, 'store'])->name('dislike.store');
+    Route::delete('posts/{id}/dislike', [DislikeController::class, 'destroy'])->name('dislike.destroy');
+});
+
 // Admin Routes
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     Route::get('dashboard', [UserController::class, 'index'])->name('admin.dashboard');
@@ -93,3 +114,4 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
+

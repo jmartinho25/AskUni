@@ -50,4 +50,15 @@ class Answer extends Model
     {
         return $this->hasMany(Comment::class, 'posts_id', 'posts_id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($answer) {
+            $answer->comments()->each(function ($comment) {
+                $comment->delete();
+            });
+        });
+    }
 }
