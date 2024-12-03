@@ -133,6 +133,15 @@
                             <i class="fas fa-pencil-alt"></i>
                             </a>
                         @endcan
+                        @can('delete', $comment)
+                            <form action="{{ route('comments.destroy', $comment) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        @endcan
                         </ul>
                     @endforeach
             @endif
@@ -166,6 +175,15 @@
                         <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
                         <i class="fas fa-pencil-alt"></i>
                         </a>
+                    @endcan
+                    @can('delete', $comment)
+                        <form action="{{ route('comments.destroy', $comment) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
                     @endcan
                 </div>
             @endforeach

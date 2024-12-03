@@ -94,6 +94,7 @@ Route::middleware('auth')->group(function () {
     Route::post('{type}/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::get('comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
     Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
 
 Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');

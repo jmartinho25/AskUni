@@ -76,4 +76,19 @@ class CommentController extends Controller
         }
     }
 
+    public function destroy(Comment $comment)
+    {
+        $this->authorize('delete', $comment);
+
+        $comment->delete();
+
+        if ($comment->question != null) {
+            return redirect()->route('questions.show', $comment->question->posts_id)->with('success', 'Comment deleted successfully');
+        } elseif ($comment->answer != null) {
+            return redirect()->route('questions.show', $comment->answer->questions_id)->with('success', 'Comment deleted successfully');
+        } else {
+            abort(404);
+        }
+    }   
+
 }
