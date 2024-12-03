@@ -92,6 +92,8 @@ Route::controller(AnswerController::class)->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('{type}/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
     Route::post('{type}/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
 });
 
 Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');

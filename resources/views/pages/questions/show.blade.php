@@ -128,6 +128,11 @@
                             @endif
                         </p>
                         <p>Date: {{ $comment->date }}</p>
+                        @can('update', $comment)
+                            <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
+                            <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        @endcan
                         </ul>
                     @endforeach
             @endif
@@ -157,6 +162,11 @@
                         @endif
                     </p>
                     <p>Date: {{ $comment->date }}</p>
+                    @can('update', $comment)
+                        <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
+                        <i class="fas fa-pencil-alt"></i>
+                        </a>
+                    @endcan
                 </div>
             @endforeach
         @endif

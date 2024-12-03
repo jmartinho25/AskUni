@@ -8,6 +8,8 @@ use App\Models\Question;
 use App\Policies\QuestionPolicy;
 use Illuminate\Support\Facades\Gate;
 use App\Policies\AnswerPolicy;
+use App\Models\Comment;
+use App\Policies\CommentPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Question::class => QuestionPolicy::class,
         Answer::class => AnswerPolicy::class,
+        Comment::class => CommentPolicy::class,
     ];
 
     /**

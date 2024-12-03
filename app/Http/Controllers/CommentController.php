@@ -43,10 +43,35 @@ class CommentController extends Controller
             'posts_id' => $parent->posts_id,
         ]);
         if ($type === 'question') {
-            return redirect()->route('questions.show', $parent->id)->with('success', 'Comment added successfully!');
+            return redirect()->route('questions.show', $parent->posts_id)->with('success', 'Comment added successfully!');
         }elseif ($type === 'answer') {
             return redirect()->route('questions.show', $parent->questions_id)->with('success', 'Comment added successfully!');
         }else {
+            abort(404);
+        }
+    }
+
+    public function edit(Comment $comment)
+    {
+        return view('pages/comments.edit', compact('comment'));
+    }
+
+    public function update(Request $request, Comment $comment)
+    {
+        $request->validate([
+            'content' => 'required|string',
+        ]);
+
+        $comment->update([
+            'content' => $request->content,
+        ]);
+
+        if($comment->question!=null){
+            return redirect()->route('questions.show', $comment->question->posts_id)->with('success', 'Comment updated successfully');
+        }elseif ($comment->answer!=null) {
+            return redirect()->route('questions.show', $comment->answer->questions_id)->with('success', 'Comment updated successfully');
+        }
+        else{
             abort(404);
         }
     }
