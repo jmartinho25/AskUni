@@ -168,11 +168,17 @@ class QuestionController extends Controller
         } else {
             // Full-text search
             return Question::with('post.user')
+                ->selectRaw("
+                    questions.*, 
+                    CASE 
+                        WHEN title ILIKE ? THEN 1 
+                        ELSE 2 
+                    END AS rank_order,
+                    ts_rank(tsvectors, to_tsquery('english', ?)) AS rank", ["%{$query}%", $query])
                 ->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query])
-                ->orderByRaw("ts_rank(tsvectors, to_tsquery('english', ?)) DESC", [$query])
-                ->union(
-                    Question::query()->where('title', 'ILIKE', "%{$query}%")
-                )
+                ->orWhere('title', 'ILIKE', "%{$query}%")
+                ->orderBy('rank_order') // prioritize exact matches
+                ->orderBy('rank', 'DESC') // order by ts_rank within each group
                 ->paginate($offset);
         }
     }
