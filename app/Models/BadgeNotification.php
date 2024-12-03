@@ -4,23 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class AnswerNotification extends Model
+class BadgeNotification extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
     protected $primaryKey = 'notifications_id';
-    protected $table = 'answers_notifications';
+    protected $table = 'badges_notifications';
 
     public function notification()
     {
         return $this->belongsTo(Notification::class, 'notifications_id');
     }
 
-    public function answer()
+    public function badge()
     {
-        return $this->belongsTo(Answer::class, 'answers_id');
+        return $this->belongsTo(Badge::class, 'badges_id');
     }
 }

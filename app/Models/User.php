@@ -120,4 +120,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Tag::class, 'users_follow_tags', 'users_id', 'tags_id');
     }
+
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class, 'earned_badges', 'users_id', 'badges_id')
+                    ->withPivot('date');
+    }
 }

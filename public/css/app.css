@@ -432,10 +432,6 @@ body {
   border-bottom: none;
 }
 
-#notifications-list :first-child {
-  border-top: 1px solid #aaaaaa;
-}
-
 /**************************************** Profile **************************************/
 
 .profile-container {
@@ -461,6 +457,55 @@ body {
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+#badges {
+  padding: 0.5em 0;
+}
+
+#badges h2 {
+  margin-top: 0.2em;
+}
+
+.badge-picture {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.badge-card {
+  position: relative;
+  display: inline-block;
+  margin: 0.5em;
+}
+
+.badge-picture {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.badge-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 0.7em;
+  width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.badge-tooltip p {
+  margin: 0.5em;
+}
+
+.badge-card:hover .badge-tooltip {
+  display: block;
 }
 
 /****************************************** Profile Tab ************************************/

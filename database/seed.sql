@@ -310,7 +310,7 @@ BEGIN
         END IF;
     END IF;
 
-    RETURN NULL;
+    RETURN NEW;
 END $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER questions_search_update BEFORE INSERT OR UPDATE ON questions
@@ -1049,10 +1049,10 @@ INSERT INTO roles (name) VALUES
 ('admin'), 
 ('moderator');
 
-INSERT INTO badges (name, description) VALUES 
-('20 Likes', 'Awarded for receiving 20 likes on a post.'),
-('First Question', 'Awarded for asking your first question.'),
-('First Correct Answer', 'Awarded for getting your answer marked as correct.');
+INSERT INTO badges (name, description, icon) VALUES 
+('20 Likes', 'Awarded for receiving 20 likes on a post.', 'img/badges/20_likes.png'),
+('First Question', 'Awarded for asking their first question.', 'img/badges/first_question.png'),
+('First Correct Answer', 'Awarded for getting their answer marked as correct.', 'img/badges/first_correct_answer.png');
 
 INSERT INTO users (username, name, email, password, description, score) VALUES 
 ('john_doe', 'John Doe', 'john_doe@fe.up.pt', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'A regular user.', 50), --1234
