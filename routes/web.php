@@ -7,6 +7,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\NotificationController;
 
@@ -88,6 +89,11 @@ Route::controller(AnswerController::class)->group(function () {
     Route::delete('/answers/{answer}', 'destroy')->name('answers.destroy');
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('{type}/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
+    Route::post('{type}/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
+});
+
 Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/admin/posts', [QuestionController::class, 'index'])->name('posts.index');
 
@@ -97,3 +103,5 @@ Route::middleware('admin')->delete('/admin/users/{id}', [UserController::class, 
 Route::get('/admin/dashboard', [AdminController::class, 'index'])
     ->name('admin.dashboard')
     ->middleware('admin');
+
+

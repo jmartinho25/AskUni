@@ -43,6 +43,7 @@
 
     @if (Auth::check())
     <a class="button" href="{{ route('answers.create', $question) }}" class="btn btn-primary mb-3">Add Answer</a>
+    <a class="button" href="{{ route('comments.create', ['question', $question->posts_id]) }}" class="btn btn-primary mb-3">Add Comment</a>
     @endif
 
     @can('update', $question)

@@ -10,6 +10,8 @@ class Comment extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+    
     protected $fillable = ['content', 'date', 'posts_id', 'users_id'];
 
     public function post(): BelongsTo

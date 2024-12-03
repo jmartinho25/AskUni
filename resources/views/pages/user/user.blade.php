@@ -64,6 +64,13 @@
                 @else
                 <label for="tab2">Answers</label>
                 @endif
+
+                <input type="radio" name="tabset" id="tab3" aria-controls="comments">
+                @if (auth()->check() && auth()->user()->id === $user->id)
+                <label for="tab3">My Comments</label>
+                @else
+                <label for="tab3">Comments</label>
+                @endif
                 
                 <div class="tab-panels">
                     <section id="questions" class="tab-panel">
@@ -108,6 +115,21 @@
                         @endforeach
                         @endif
                         </div>
+                    </section>
+                    <section id="comments" class="tab-panel">
+                    <h2>Comments</h2>
+                    <div class="all-questions">
+                    @if ($comments->isEmpty())
+                        <p>No comments available.</p>
+                    @else
+                    @foreach ($comments as $comment)
+                        <div class="answer-card">
+                            <p>{{ $comment->content }}</p>
+                            <p>Date: {{ $comment->date }}</p>
+                        </div>
+                    @endforeach
+                    @endif
+                    </div>
                     </section>
                 </div>
             </div>

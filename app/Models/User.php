@@ -88,6 +88,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the comments associated with the user's posts.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'users_id');
+    }
+
+    /**
      * Get the notifications associated with the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

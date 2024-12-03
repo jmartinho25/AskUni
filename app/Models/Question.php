@@ -53,5 +53,19 @@ class Question extends Model
     {
         return $this->belongsToMany(Tag::class, 'posts_tags', 'posts_id', 'tags_id');
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($question) {
+            $question->answers()->each(function ($answer) {
+                $answer->delete();
+            });
+            $question->comments()->each(function ($comment) {
+                $comment->delete();
+            });
+        });
+    }
 }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Notification;
+
 use App\Models\QuestionNotification;
 use App\Models\AnswerNotification;
 use Illuminate\Http\Request;
@@ -31,13 +32,15 @@ class UserController extends Controller
 
         $questions = $user->questions()->get();
 
+        $comments= $user->comments()->get();
+
         $badges = $user->badges()->get();
         
         //$comments = $user->comments()->get();
         
         //$tags = $user->tags()->get();
 
-        return view('pages.user.user', compact('user', 'posts', 'answers','questions', 'badges'));
+        return view('pages.user.user', compact('user', 'posts', 'answers','questions', 'badges', 'comments'));
     }
 
     // Show search page
