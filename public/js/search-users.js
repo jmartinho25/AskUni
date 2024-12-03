@@ -1,67 +1,100 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('search-input');
-    const resultsContainer = document.getElementById('results-container');
-    const paginationContainer = document.getElementById('pagination-container');
+let time = 0;
 
-    async function fetchUsers(query = '', page = 1) {
-        resultsContainer.innerHTML = '<p>Loading...</p>';
-        paginationContainer.innerHTML = '';
+function showLoadingIndicator(container) {
+    container.innerHTML = '<p><i class="fas fa-circle-notch fa-spin"></i></p>';
+}
 
-        try {
-            const response = await fetch(`/admin/users/search?query=${encodeURIComponent(query)}&page=${page}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+function displayResults(data, resultsContainer) {
+    resultsContainer.innerHTML = '';
+    if (data.length === 0) {
+        resultsContainer.innerHTML = '<p>No results found.</p>';
+    } else {
+        data.forEach(user => {
+            const tr = document.createElement('tr');
+            if (user.deleted_at) {
+                tr.classList.add('table-danger');
             }
-            const data = await response.json();
-            displayResults(data);
-        } catch (error) {
-            console.error('Error fetching users:', error);
-            resultsContainer.innerHTML = '<p>Error loading results. Please try again later.</p>';
-        }
-    }
 
-    function displayResults(data) {
-        resultsContainer.innerHTML = '';
-
-        if (data.data.length === 0) {
-            resultsContainer.innerHTML = '<p>No users found.</p>';
-            return;
-        }
-
-        data.data.forEach(user => {
-            const row = document.createElement('div');
-            row.classList.add('user-row');
-            row.innerHTML = `
-                <p><strong>Name:</strong> ${user.name}</p>
-                <p><strong>Email:</strong> ${user.email}</p>
+            tr.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>
+                    ${user.deleted_at ? `
+                        <span class="text-danger">Deleted</span>
+                        <form action="/users/restore/${user.id}" method="POST" style="display:inline-block;">
+                            <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
+                            <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to restore this user?')">
+                                Restore
+                            </button>
+                        </form>
+                    ` : `
+                        ${!user.is_admin && ${Auth::user()->id} != user.id ? `
+                            <form action="/admin/users/destroy/${user.id}" method="POST" style="display:inline-block;">
+                                <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">
+                                    Delete
+                                </button>
+                            </form>
+                        ` : `
+                            <span class="text-muted">Cannot delete admin</span>
+                        `}
+                    `}
+                </td>
             `;
-            resultsContainer.appendChild(row);
+
+            resultsContainer.appendChild(tr);
+        });
+    }
+}
+
+function showError(resultsContainer) {
+    resultsContainer.innerHTML = '<p>Error loading results. Please try again later.</p>';
+}
+
+async function fetchAndDisplay(url, resultsContainer) {
+    showLoadingIndicator(resultsContainer);
+
+    try {
+        const response = await fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         });
 
-        setupPagination(data);
-    }
-
-    function setupPagination(data) {
-        paginationContainer.innerHTML = '';
-
-        if (data.total > data.per_page) {
-            for (let page = 1; page <= data.last_page; page++) {
-                const pageLink = document.createElement('button');
-                pageLink.textContent = page;
-                pageLink.classList.add('pagination-button');
-                if (page === data.current_page) {
-                    pageLink.disabled = true;
-                }
-                pageLink.addEventListener('click', () => fetchUsers(searchInput.value, page));
-                paginationContainer.appendChild(pageLink);
-            }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const data = await response.json();
+        displayResults(data, resultsContainer);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        showError(resultsContainer);
     }
+}
 
-    searchInput.addEventListener('input', () => {
-        const query = searchInput.value.trim();
-        fetchUsers(query);
-    });
+function performSearch() {
+    const query = document.getElementById('user-search-input').value;
+    const url = `/admin/users/search?query=${encodeURIComponent(query)}`;
 
-    fetchUsers();
+    const resultsContainer = document.getElementById('users-table-body');
+
+    // Clear previous results
+    resultsContainer.innerHTML = '';
+
+    fetchAndDisplay(url, resultsContainer);
+}
+
+function searchWithDelay() {
+    clearTimeout(time);
+    time = setTimeout(function() {
+        performSearch();
+    }, 300); //300 ms
+}
+
+document.getElementById('user-search-input').addEventListener('input', searchWithDelay);
+document.getElementById('user-search-bar').addEventListener('submit', function(event) {
+    event.preventDefault();
+    performSearch();
 });

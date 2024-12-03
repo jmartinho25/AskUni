@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Notification;
-use App\Models\QuestionNotification;
-use App\Models\AnswerNotification;
+use App\Models\AppealForUnblock;
 use Illuminate\Http\Request;
+use App\Models\ContentReports;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -99,35 +98,6 @@ class UserController extends Controller
         return redirect()->route('profile', $user->id)->with('success', 'Profile updated successfully.');
     }
     
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        $user = User::find($id);
-         
-        if ($user) {
-            $user->deleted_at = now();
-            $user->save();
-            return redirect()->route('admin.dashboard')->with('success', 'User deleted successfully.');
-        }
-
-        return back()->with('error', 'User not found.');
-    }
-
-
-    public function restore($id)
-    {
-        $user = User::whereNotNull('deleted_at')->find($id); 
-
-        if ($user) {
-            $user->deleted_at = null; 
-            $user->save();
-            return redirect()->route('admin.dashboard')->with('success', 'User restored successfully.');
-        }
-
-        return back()->with('error', 'User not found.');
-    }
 
     public function score($id)
     {
@@ -166,52 +136,121 @@ class UserController extends Controller
     
         return response()->json($result);
     }
-
-
-  
-    public function index(Request $request)
+    
+    /**
+     * Display unblock requests.
+     */
+    public function unblockRequests()
     {
-        $query = $request->input('query'); // Obtém o valor da pesquisa da URL
+        $unblockRequests = AppealForUnblock::with('user')->paginate(10);
 
-        // Realiza a busca com paginação
-        $users = $this->performSearch($query);
-
-        // Retorna para a view com os resultados
-        return view('admin.dashboard', compact('users', 'query'));
+        return view('pages.admin.appeals', compact('unblockRequests'));
     }
 
-    protected function performSearch($query)
+    /**
+     * Display user reports.
+     */
+    public function userReports($id)
     {
-        // Se houver um termo de pesquisa, filtra os usuários
-        if ($query) {
-            return User::where('name', 'ILIKE', "%{$query}%")
-                ->orWhere('email', 'ILIKE', "%{$query}%")
-                ->paginate(10);  // Paginação de 10 resultados por página
+        $user = User::findOrFail($id);
+        $reports = ContentReports::whereHas('comment', function($query) use ($id) {
+            $query->where('users_id', $id);
+        })->orWhereHas('post', function($query) use ($id) {
+            $query->where('users_id', $id);
+        })->with(['comment', 'post'])->paginate(10);
+
+        return view('pages.admin.reports', compact('user', 'reports'));
+    }
+
+    /**
+     * Unblock a user and delete the appeal.
+     */
+    public function unblock($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->is_blocked) {
+            $user->is_blocked = false;
+            $user->save();
+
+            // Delete the appeal
+            AppealForUnblock::where('users_id', $id)->delete();
+
+            return redirect()->route('admin.dashboard')->with('success', 'User unblocked successfully.');
         }
 
-        // Se não houver pesquisa, retorna todos os usuários com paginação
-        return User::paginate(10);
+        return redirect()->route('admin.dashboard')->with('error', 'User is not blocked.');
+    }
+
+    /**
+     * Resolve a report.
+     */
+    public function resolveReport($id)
+    {
+        $report = ContentReports::findOrFail($id);
+        $report->solved = true;
+        $report->save();
+
+        return redirect()->back()->with('success', 'Report marked as resolved.');
     }
 
 
-    public function search(Request $request)
+    /**
+     * Display a list of users.
+     */
+    public function index(Request $request)
     {
         $query = $request->input('query');
-    
-        $users = User::where('name', 'like', '%' . $query . '%')
-                     ->orWhere('email', 'like', '%' . $query . '%')
-                     ->paginate(10);
-    
-        return view('admin.dashboard', compact('users', 'query'));
+        $users = User::when($query, function ($q) use ($query) {
+            return $q->where('username', 'like', "%{$query}%");
+        })->withTrashed()->paginate(10);
+
+        return view('pages.admin.dashboard', compact('users', 'query'));
+    }
+
+    /**
+     * Sanitize the search query.
+     */
+    protected function sanitizeQuery($query)
+    {
+        return htmlspecialchars(trim($query));
+    }
+
+    /**
+     * Restore a deleted user.
+     */
+    public function restore($id)
+    {
+        $user = User::withTrashed()->find($id);
+
+        if ($user && $user->trashed()) {
+            $user->restore();
+            return redirect()->route('admin.dashboard')->with('success', 'User restored successfully.');
+        }
+
+        return redirect()->route('admin.dashboard')->with('error', 'User not found or not deleted.');
+    }
+
+    /**
+     * Delete a user.
+     */
+    public function destroy($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return back()->with('error', 'User not found.');
+        }
+
+        if ($user->role === 'admin') {
+            return back()->with('error', 'You cannot delete another admin.');
+        }
+
+        $user->delete();
+
+        return redirect()->route('admin.dashboard')->with('success', 'User deleted successfully.');
     }
     
-
-
-    
-
-
-
-
 
 
 }

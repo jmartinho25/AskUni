@@ -633,7 +633,7 @@ body {
 
 /********************************** Pagination ***********************************/
 
-#pagination-container, .pagination {
+#pagination-container, #pagination-container-user, .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -641,7 +641,7 @@ body {
   padding: 1em;
 }
 
-#pagination-container a, .pagination a {
+#pagination-container a, .pagination a, #pagination-container-user a {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -654,23 +654,32 @@ body {
   border-radius: 5px;
   background-color: #f9f9f9;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#pagination-container a:hover {
+#pagination-container a:hover, #pagination-container-user a:hover, .pagination a:hover {
   background-color: #005fa3;
   color: white;
   border-color: #005fa3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.pagination a:hover{
-  background-color: #cc6600;
-  color: white;
-  border-color: #cc6600;
+#pagination-container a:active, #pagination-container-user a:active, .pagination a:active {
+  background-color: #003f7f;
+  border-color: #003f7f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#pagination-container svg, .pagination svg {
+#pagination-container svg, .pagination svg, #pagination-container-user svg {
   width: 16px;
   height: 16px;
+}
+
+#pagination-container-user .active a, .pagination .active a {
+  background-color: #005fa3;
+  color: white;
+  border-color: #005fa3;
+  cursor: default;
 }
 
 

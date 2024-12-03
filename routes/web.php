@@ -1,22 +1,15 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
-
-
-
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AdminController;
-
 use App\Http\Controllers\NotificationController;
-
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
-
 use App\Http\Controllers\FeedController;
-use App\Models\Role;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +29,6 @@ Route::redirect('/', '/home');
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', 'index')->name('home');
 });
-
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
@@ -58,12 +50,10 @@ Route::controller(UserController::class)->group(function () {
     Route::delete('/users/{id}', 'destroy')->name('users.destroy.profile');
 });
 
-// Posts
+// Notifications
 Route::controller(UserController::class)->group(function () {
     Route::get('/api/notifications', 'getNotificationsAPI');
-
 });
-
 
 // Question Routes (API)
 Route::controller(QuestionController::class)->group(function () {
@@ -74,14 +64,16 @@ Route::controller(QuestionController::class)->group(function () {
 // Question Routes (Web)
 Route::resource('questions', QuestionController::class);
 
-
+// Notifications API
 Route::controller(NotificationController::class)->group(function () {
     Route::put('/api/notifications/mark-all-read', 'markAllReadAPI')->name('notifications.read.all');
     Route::put('/api/notifications/{id}', 'markAsReadAPI')->name('notifications.read');
 });
 
+// Feed
 Route::get('/feed', [FeedController::class, 'index'])->name('feed');
 
+// Answer Routes
 Route::controller(AnswerController::class)->group(function () {
     Route::get('/questions/{question}/answers/create', 'create')->name('answers.create');
     Route::post('/questions/{question}/answers', 'store')->name('answers.store');
@@ -90,19 +82,14 @@ Route::controller(AnswerController::class)->group(function () {
     Route::delete('/answers/{answer}', 'destroy')->name('answers.destroy');
 });
 
-Route::prefix('admin')->middleware('auth', 'is_admin')->group(function() {
-    Route::get('dashboard', [AdminController::class, 'index'])->name('admin.dashboard');    
-    Route::resource('users', UserController::class);
-
+// Admin Routes
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
+    Route::get('dashboard', [UserController::class, 'index'])->name('admin.dashboard');
+    Route::get('unblock-requests', [UserController::class, 'unblockRequests'])->name('admin.unblock.requests');
+    Route::get('user/{id}/reports', [UserController::class, 'userReports'])->name('admin.user.reports');
+    Route::get('/users/search', [UserController::class, 'searchAPI'])->name('admin.users.search');
+    Route::post('/users/unblock/{id}', [UserController::class, 'unblock'])->name('admin.users.unblock');
+    Route::post('/reports/resolve/{id}', [UserController::class, 'resolveReport'])->name('admin.reports.resolve');
+    Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
-Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
-Route::get('/admin/users/search', [UserController::class, 'search'])->name('admin.users.search');
-
-Route::get('/admin/posts', [QuestionController::class, 'index'])->name('posts.index');
-
-Route::middleware('admin')->get('/admin/users', [UserController::class, 'index'])->name('users.index');
-Route::middleware('admin')->delete('/admin/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-
-Route::get('/admin/dashboard', [AdminController::class, 'index'])
-    ->name('admin.dashboard')
-    ->middleware('admin');
