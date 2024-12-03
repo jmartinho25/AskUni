@@ -42,8 +42,13 @@ class CommentController extends Controller
             'date' => now(),
             'posts_id' => $parent->posts_id,
         ]);
-
-        return redirect()->route($type . 's.show', $parent->posts_id)->with('success', 'Comment added successfully!');
+        if ($type === 'question') {
+            return redirect()->route('questions.show', $parent->id)->with('success', 'Comment added successfully!');
+        }elseif ($type === 'answer') {
+            return redirect()->route('questions.show', $parent->questions_id)->with('success', 'Comment added successfully!');
+        }else {
+            abort(404);
+        }
     }
 
 }

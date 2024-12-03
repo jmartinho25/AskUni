@@ -91,10 +91,14 @@
                 </form>
             @endcan
 
+            @if (Auth::check())
+            <a class="button" href="{{ route('comments.create', ['answer', $answer->posts_id]) }}" class="btn btn-primary mb-3">Add Comment</a>
+            @endif
+
             @if (!$answer->comments->isEmpty())
                 <h3>Comments</h3>
-                <ul class="question-card">
                     @foreach ($answer->comments as $comment)
+                    <ul class="question-card">
                         <p>{{ $comment->content }}</p>
                         <p>Commented by: 
                             @if ($comment->user)
@@ -108,8 +112,8 @@
                             @endif
                         </p>
                         <p>Date: {{ $comment->date }}</p>
+                        </ul>
                     @endforeach
-                </ul>
             @endif
         </div>
     @endforeach
