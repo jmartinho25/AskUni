@@ -118,9 +118,26 @@ body {
     border-color: #005fa3;
   }
 
-  button.btn.btn-danger:hover {
-    background-color: #f44336;
-    border-color: #f44336;
+  button.btn.btn-danger{
+    background:none;
+    border: none;
+    color:#0784d2;
+    font-size: 2rem;
+  }
+
+  button.btn.btn-danger:hover{
+    color: red;
+  }
+
+  #btn-edit {
+    background:none;
+    border: none;
+    color:#0784d2;
+    font-size: 2rem;
+  }
+
+  #btn-edit:hover {
+    color: #ff8800;
   }
 
 

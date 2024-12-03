@@ -40,8 +40,8 @@
                             <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">
-                                    Delete
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this User?')">
+                                        <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
                         @else

@@ -103,11 +103,15 @@
                                 <a class="button" href="{{ route('questions.show', $answer->answer->questions_id) }}" class="btn btn-secondary">View Question</a>
 
                                 @if (auth()->check() && auth()->user()->id === $answer->users_id)
-                                    <a class="button" href="{{ route('answers.edit', $answer->id) }}" class="btn btn-danger">Edit Answer</a>
+                                    <a class="button" href="{{ route('answers.edit', $answer->id) }}" id="btn-edit">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
                                     <form action="{{ route('answers.destroy', $answer->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete Answer</button>
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Answer?')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </form>
                                 @endif
 
