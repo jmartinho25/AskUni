@@ -148,4 +148,52 @@ class UserController extends Controller
 
         return response()->json($result);
     }
+
+
+  
+    public function index(Request $request)
+    {
+        $query = $request->input('query'); // Obtém o valor da pesquisa da URL
+
+        // Realiza a busca com paginação
+        $users = $this->performSearch($query);
+
+        // Retorna para a view com os resultados
+        return view('admin.dashboard', compact('users', 'query'));
+    }
+
+    protected function performSearch($query)
+    {
+        // Se houver um termo de pesquisa, filtra os usuários
+        if ($query) {
+            return User::where('name', 'ILIKE', "%{$query}%")
+                ->orWhere('email', 'ILIKE', "%{$query}%")
+                ->paginate(10);  // Paginação de 10 resultados por página
+        }
+
+        // Se não houver pesquisa, retorna todos os usuários com paginação
+        return User::paginate(10);
+    }
+
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+    
+        $users = User::where('name', 'like', '%' . $query . '%')
+                     ->orWhere('email', 'like', '%' . $query . '%')
+                     ->paginate(10);
+    
+        return view('admin.dashboard', compact('users', 'query'));
+    }
+    
+
+
+    
+
+
+
+
+
+
 }

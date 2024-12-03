@@ -61,7 +61,9 @@ Route::controller(UserController::class)->group(function () {
 // Posts
 Route::controller(UserController::class)->group(function () {
     Route::get('/api/notifications', 'getNotificationsAPI');
+
 });
+
 
 // Question Routes (API)
 Route::controller(QuestionController::class)->group(function () {
@@ -88,7 +90,14 @@ Route::controller(AnswerController::class)->group(function () {
     Route::delete('/answers/{answer}', 'destroy')->name('answers.destroy');
 });
 
-Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
+Route::prefix('admin')->middleware('auth', 'is_admin')->group(function() {
+    Route::get('dashboard', [AdminController::class, 'index'])->name('admin.dashboard');    
+    Route::resource('users', UserController::class);
+
+});
+Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+Route::get('/admin/users/search', [UserController::class, 'search'])->name('admin.users.search');
+
 Route::get('/admin/posts', [QuestionController::class, 'index'])->name('posts.index');
 
 Route::middleware('admin')->get('/admin/users', [UserController::class, 'index'])->name('users.index');
