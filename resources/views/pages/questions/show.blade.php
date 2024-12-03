@@ -39,6 +39,57 @@
         @endforeach
     </p>
 
+    <p>
+    @if (Auth::check() && $question->post->isLikedBy(Auth::user()))
+    <form action="{{ route('like.destroy', $question->posts_id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-like">
+            <i class="fas fa-thumbs-up"></i> {{ $question->post->likesCount() }}
+        </button>
+    </form>
+    @else
+    @can('like', $question->post)
+        <form action="{{ route('like.store', $question->posts_id) }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-like">
+                <i class="far fa-thumbs-up"></i> {{ $question->post->likesCount() }}
+            </button>
+        </form>
+        @else
+        <form style="display:inline;">
+        <button type="button" class="btn btn-like" disabled>
+            <i class="far fa-thumbs-up"></i> {{ $question->post->likesCount() }}
+        </button>
+        </form>
+    @endcan
+    @endif
+    @if (Auth::check() && $question->post->isDislikedBy(Auth::user()))
+    <form action="{{ route('dislike.destroy', $question->posts_id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-like">
+            <i class="fas fa-thumbs-down"></i> {{ $question->post->dislikesCount() }}
+        </button>
+    </form>
+    @else
+    @can('dislike', $question->post)
+        <form action="{{ route('dislike.store', $question->posts_id) }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-like">
+                <i class="far fa-thumbs-down"></i> {{ $question->post->dislikesCount() }}
+            </button>
+        </form>
+            @else
+            <form style="display:inline;">
+            <button type="button" class="btn btn-like" disabled>
+            <i class="far fa-thumbs-down"></i> {{ $question->post->dislikesCount() }}
+            </button>
+            </form>
+    @endcan
+    @endif
+    </p>
+
     <a class="button" href="{{ route('home') }}" id="btn-edit">
         <i class="fas fa-home"></i>
     </a>

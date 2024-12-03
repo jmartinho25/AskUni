@@ -10,6 +10,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\DislikeController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -95,6 +97,14 @@ Route::middleware('auth')->group(function () {
     Route::get('comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
     Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::post('posts/{id}/like', [LikeController::class, 'store'])->name('like.store');
+    Route::delete('posts/{id}/like', [LikeController::class, 'destroy'])->name('like.destroy');
+    Route::post('posts/{id}/dislike', [DislikeController::class, 'store'])->name('dislike.store');
+    Route::delete('posts/{id}/dislike', [DislikeController::class, 'destroy'])->name('dislike.destroy');
 });
 
 Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
