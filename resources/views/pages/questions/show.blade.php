@@ -39,21 +39,83 @@
         @endforeach
     </p>
 
-    <a class="button" href="{{ route('home') }}" class="btn btn-secondary mb-3">Back to Home Page</a>
+    <p>
+    @if (Auth::check() && $question->post->isLikedBy(Auth::user()))
+    <form action="{{ route('like.destroy', $question->posts_id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-like">
+            <i class="fas fa-thumbs-up"></i> {{ $question->post->likesCount() }}
+        </button>
+    </form>
+    @else
+    @can('like', $question->post)
+        <form action="{{ route('like.store', $question->posts_id) }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-like">
+                <i class="far fa-thumbs-up"></i> {{ $question->post->likesCount() }}
+            </button>
+        </form>
+        @else
+        <form style="display:inline;">
+        <button type="button" class="btn btn-like" disabled>
+            <i class="far fa-thumbs-up"></i> {{ $question->post->likesCount() }}
+        </button>
+        </form>
+    @endcan
+    @endif
+    @if (Auth::check() && $question->post->isDislikedBy(Auth::user()))
+    <form action="{{ route('dislike.destroy', $question->posts_id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-like">
+            <i class="fas fa-thumbs-down"></i> {{ $question->post->dislikesCount() }}
+        </button>
+    </form>
+    @else
+    @can('dislike', $question->post)
+        <form action="{{ route('dislike.store', $question->posts_id) }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-like">
+                <i class="far fa-thumbs-down"></i> {{ $question->post->dislikesCount() }}
+            </button>
+        </form>
+            @else
+            <form style="display:inline;">
+            <button type="button" class="btn btn-like" disabled>
+            <i class="far fa-thumbs-down"></i> {{ $question->post->dislikesCount() }}
+            </button>
+            </form>
+    @endcan
+    @endif
+    </p>
+
+    <a class="button" href="{{ route('home') }}" id="btn-edit">
+        <i class="fas fa-home"></i>
+    </a>
 
     @if (Auth::check())
-    <a class="button" href="{{ route('answers.create', $question) }}" class="btn btn-primary mb-3">Add Answer</a>
+    <a class="button" href="{{ route('answers.create', $question) }}" id="btn-edit">
+        <i class="fas fa-reply"></i>
+    </a>
+    <a class="button" href="{{ route('comments.create', ['question', $question->posts_id]) }}" id="btn-edit">
+        <i class="fas fa-comment"></i>
+    </a>
     @endif
 
     @can('update', $question)
-        <a class="button" href="{{ route('questions.edit', $question) }}" class="btn btn-primary">Edit Question</a>
+        <a class="button" href="{{ route('questions.edit', $question) }}" id="btn-edit">
+            <i class="fas fa-pencil-alt"></i>
+        </a>
     @endcan
 
     @can('delete', $question)
         <form action="{{ route('questions.destroy', $question) }}" method="POST" class="delete-form">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger">Delete Question</button>
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Question?')">
+                <i class="fas fa-trash-alt"></i>
+            </button>
         </form>
     @endcan
 
@@ -79,21 +141,31 @@
             <p>Date: {{ $answer->post->date }}</p>
 
             @can('update', $answer)
-                <a class="button" href="{{ route('answers.edit', $answer) }}" class="btn btn-primary">Edit Answer</a>
+                <a class="button" href="{{ route('answers.edit', $answer) }}" id="btn-edit">
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
             @endcan
 
             @can('delete', $answer)
                 <form action="{{ route('answers.destroy', $answer) }}" method="POST" class="delete-form">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete Answer</button>
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Answer?')">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </form>
             @endcan
 
+            @if (Auth::check())
+            <a class="button" href="{{ route('comments.create', ['answer', $answer->posts_id]) }}" id="btn-edit">
+                <i class="fas fa-comment"></i>
+            </a>
+            @endif
+
             @if (!$answer->comments->isEmpty())
                 <h3>Comments</h3>
-                <ul class="question-card">
                     @foreach ($answer->comments as $comment)
+                    <ul class="question-card">
                         <p>{{ $comment->content }}</p>
                         <p>Commented by: 
                             @if ($comment->user)
@@ -107,8 +179,22 @@
                             @endif
                         </p>
                         <p>Date: {{ $comment->date }}</p>
+                        @can('update', $comment)
+                            <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
+                            <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        @endcan
+                        @can('delete', $comment)
+                            <form action="{{ route('comments.destroy', $comment) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        @endcan
+                        </ul>
                     @endforeach
-                </ul>
             @endif
         </div>
     @endforeach
@@ -136,6 +222,20 @@
                         @endif
                     </p>
                     <p>Date: {{ $comment->date }}</p>
+                    @can('update', $comment)
+                        <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
+                        <i class="fas fa-pencil-alt"></i>
+                        </a>
+                    @endcan
+                    @can('delete', $comment)
+                        <form action="{{ route('comments.destroy', $comment) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    @endcan
                 </div>
             @endforeach
         @endif

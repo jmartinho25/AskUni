@@ -51,8 +51,14 @@
                             <span class="text-danger">Deleted</span>
                             <form action="{{ route('users.restore', $user->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
+<<<<<<< HEAD
                                 <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to restore this user?')">
                                     Restore
+=======
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this User?')">
+                                        <i class="fas fa-trash-alt"></i>
+>>>>>>> 07a53fff80b248452518b66cc114dce80fbe7b68
                                 </button>
                             </form>
                         @else

@@ -124,10 +124,11 @@ class QuestionController extends Controller
     {
         $query = $this->sanitizeQuery($request->input('query'));
         $exactMatch = $request->input('exact_match');
+        $order = $request->input('order', 'relevance');
         $offset = 10;
-
-        $results = $this->performSearch($query, $exactMatch, $offset);
-
+    
+        $results = $this->performSearch($query, $exactMatch, $offset, $order);
+    
         return view('pages.search', [
             'query' => $query,
             'results' => $results,
@@ -138,9 +139,10 @@ class QuestionController extends Controller
     {
         $query = $this->sanitizeQuery($request->input('query'));
         $exactMatch = $request->input('exact_match');
+        $order = $request->input('order', 'relevance');
         $offset = 10;
     
-        $results = $this->performSearch($query, $exactMatch, $offset);
+        $results = $this->performSearch($query, $exactMatch, $offset, $order);
     
         $results->getCollection()->transform(function ($question) {
             return [
@@ -154,33 +156,46 @@ class QuestionController extends Controller
     
         return response()->json([
             'results' => $results->items(),
-            'pagination' => (string) $results->appends(['query' => $query, 'exact_match' => $exactMatch])->links()
+            'pagination' => (string) $results->appends(['query' => $query, 'exact_match' => $exactMatch, 'order' => $order])->links()
         ]);
     }
 
-    protected function performSearch($query, $exactMatch, $offset)
+    protected function performSearch($query, $exactMatch, $offset, $order = null)
     {
+        $queryBuilder = Question::with('post.user')
+            ->join('posts', 'questions.posts_id', '=', 'posts.id')
+            ->select('questions.*', 'posts.date');
+    
         if ($exactMatch) {
-            // Exact matches only
-            return Question::with('post.user')
-                ->where('title', 'ILIKE', "%{$query}%")
-                ->paginate($offset);
+            $queryBuilder->where('questions.title', 'ILIKE', "%{$query}%");
         } else {
-            // Full-text search
-            return Question::with('post.user')
-                ->selectRaw("
+            $queryBuilder->selectRaw("
                     questions.*, 
                     CASE 
-                        WHEN title ILIKE ? THEN 1 
+                        WHEN questions.title ILIKE ? THEN 1 
                         ELSE 2 
                     END AS rank_order,
-                    ts_rank(tsvectors, to_tsquery('english', ?)) AS rank", ["%{$query}%", $query])
-                ->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query])
-                ->orWhere('title', 'ILIKE', "%{$query}%")
-                ->orderBy('rank_order') // prioritize exact matches
-                ->orderBy('rank', 'DESC') // order by ts_rank within each group
-                ->paginate($offset);
+                    ts_rank(questions.tsvectors, to_tsquery('english', ?)) AS rank", ["%{$query}%", $query])
+                ->whereRaw("questions.tsvectors @@ to_tsquery('english', ?)", [$query])
+                ->orWhere('questions.title', 'ILIKE', "%{$query}%");
         }
+    
+        switch ($order) {
+            case 'date_desc':
+                $queryBuilder->orderBy('posts.date', 'DESC');
+                break;
+            case 'date_asc':
+                $queryBuilder->orderBy('posts.date', 'ASC');
+                break;
+            default:
+                if (!$exactMatch){
+                    $queryBuilder->orderBy('rank_order') // prioritize exact matches
+                                ->orderBy('rank', 'DESC'); // order by ts_rank within each group
+                }
+                break;
+        }
+    
+        return $queryBuilder->paginate($offset);
     }
 
     protected function sanitizeQuery($query)
