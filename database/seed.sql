@@ -237,13 +237,13 @@ CREATE TABLE edit_histories (
 --------------------------------
 
 CREATE INDEX users_username ON users USING btree(username);
-CLUSTER users USING users_username;
+-- CLUSTER users USING users_username;
 
 CREATE INDEX posts_users_id ON posts USING btree(users_id);
 CLUSTER posts USING posts_users_id;
 
 CREATE INDEX comments_users_id ON comments USING btree(users_id);
-CLUSTER comments USING comments_users_id;
+-- CLUSTER comments USING comments_users_id;
 
 CREATE INDEX questions_posts_id ON questions USING btree(posts_id);
 CLUSTER questions USING questions_posts_id;
@@ -255,7 +255,7 @@ CREATE INDEX comments_posts_id ON comments USING btree(posts_id);
 CLUSTER comments USING comments_posts_id;
 
 CREATE INDEX notifications_users_id ON notifications USING btree(users_id);
-CLUSTER notifications USING notifications_users_id;
+-- CLUSTER notifications USING notifications_users_id;
 
 CREATE INDEX badges_name ON badges USING btree(name);
 CLUSTER badges USING badges_name;
@@ -299,13 +299,15 @@ ALTER TABLE questions ADD COLUMN tsvectors TSVECTOR;
 CREATE OR REPLACE FUNCTION questions_search_update() RETURNS trigger AS $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        NEW.tsvectors := setweight(to_tsvector('english', coalesce(NEW.title, '')), 'A');
+        NEW.tsvectors := setweight(to_tsvector('english', coalesce(NEW.title, '')), 'A') ||
+                         setweight(to_tsvector('english', coalesce((SELECT content FROM posts WHERE posts.id = NEW.posts_id), '')), 'B');
         RETURN NEW;
     END IF;
 
     IF TG_OP = 'UPDATE' THEN
-        IF NEW.title <> OLD.title THEN
-            NEW.tsvectors := setweight(to_tsvector('english', coalesce(NEW.title, '')), 'A');
+        IF NEW.title <> OLD.title OR NEW.posts_id <> OLD.posts_id THEN
+            NEW.tsvectors := setweight(to_tsvector('english', coalesce(NEW.title, '')), 'A') ||
+                             setweight(to_tsvector('english', coalesce((SELECT content FROM posts WHERE posts.id = NEW.posts_id), '')), 'B');
             RETURN NEW;
         END IF;
     END IF;
