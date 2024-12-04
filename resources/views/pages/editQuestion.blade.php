@@ -30,6 +30,17 @@
             <textarea name="content" id="content" class="form-control" required>{{ old('content', $question->post->content) }}</textarea>
         </div>
 
+        <div class="form-group" id="question-tags">
+            <label for="tags">Tags</label>
+            <select name="tags[]" id="tags" class="form-control" multiple>
+                @foreach($allTags as $tag)
+                    <option value="{{ $tag->id }}" {{ in_array($tag->id, $question->tags->pluck('id')->toArray()) ? 'selected' : '' }}>
+                        {{ $tag->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Update Question</button>
     </form>
 </div>

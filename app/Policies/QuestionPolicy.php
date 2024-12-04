@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Question;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionPolicy
 {
@@ -29,7 +30,7 @@ class QuestionPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return Auth::check();
     }
 
     /**

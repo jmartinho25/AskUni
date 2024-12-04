@@ -21,7 +21,11 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('pages/questions.create');
+        $this->authorize('create', Question::class);
+
+        $allTags = Tag::all();
+
+        return view('pages.questions.create', compact('allTags'));
     }
 
     /**
@@ -29,9 +33,13 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Question::class);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'tags' => 'array|max:5',
+            'tags.*' => 'integer|exists:tags,id',
         ]);
 
         $post = Post::create([
@@ -40,11 +48,13 @@ class QuestionController extends Controller
             'users_id' => auth()->user()->id, 
         ]);
 
-        Question::create([
+        $question = Question::create([
             'posts_id' => $post->id,
             'title' => $validated['title'],
         ]);
 
+        $question->tags()->sync($request->input('tags', []));
+    
         return redirect()->route('questions.index')->with('success', 'Question created successfully');
     }
 
@@ -79,7 +89,9 @@ class QuestionController extends Controller
     {
         $this->authorize('update', $question);
 
-        return view('pages.editQuestion', compact('question'));
+        $allTags = Tag::all();
+
+        return view('pages.editQuestion', compact('question', 'allTags'));
     }
 
     /**
@@ -93,6 +105,8 @@ class QuestionController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'tags' => 'array|max:5',
+            'tags.*' => 'integer|exists:tags,id',
         ]);
 
         // Update the question in the database
@@ -104,8 +118,9 @@ class QuestionController extends Controller
             'content' => $request->input('content'),
         ]);
 
-        // Redirect to the question page with a success message
-        return redirect()->route('questions.show',$question->posts_id)->with('success', 'Question updated successfully');
+        $question->tags()->sync($request->input('tags', []));
+    
+        return redirect()->route('questions.show', $question->posts_id)->with('success', 'Question updated successfully');
     }
 
     /**

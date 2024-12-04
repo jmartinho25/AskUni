@@ -303,6 +303,10 @@ body {
   margin-bottom: 20px;
 }
 
+#question-tags {
+  margin-bottom: 1em;
+}
+
 /**************************************FOOTER**************************************/
 .footer {
   background-color: #f4f4f4;
