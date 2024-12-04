@@ -52,7 +52,7 @@
             
         @if (Auth::check())
             <div class="explore-tags">
-                <a href="#">Explore Tags</a>
+                <a href="{{ route('tags.index') }}">Explore Tags</a>
             </div>
 
         
