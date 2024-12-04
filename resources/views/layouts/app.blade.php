@@ -72,16 +72,15 @@
             </div>
 
                 <div class="profile">
-                    <a href="{{ route('profile', Auth::user()->id) }}">
+                    <a href="{{ route('profile', Auth::user()->id) }} " id="user">
                         <i class="fa fa-user"></i>
                     </a>
                 </div>
-                <a href="{{ url('/logout') }}">
+                <a class="btn btn-danger" id="sign-out" href="{{ url('/logout') }}">
                     <i class="fas fa-sign-out-alt"></i>
-
                 </a>
             @else
-                <a href="{{ url('/login') }}">
+                <a class="btn btn-solve" id="sign-in" href="{{ url('/login') }}">
                     <i class="fas fa-sign-in-alt"></i>
                 </a>
             @endif

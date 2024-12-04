@@ -27,18 +27,18 @@ body {
     justify-self: center;
   }
 
-  .fas.fa-sign-out-alt, .fas.fa-sign-in-alt{
+  #sign-out, #sign-in{
     font-size: 1.6em;
     margin-left: 30px;
     margin-right: 10px;
     color: black;
   }
 
-  .fas.fa-sign-out-alt:hover{
+  #sign-out:hover{
     color: red;
   }
 
-  .fas.fa-sign-in-alt:hover{
+  #sign-in:hover{
     color: green;
   }
 
@@ -152,6 +152,10 @@ body {
     border: none;
     color:#0784d2;
     font-size: 2rem;
+  }
+
+  #user:hover{
+    color: #cc6600;
   }
 
 
@@ -322,13 +326,13 @@ body {
   background-color: #f4f4f4;
   color: #333;
   text-align: left;
-  padding: 1em 0;
+  padding: 1em 1em;
   width: 100%;
   display: flex;
   bottom: 0;
   left: 0;
   display: flex;
-  justify-content: center; 
+  justify-content: space-between; 
   margin-top: 20px;
 }
 
@@ -838,6 +842,14 @@ body {
   margin-right: 10px; /* Espaço entre o ícone e o texto */
   margin-left: 10px;
 }
+
+.faq-actions a,
+.faq-actions form {
+    margin-bottom: 0; /* Remove a margem inferior dos elementos dentro de faq-actions */
+}
+
+
+
 
 
 

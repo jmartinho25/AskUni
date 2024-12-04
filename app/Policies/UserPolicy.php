@@ -18,4 +18,9 @@ class UserPolicy
     {
         return $authUser->id === $user->id;
     }
+
+    public function admin(User $user)
+    {
+        return $user->roles->contains('name', 'admin');
+    }
 }
