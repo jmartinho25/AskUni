@@ -105,7 +105,9 @@
                             <div class="answer-card">
                                 <p>{{ $answer->content }}</p>
                                 <p>Date: {{ $answer->date }}</p>
-                                <a class="button" href="{{ route('questions.show', $answer->answer->questions_id) }}" class="btn btn-secondary">View Question</a>
+                                <a class="button" href="{{ route('questions.show', $answer->answer->questions_id) }}" id="btn-edit">
+                                    <i class="fas fa-book-open"></i>
+                                </a>
 
                                 @if (auth()->check() && auth()->user()->id === $answer->users_id)
                                     <a class="button" href="{{ route('answers.edit', $answer->id) }}" id="btn-edit">
@@ -135,6 +137,15 @@
                         <div class="answer-card">
                             <p>{{ $comment->content }}</p>
                             <p>Date: {{ $comment->date }}</p>
+                            @if($comment->question!=null)
+                                <a class="button" href="{{ route('questions.show', $comment->question->posts_id) }}" id="btn-edit">
+                                <i class="fas fa-book-open"></i>
+                                </a>
+                            @elseif($comment->answer!=null)
+                                <a class="button" href="{{ route('questions.show', $comment->answer->questions_id) }}" id="btn-edit">
+                                <i class="fas fa-book-open"></i>
+                                </a>
+                            @endif
                             @can('update', $comment)
                                 <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
                                     <i class="fas fa-pencil-alt"></i>
@@ -173,7 +184,9 @@
                             <div class="answer-card">
                                 <p>{{ $answer->post->content }}</p>
                                 <p>Date: {{ $answer->post->date }}</p>
-                                <a class="read_more" href="{{ route('questions.show', $answer->questions_id) }}" class="btn btn-secondary">View Question</a>
+                                <a class="button" href="{{ route('questions.show', $answer->questions_id) }}" id="btn-edit">
+                                    <i class="fas fa-book-open"></i>
+                                </a>
                             </div>
                         @endforeach
                     @endif
@@ -195,7 +208,9 @@
                             <div class="answer-card">
                                 <p>{{ $answer->post->content }}</p>
                                 <p>Date: {{ $answer->post->date }}</p>
-                                <a class="read_more" href="{{ route('questions.show', $answer->questions_id) }}" class="btn btn-secondary">View Question</a>
+                                <a class="button" href="{{ route('questions.show', $answer->questions_id) }}" id="btn-edit">
+                                    <i class="fas fa-book-open"></i>
+                                </a>
                             </div>
                         @endforeach
                     @endif
