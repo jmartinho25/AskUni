@@ -267,6 +267,12 @@ CREATE INDEX notifications_users_id ON notifications USING btree(users_id);
 CREATE INDEX badges_name ON badges USING btree(name);
 CLUSTER badges USING badges_name;
 
+CREATE INDEX tags_id_idx ON tags USING btree(id);
+
+CREATE INDEX posts_tags_posts_id_idx ON posts_tags USING btree(posts_id);
+CREATE INDEX posts_tags_tags_id_idx ON posts_tags USING btree(tags_id);
+CREATE INDEX posts_tags_posts_id_tags_id_idx ON posts_tags(posts_id, tags_id);
+
 
 --------------------------------
 -- Full-text Search Indices

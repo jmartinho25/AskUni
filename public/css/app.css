@@ -321,6 +321,10 @@ body {
   margin-bottom: 20px;
 }
 
+#question-tags {
+  margin-bottom: 1em;
+}
+
 /**************************************FOOTER**************************************/
 .footer {
   background-color: #f4f4f4;
@@ -715,6 +719,34 @@ body {
   color: #999;
 }
 
+#search-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1em 0;
+  gap: 1em;
+}
+
+#search-filters #order-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+
+#search-filters #order-container label {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+#search-filters #order {
+  margin: 0;
+}
+
+#search-filters #tags-container {
+  width: 100%;
+}
 
 /********************************** Pagination ***********************************/
 

@@ -77,7 +77,8 @@ function performSearch() {
     const query = document.getElementById('search-input').value;
     const exactMatch = document.getElementById('exact-match').checked;
     const order = document.getElementById('order').value;
-    const url = `/api/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch ? 1 : 0}&order=${order}`;
+    const tags = Array.from(document.getElementById('tags').selectedOptions).map(option => `tags[]=${option.value}`).join('&');
+    const url = `/api/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch ? 1 : 0}&order=${order}&${tags}`;
 
     const resultsContainer = document.getElementById('results-container');
     const paginationContainer = document.getElementById('pagination-container');
@@ -95,10 +96,21 @@ function searchWithDelay() {
 document.addEventListener('DOMContentLoaded', function() {
     const queryInput = document.getElementById('search-input');
     const exactMatch = document.getElementById('exact-match');
+    const tagsInput = document.getElementById('tags');
+
+    const choices = new Choices(tagsInput, {
+        removeItemButton: true,
+        searchEnabled: true,
+        placeholder: true,
+        placeholderValue: 'Select tags',
+        noResultsText: 'No tags found',
+        noChoicesText: 'No tags available',
+    });
 
     const urlParams = new URLSearchParams(window.location.search);
     const query = urlParams.get('query');
     const exactMatchValue = urlParams.get('exact_match');
+    const tagsValue = urlParams.getAll('tags[]');
 
     if (query) {
         queryInput.value = query;
@@ -106,10 +118,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (exactMatchValue) {
         exactMatch.checked = exactMatchValue === 'on';
     }
+    if (tagsValue) {
+        tagsValue.forEach(value => {
+            choices.setChoiceByValue(value);
+        });
+    }
 
     queryInput.addEventListener('input', searchWithDelay);
     exactMatch.addEventListener('change', performSearch);
     document.getElementById('order').addEventListener('change', performSearch);
+    tagsInput.addEventListener('change', performSearch);
     document.getElementById('search-bar').addEventListener('submit', function(event) {
         event.preventDefault();
         navigateToSearchPage();
@@ -125,7 +143,8 @@ function navigateToSearchPage() {
     const query = document.getElementById('search-input').value;
     const exactMatch = document.getElementById('exact-match').checked;
     const order = document.getElementById('order').value;
-    const searchPageUrl = `/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch ? 1 : 0}&order=${order}`;
+    const tags = Array.from(document.getElementById('tags').selectedOptions).map(option => `tags[]=${option.value}`).join('&');
+    const searchPageUrl = `/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch ? 1 : 0}&order=${order}&${tags}`;
 
     if (window.location.pathname !== '/questions/search') {
         window.location.href = searchPageUrl;
@@ -142,8 +161,9 @@ function addPaginationEventListeners() {
             const query = urlParams.get('query');
             const exactMatch = urlParams.get('exact_match');
             const order = urlParams.get('order');
+            const tags = urlParams.getAll('tags[]');
             const page = urlParams.get('page');
-            const url = `/api/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch}&order=${order}&page=${page}`;
+            const url = `/api/questions/search?query=${encodeURIComponent(query)}&exact_match=${exactMatch}&order=${order}&${tags.map(tag => `tags[]=${tag}`).join('&')}&page=${page}`;
 
             const resultsContainer = document.getElementById('results-container');
             const paginationContainer = document.getElementById('pagination-container');
