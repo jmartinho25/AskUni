@@ -7,8 +7,8 @@
         </div>
     @endif
 <div class="container">
-    
-
+    <div class="question-section">
+        <div class="question-item">
     <h1>{{ $question->title }}</h1>
 
     <p>{{ $question->post->content }}</p>
@@ -118,14 +118,16 @@
             </button>
         </form>
     @endcan
+    </div>
+    </div>
 
+    <div class="answers-section">
     <h2>Answers</h2>
-    <div class="all-questions">
     @if ($question->answers->isEmpty())
         <p>No answers available.</p>
     @else
     @foreach ($question->answers as $answer)
-        <div class="answer-card" id="answer-{{ $answer->posts_id }}">
+        <div class="answer-item">
             <p>{{ $answer->post->content }}</p>
             <p>Answered by: 
                 @if ($answer->post->user)
@@ -139,6 +141,57 @@
                 @endif
             </p>
             <p>Date: {{ $answer->post->date }}</p>
+
+            <p>
+            @if (Auth::check() && $answer->post->isLikedBy(Auth::user()))
+                <form action="{{ route('like.destroy', $answer->posts_id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-like">
+                    <i class="fas fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
+                </button>
+                 </form>
+            @else
+                @can('like', $answer->post)
+                    <form action="{{ route('like.store', $answer->posts_id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-like">
+                        <i class="far fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
+                    </button>
+                    </form>
+                @else
+                    <form style="display:inline;">
+                    <button type="button" class="btn btn-like" disabled>
+                        <i class="far fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
+                    </button>
+                    </form>
+                @endcan
+            @endif
+            @if (Auth::check() && $answer->post->isDislikedBy(Auth::user()))
+                <form action="{{ route('dislike.destroy', $answer->posts_id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-like">
+                    <i class="fas fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
+                </button>
+                </form>
+            @else
+                @can('dislike', $answer->post)
+                    <form action="{{ route('dislike.store', $answer->posts_id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-like">
+                        <i class="far fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
+                    </button>
+                    </form>
+                @else
+                    <form style="display:inline;">
+                    <button type="button" class="btn btn-like" disabled>
+                        <i class="far fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
+                    </button>
+                    </form>
+                @endcan
+            @endif
+            </p>
 
             @can('update', $answer)
                 <a class="button" href="{{ route('answers.edit', $answer) }}" id="btn-edit">
@@ -165,7 +218,7 @@
             @if (!$answer->comments->isEmpty())
                 <h3>Comments</h3>
                     @foreach ($answer->comments as $comment)
-                    <ul class="question-card">
+                    <div class="comment-item">
                         <p>{{ $comment->content }}</p>
                         <p>Commented by: 
                             @if ($comment->user)
@@ -179,6 +232,7 @@
                             @endif
                         </p>
                         <p>Date: {{ $comment->date }}</p>
+                        <div class="comment-actions">
                         @can('update', $comment)
                             <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
                             <i class="fas fa-pencil-alt"></i>
@@ -193,7 +247,8 @@
                                 </button>
                             </form>
                         @endcan
-                        </ul>
+                        </div>
+                    </div>
                     @endforeach
             @endif
         </div>
@@ -202,13 +257,13 @@
     </div>
     @endif
 
+    <div class="question-comments-section">
     <h2>Comments</h2>
-    <div class="all-questions">
         @if ($question->comments->isEmpty())
             <p>No comments available.</p>
         @else
             @foreach ($question->comments as $comment)
-                <div class="question-card">
+                <div class="question-comment-item">
                     <p>{{ $comment->content }}</p>
                     <p>Commented by: 
                         @if ($comment->user)
@@ -222,6 +277,7 @@
                         @endif
                     </p>
                     <p>Date: {{ $comment->date }}</p>
+                    <div class="comment-actions">
                     @can('update', $comment)
                         <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
                         <i class="fas fa-pencil-alt"></i>
@@ -236,6 +292,7 @@
                             </button>
                         </form>
                     @endcan
+                    </div>
                 </div>
             @endforeach
         @endif

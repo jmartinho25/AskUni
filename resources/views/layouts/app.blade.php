@@ -17,6 +17,9 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+    <!-- Choices.js -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
     <script type="text/javascript" src="{{ url('js/app.js') }}" defer></script>
     @if (Auth::check())
@@ -72,17 +75,16 @@
             </div>
 
                 <div class="profile">
-                    <a href="{{ route('profile', Auth::user()->id) }}">
+                    <a href="{{ route('profile', Auth::user()->id) }} " id="user">
                         <i class="fa fa-user"></i>
                     </a>
                 </div>
-                <a href="{{ url('/logout') }}">
-                    <button id="log">Logout </button>
-
+                <a class="btn btn-danger" id="sign-out" href="{{ url('/logout') }}">
+                    <i class="fas fa-sign-out-alt"></i>
                 </a>
             @else
-                <a href="{{ url('/login') }}">
-                    <button id="log">Login </button>
+                <a class="btn btn-solve" id="sign-in" href="{{ url('/login') }}">
+                    <i class="fas fa-sign-in-alt"></i>
                 </a>
             @endif
         </div>
@@ -94,6 +96,7 @@
         </section>
 
     <footer class="footer">
+        <a href="{{ route('faq.index') }}">FAQ</a>
         <p>@AskUni</p>
     </footer>
     </main>

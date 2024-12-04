@@ -37,6 +37,7 @@ DROP TABLE IF EXISTS tags CASCADE;
 DROP TABLE IF EXISTS roles CASCADE;
 DROP TABLE IF EXISTS badges CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS frequently_asked_questions CASCADE;
 
 DROP TYPE IF EXISTS comments_notifications_types CASCADE;
 DROP TYPE IF EXISTS questions_notifications_types CASCADE;
@@ -233,6 +234,12 @@ CREATE TABLE edit_histories (
     comments_id INTEGER REFERENCES comments(id) ON DELETE SET NULL
 );
 
+CREATE TABLE frequently_asked_questions (
+    id SERIAL PRIMARY KEY,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL
+);  
+
 
 --------------------------------
 -- Create Indexes
@@ -261,6 +268,12 @@ CREATE INDEX notifications_users_id ON notifications USING btree(users_id);
 
 CREATE INDEX badges_name ON badges USING btree(name);
 CLUSTER badges USING badges_name;
+
+CREATE INDEX tags_id_idx ON tags USING btree(id);
+
+CREATE INDEX posts_tags_posts_id_idx ON posts_tags USING btree(posts_id);
+CREATE INDEX posts_tags_tags_id_idx ON posts_tags USING btree(tags_id);
+CREATE INDEX posts_tags_posts_id_tags_id_idx ON posts_tags(posts_id, tags_id);
 
 
 --------------------------------
@@ -1313,3 +1326,12 @@ INSERT INTO earned_badges (users_id, badges_id, date) VALUES
 (8, 2, now()),
 (9, 2, now()),
 (10, 2, now());
+
+INSERT INTO frequently_asked_questions (question, answer) VALUES
+('How do I create an account?', 'To create an account, click on <i class="fas fa-sign-in-alt"></i>, then click on "Register" and fill in the required informations.'),
+('How do I update my profile information?', 'To update your profile information, go to your profile page and click on the "Edit Profile" button.'),
+('How do I post a question?', 'To post a question, click on the "Add Question" button on the homepage and fill in the required details.'),
+('How do I answer a question?', 'To answer a question, click on the question you want to answer and then click on <i class="fas fa-reply"></i>.'),
+('How do I edit my question or answer?', 'To edit your question or answer, go to your question or answer and click on  <i class="fas fa-pencil-alt"></i>. '),
+('How do I delete my question or answer?', 'To delete your question or answer, go to your question or answer and click on  <i class="fas fa-trash-alt"></i>. '),
+('How do I upvote or downvote a question or answer?', 'To upvote or downvote a question or answer, click on <i class="far fa-thumbs-up"></i> or <i class="far fa-thumbs-down"></i> .');

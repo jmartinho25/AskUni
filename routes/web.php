@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedController;
 use App\Models\Role;
+use App\Http\Controllers\FaqController;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,3 +126,12 @@ Route::post('/send', [MailController::class, 'send'])->name('send.email');Route:
     return view('emails.feedback');
 })->name('emails.feedback');
 
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
+
+Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
+    Route::get('/faq/create', [FaqController::class, 'create'])->name('faq.create');
+    Route::post('/faq', [FaqController::class, 'store'])->name('faq.store');
+    Route::get('/faq/{id}/edit', [FaqController::class, 'edit'])->name('faq.edit');
+    Route::put('/faq/{id}', [FaqController::class, 'update'])->name('faq.update');
+    Route::delete('/faq/{id}', [FaqController::class, 'destroy'])->name('faq.destroy');
+});

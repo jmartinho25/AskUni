@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\AppealForUnblock;
 use Illuminate\Http\Request;
 use App\Models\ContentReports;
+use App\Models\Question;
+use App\Models\Answer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -34,12 +36,25 @@ class UserController extends Controller
         $comments= $user->comments()->get();
 
         $badges = $user->badges()->get();
-        
-        //$comments = $user->comments()->get();
-        
-        //$tags = $user->tags()->get();
 
-        return view('pages.user.user', compact('user', 'posts', 'answers','questions', 'badges', 'comments'));
+        $likedQuestions = Question::whereHas('post.likes', function ($query) use ($user) {
+            $query->where('users_id', $user->id);
+        })->get();
+
+        $likedAnswers = Answer::whereHas('post.likes', function ($query) use ($user) {
+            $query->where('users_id', $user->id);
+        })->get();
+
+        // Buscar perguntas e respostas que o usuário deu dislike
+        $dislikedQuestions = Question::whereHas('post.dislikes', function ($query) use ($user) {
+            $query->where('users_id', $user->id);
+        })->get();
+
+        $dislikedAnswers = Answer::whereHas('post.dislikes', function ($query) use ($user) {
+            $query->where('users_id', $user->id);
+        })->get();
+        
+        return view('pages.user.user', compact('user', 'posts', 'answers','questions', 'badges', 'comments', 'likedQuestions', 'likedAnswers', 'dislikedQuestions', 'dislikedAnswers'));
     }
 
     // Show search page
