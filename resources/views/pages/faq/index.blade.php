@@ -19,9 +19,9 @@
                 <p>{!! $faq->answer !!}</p>
                 @can('admin', Auth::user())
                     <div class="faq-actions">
-                        <button type="submit" href="{{ route('faq.edit', $faq->id) }}" id="btn-edit">
+                        <a class="button" href="{{ route('faq.edit', $faq->id) }}" id="btn-edit">
                             <i class="fas fa-pencil"></i> 
-                        </button>
+                        </a>
                         <form action="{{ route('faq.destroy', $faq->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
