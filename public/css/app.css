@@ -24,8 +24,22 @@ body {
     margin-top: 20px;
   }
   main > header a.button {
-    margin: 1em;
     justify-self: center;
+  }
+
+  .fas.fa-sign-out-alt, .fas.fa-sign-in-alt{
+    font-size: 1.6em;
+    margin-left: 30px;
+    margin-right: 10px;
+    color: black;
+  }
+
+  .fas.fa-sign-out-alt:hover{
+    color: red;
+  }
+
+  .fas.fa-sign-in-alt:hover{
+    color: green;
   }
 
   main > header span {
@@ -763,6 +777,66 @@ body {
 .table td button{
   margin:auto;
   margin-top: 20px;
+}
+
+/***********************************FAQ*************************************/
+/* Estilos para a seção de FAQ */
+.faq-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.faq-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.faq-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.faq-item h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #333333;
+  display: flex;
+  align-items: center;
+}
+
+.faq-item h3::before {
+  content: "\f059"; /* Ícone de pergunta (fa-question-circle) */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 10px;
+  color: #0784d2;
+}
+
+.faq-item p {
+  font-size: 1.2em;
+  margin-left: 33px;
+  color: #666666;
+  display: flex;
+  align-items: center;
+}
+
+.faq-item p::before {
+  content: "\f058"; /* Ícone de resposta (fa-check-circle) */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 10px;
+  color: #ff8800;
+}
+
+.faq-item p i {
+  margin-right: 10px; /* Espaço entre o ícone e o texto */
+  margin-left: 10px;
 }
 
 

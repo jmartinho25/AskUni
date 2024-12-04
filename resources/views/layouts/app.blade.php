@@ -77,12 +77,12 @@
                     </a>
                 </div>
                 <a href="{{ url('/logout') }}">
-                    <button id="log">Logout </button>
+                    <i class="fas fa-sign-out-alt"></i>
 
                 </a>
             @else
                 <a href="{{ url('/login') }}">
-                    <button id="log">Login </button>
+                    <i class="fas fa-sign-in-alt"></i>
                 </a>
             @endif
         </div>
@@ -94,6 +94,7 @@
         </section>
 
     <footer class="footer">
+        <a href="{{ route('faq.index') }}">FAQ</a>
         <p>@AskUni</p>
     </footer>
     </main>

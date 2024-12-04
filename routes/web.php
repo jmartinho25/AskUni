@@ -14,6 +14,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\FaqController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,3 +116,4 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');

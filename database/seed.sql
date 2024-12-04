@@ -37,6 +37,7 @@ DROP TABLE IF EXISTS tags CASCADE;
 DROP TABLE IF EXISTS roles CASCADE;
 DROP TABLE IF EXISTS badges CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS frequently_asked_questions CASCADE;
 
 DROP TYPE IF EXISTS comments_notifications_types CASCADE;
 DROP TYPE IF EXISTS questions_notifications_types CASCADE;
@@ -230,6 +231,12 @@ CREATE TABLE edit_histories (
     posts_id INTEGER REFERENCES posts(id) ON DELETE SET NULL,
     comments_id INTEGER REFERENCES comments(id) ON DELETE SET NULL
 );
+
+CREATE TABLE frequently_asked_questions (
+    id SERIAL PRIMARY KEY,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL
+);  
 
 
 --------------------------------
@@ -1311,3 +1318,15 @@ INSERT INTO earned_badges (users_id, badges_id, date) VALUES
 (8, 2, now()),
 (9, 2, now()),
 (10, 2, now());
+
+INSERT INTO frequently_asked_questions (question, answer) VALUES
+('How do I create an account?', 'To create an account, click on the "Sign Up" button on the top right corner and fill in the required details.'),
+('How do I reset my password?', 'To reset your password, click on the "Forgot Password" link on the login page and follow the instructions.'),
+('How do I contact support?', 'You can contact support by clicking on the "Contact Us" link at the bottom of the page and filling out the contact form.'),
+('How do I update my profile information?', 'To update your profile information, go to your profile page and click on the "Edit Profile" button.'),
+('How do I delete my account?', 'To delete your account, please contact support and request account deletion.'),
+('How do I post a question?', 'To post a question, click on the "Ask Question" button on the homepage and fill in the required details.'),
+('How do I answer a question?', 'To answer a question, click on the question you want to answer and then click on the "Answer" button.'),
+('How do I edit my question or answer?', 'To edit your question or answer, go to yout question or answer and click on  <i class="fas fa-pencil-alt"></i>. '),
+('How do I delete my question or answer?', 'To delete your question or answer, go to the question or answer page and click on the "Delete" button.'),
+('How do I upvote or downvote a question or answer?', 'To upvote or downvote a question or answer, click on the upvote or downvote button next to the question or answer.');
