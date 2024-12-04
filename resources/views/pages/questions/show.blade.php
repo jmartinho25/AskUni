@@ -7,8 +7,8 @@
         </div>
     @endif
 <div class="container">
-    
-
+    <div class="question-section">
+        <div class="question-item">
     <h1>{{ $question->title }}</h1>
 
     <p>{{ $question->post->content }}</p>
@@ -118,14 +118,16 @@
             </button>
         </form>
     @endcan
+    </div>
+    </div>
 
+    <div class="answers-section">
     <h2>Answers</h2>
-    <div class="all-questions">
     @if ($question->answers->isEmpty())
         <p>No answers available.</p>
     @else
     @foreach ($question->answers as $answer)
-        <div class="answer-card" id="answer-{{ $answer->posts_id }}">
+        <div class="answer-item">
             <p>{{ $answer->post->content }}</p>
             <p>Answered by: 
                 @if ($answer->post->user)
@@ -216,7 +218,7 @@
             @if (!$answer->comments->isEmpty())
                 <h3>Comments</h3>
                     @foreach ($answer->comments as $comment)
-                    <ul class="question-card">
+                    <div class="comment-item">
                         <p>{{ $comment->content }}</p>
                         <p>Commented by: 
                             @if ($comment->user)
@@ -230,6 +232,7 @@
                             @endif
                         </p>
                         <p>Date: {{ $comment->date }}</p>
+                        <div class="comment-actions">
                         @can('update', $comment)
                             <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
                             <i class="fas fa-pencil-alt"></i>
@@ -244,7 +247,8 @@
                                 </button>
                             </form>
                         @endcan
-                        </ul>
+                        </div>
+                    </div>
                     @endforeach
             @endif
         </div>
@@ -253,13 +257,13 @@
     </div>
     @endif
 
+    <div class="question-comments-section">
     <h2>Comments</h2>
-    <div class="all-questions">
         @if ($question->comments->isEmpty())
             <p>No comments available.</p>
         @else
             @foreach ($question->comments as $comment)
-                <div class="question-card">
+                <div class="question-comment-item">
                     <p>{{ $comment->content }}</p>
                     <p>Commented by: 
                         @if ($comment->user)
@@ -273,6 +277,7 @@
                         @endif
                     </p>
                     <p>Date: {{ $comment->date }}</p>
+                    <div class="comment-actions">
                     @can('update', $comment)
                         <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
                         <i class="fas fa-pencil-alt"></i>
@@ -287,6 +292,7 @@
                             </button>
                         </form>
                     @endcan
+                    </div>
                 </div>
             @endforeach
         @endif

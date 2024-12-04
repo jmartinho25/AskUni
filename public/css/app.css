@@ -180,6 +180,7 @@ body {
     font-size: 2rem;
     font-family: "Font Awesome 6 Free";
     font-weight: 400;
+    margin-bottom: 0;
   }
 
 
@@ -344,10 +345,223 @@ body {
   margin: 0;
 }
 
+/**********************************QUESTION*************************************/
 
-.question-user-name {
-  display: block;
-  margin-top: 5px;
+.question-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #e9f7fe;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.question-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #b3d4fc;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.question-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.question-item h1{
+  margin-left: 20px;
+}
+
+.question-item p {
+  font-size: 1.2em;
+  margin-left: 33px;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* Permite que o texto quebre para a próxima linha */
+}
+
+
+.question-item p i {
+  margin-right: 10px; /* Espaço entre o ícone e o texto */
+  white-space: nowrap; /* Garante que o ícone e o texto fiquem juntos */
+}
+
+.question-item p span {
+  display: inline-block;
+  white-space: nowrap; /* Garante que o texto e o ícone fiquem juntos */
+}
+
+
+/*********************************ANSWERS************************************/
+
+.answers-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.answers-section h2{
+  margin-top: 0;
+}
+
+.answer-item {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1.5px solid #0784d2;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.answer-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.answer-item p {
+  font-size: 1.2em;
+  margin-left: 10px;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* Permite que o texto quebre para a próxima linha */
+}
+
+.answer-item p i {
+  margin-right: 10px; /* Espaço entre o ícone e o texto */
+  white-space: nowrap; /* Garante que o ícone e o texto fiquem juntos */
+}
+
+.answer-item p span {
+  display: inline-block;
+  white-space: nowrap; /* Garante que o texto e o ícone fiquem juntos */
+}
+
+.answer-actions {
+  display: flex;
+  gap: 10px; /* Espaço entre os botões */
+  margin-top: 10px; /* Reduz o espaço em branco acima dos botões */
+}
+
+.answer-actions a,
+.answer-actions form {
+  margin-bottom: 0; /* Remove a margem inferior dos elementos dentro de answer-actions */
+}
+
+
+/**********************************ANSWER COMMENTS***********************************/
+
+.comments-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment-item {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.comment-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment-item p {
+    font-size: 1.1em;
+    margin-left: 0px;
+    color: #333333;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Permite que o texto quebre para a próxima linha */
+}
+
+.comment-item p i {
+    margin-right: 10px; /* Espaço entre o ícone e o texto */
+    white-space: nowrap; /* Garante que o ícone e o texto fiquem juntos */
+}
+
+.comment-item p span {
+    display: inline-block;
+    white-space: nowrap; /* Garante que o texto e o ícone fiquem juntos */
+}
+
+.comment-actions {
+    display: flex;
+    gap: 10px; /* Espaço entre os botões */
+    margin-top: 10px; /* Reduz o espaço em branco acima dos botões */
+}
+
+.comment-actions a,
+.comment-actions form {
+    margin-bottom: 0; /* Remove a margem inferior dos elementos dentro de comment-actions */
+}
+
+
+/**********************************QUESTION COMMENTS***********************************/
+
+.question-comments-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.question-comments-section h2{
+  margin-top: 0;
+}
+
+.question-comment-item {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1.5px solid #ff8800;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.question-comment-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.question-comment-item p {
+  font-size: 1.2em;
+  margin-left: 10px;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* Permite que o texto quebre para a próxima linha */
+}
+
+.question-comment-item p i {
+  margin-right: 10px; /* Espaço entre o ícone e o texto */
+  white-space: nowrap; /* Garante que o ícone e o texto fiquem juntos */
+}
+
+.question-comment-item p span {
+  display: inline-block;
+  white-space: nowrap; /* Garante que o texto e o ícone fiquem juntos */
+}
+
+.comment-actions {
+  display: flex;
+  gap: 10px; /* Espaço entre os botões */
+  margin-top: 10px; /* Reduz o espaço em branco acima dos botões */
+}
+
+.comment-actions a,
+.comment-actions form {
+  margin-bottom: 0; /* Remove a margem inferior dos elementos dentro de comment-actions */
+}
+/*  margin-top: 5px;
   color: #555;
   text-decoration: none;
   margin: 0;
@@ -356,7 +570,7 @@ body {
 .question-user-name:hover {
   color: #cc6600;
   text-decoration: none;
-}
+}*/
 
 
 
@@ -621,6 +835,7 @@ body {
   border-bottom: 0;
   cursor: pointer;
   font-weight: 600;
+  margin-bottom: 0;
 }
 
 .tabset > label:hover,
@@ -631,6 +846,7 @@ body {
 
 .tabset > input:checked + label {
   border-color: #ccc;
+  box-shadow: -4px -4px 8px rgba(0, 0, 0, 0.1), 4px -4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .tab-panel {
