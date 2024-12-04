@@ -92,17 +92,33 @@ function searchWithDelay() {
     }, 300); //300 ms
 }
 
-document.getElementById('search-input').addEventListener('input', searchWithDelay);
-document.getElementById('exact-match').addEventListener('change', performSearch);
-document.getElementById('order').addEventListener('change', performSearch);
-document.getElementById('search-bar').addEventListener('submit', function(event) {
-    event.preventDefault();
-    navigateToSearchPage();
-});
+document.addEventListener('DOMContentLoaded', function() {
+    const queryInput = document.getElementById('search-input');
+    const exactMatch = document.getElementById('exact-match');
 
-document.getElementById('search-button').addEventListener('click', function(event) {
-    event.preventDefault();
-    navigateToSearchPage();
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('query');
+    const exactMatchValue = urlParams.get('exact_match');
+
+    if (query) {
+        queryInput.value = query;
+    }
+    if (exactMatchValue) {
+        exactMatch.checked = exactMatchValue === 'on';
+    }
+
+    queryInput.addEventListener('input', searchWithDelay);
+    exactMatch.addEventListener('change', performSearch);
+    document.getElementById('order').addEventListener('change', performSearch);
+    document.getElementById('search-bar').addEventListener('submit', function(event) {
+        event.preventDefault();
+        navigateToSearchPage();
+    });
+
+    document.getElementById('search-button').addEventListener('click', function(event) {
+        event.preventDefault();
+        navigateToSearchPage();
+    });
 });
 
 function navigateToSearchPage() {
