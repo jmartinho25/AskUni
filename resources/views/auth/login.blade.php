@@ -33,5 +33,6 @@
         Login
     </button>
     <a class="button button-outline" href="{{ route('register') }}">Register</a>
+    <a class="button button-outline" href="{{ route('password.request') }}">Forgot Your Password?</a>
 </form>
 @endsection

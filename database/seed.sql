@@ -64,7 +64,9 @@ CREATE TABLE users (
     is_blocked BOOLEAN DEFAULT FALSE,
     remember_token TEXT DEFAULT NULL,
     score INTEGER CHECK (score >= 0 AND score <= 100) DEFAULT 0,
-    deleted_at TIMESTAMP NULL DEFAULT NULL CHECK (deleted_at IS NULL OR deleted_at <= now())
+    deleted_at TIMESTAMP NULL DEFAULT NULL CHECK (deleted_at IS NULL OR deleted_at <= now()),
+    reset_token TEXT DEFAULT NULL,
+    reset_token_created_at TIMESTAMP DEFAULT NULL
 );
 
 

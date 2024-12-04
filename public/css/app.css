@@ -762,3 +762,21 @@ body {
 
 
 
+
+/***********************************FEEDBACK*************************************/
+.feedback-container {
+  margin-top: 50px;
+}
+.feedback-content {
+  text-align: center;
+}
+.feedback-image {
+  max-width: 150px;
+  margin-bottom: 20px;
+}
+.feedback-details h5 {
+  margin: 10px 0;
+}
+.feedback-content .btn {
+  margin-top: 20px;
+}

@@ -44,5 +44,6 @@
       Register
     </button>
     <a class="button button-outline" href="{{ route('login') }}">Login</a>
+    <a class="button button-outline" href="{{ route('password.request') }}">Forgot Your Password?</a>
 </form>
 @endsection

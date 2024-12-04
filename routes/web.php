@@ -6,7 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CommentController;
-
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\DislikeController;
 
@@ -14,6 +14,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedController;
+use App\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,4 +115,13 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
+
+// Mail Routes
+Route::get('password/reset/{token}', [MailController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [MailController::class, 'reset'])->name('password.update');
+Route::get('password/request', [MailController::class, 'showLinkRequestForm'])->name('password.request');
+Route::get('/send-email', [MailController::class, 'showLinkRequestForm'])->name('send.email.form');
+Route::post('/send', [MailController::class, 'send'])->name('send.email');Route::get('/feedback', function () {
+    return view('emails.feedback');
+})->name('emails.feedback');
 
