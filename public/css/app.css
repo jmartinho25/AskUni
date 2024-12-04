@@ -582,7 +582,8 @@ body {
 
 .tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
 .tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
-.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3){
+.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
+.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4){
   display: block;
 }
 

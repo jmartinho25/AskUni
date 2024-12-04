@@ -71,6 +71,11 @@
                 @else
                 <label for="tab3">Comments</label>
                 @endif
+
+                <input type="radio" name="tabset" id="tab4" aria-controls="votes">
+                @if (auth()->check() && auth()->user()->id === $user->id)
+                <label for="tab4">My Votes</label>
+                @endif
                 
                 <div class="tab-panels">
                     <section id="questions" class="tab-panel">
@@ -149,6 +154,54 @@
                     @endif
                     </div>
                     </section>
+                    <section id="votes" class="tab-panel">
+            <h2>My Votes</h2>
+                <div class="all-questions">
+                    <h3>Likes</h3>
+                    @if ($likedQuestions->isEmpty() && $likedAnswers->isEmpty())
+                        <p>No liked posts available.</p>
+                    @else
+                        @foreach ($likedQuestions as $question)
+                            <div class="question-card">
+                                <h3>{{ $question->title }}</h3>
+                                <p>{{ $question->post->content }}</p>
+                                <p>Date: {{ $question->post->date }}</p>
+                                <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
+                            </div>
+                        @endforeach
+                        @foreach ($likedAnswers as $answer)
+                            <div class="answer-card">
+                                <p>{{ $answer->post->content }}</p>
+                                <p>Date: {{ $answer->post->date }}</p>
+                                <a class="read_more" href="{{ route('questions.show', $answer->questions_id) }}" class="btn btn-secondary">View Question</a>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+                <div class="all-questions">
+                    <h3>Dislikes</h3>
+                    @if ($dislikedQuestions->isEmpty() && $dislikedAnswers->isEmpty())
+                        <p>No disliked posts available.</p>
+                    @else
+                        @foreach ($dislikedQuestions as $question)
+                            <div class="question-card">
+                                <h3>{{ $question->title }}</h3>
+                                <p>{{ $question->post->content }}</p>
+                                <p>Date: {{ $question->post->date }}</p>
+                                <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
+                            </div>
+                        @endforeach
+                        @foreach ($dislikedAnswers as $answer)
+                            <div class="answer-card">
+                                <p>{{ $answer->post->content }}</p>
+                                <p>Date: {{ $answer->post->date }}</p>
+                                <a class="read_more" href="{{ route('questions.show', $answer->questions_id) }}" class="btn btn-secondary">View Question</a>
+                            </div>
+                        @endforeach
+                    @endif
+
+                </div>
+        </section>
                 </div>
             </div>
         </div>
