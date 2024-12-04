@@ -140,6 +140,57 @@
             </p>
             <p>Date: {{ $answer->post->date }}</p>
 
+            <p>
+            @if (Auth::check() && $answer->post->isLikedBy(Auth::user()))
+                <form action="{{ route('like.destroy', $answer->posts_id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-like">
+                    <i class="fas fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
+                </button>
+                 </form>
+            @else
+                @can('like', $answer->post)
+                    <form action="{{ route('like.store', $answer->posts_id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-like">
+                        <i class="far fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
+                    </button>
+                    </form>
+                @else
+                    <form style="display:inline;">
+                    <button type="button" class="btn btn-like" disabled>
+                        <i class="far fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
+                    </button>
+                    </form>
+                @endcan
+            @endif
+            @if (Auth::check() && $answer->post->isDislikedBy(Auth::user()))
+                <form action="{{ route('dislike.destroy', $answer->posts_id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-like">
+                    <i class="fas fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
+                </button>
+                </form>
+            @else
+                @can('dislike', $answer->post)
+                    <form action="{{ route('dislike.store', $answer->posts_id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-like">
+                        <i class="far fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
+                    </button>
+                    </form>
+                @else
+                    <form style="display:inline;">
+                    <button type="button" class="btn btn-like" disabled>
+                        <i class="far fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
+                    </button>
+                    </form>
+                @endcan
+            @endif
+            </p>
+
             @can('update', $answer)
                 <a class="button" href="{{ route('answers.edit', $answer) }}" id="btn-edit">
                     <i class="fas fa-pencil-alt"></i>
