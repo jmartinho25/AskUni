@@ -118,7 +118,7 @@ body {
     border-color: #005fa3;
   }
 
-  button.btn.btn-danger {
+  button.btn.btn-danger, button.btn.btn-solve {
     background:none;
     border: none;
     color:#0784d2;
@@ -127,6 +127,10 @@ body {
 
   button.btn.btn-danger:hover{
     color: red;
+  }
+
+  button.btn.btn-solve:hover{
+    color: green;
   }
 
   #btn-edit {
