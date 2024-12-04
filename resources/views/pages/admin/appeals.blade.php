@@ -21,12 +21,14 @@
                     <td>
                         <form action="{{ route('admin.users.unblock', $request->user->id) }}" method="POST" style="display:inline-block;">
                             @csrf
-                            <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to unblock this user?')">
-                                Unblock
+                            <button type="submit" class="btn btn-solve" onclick="return confirm('Are you sure you want to unblock this user?')">
+                                <i class="fas fa-unlock"></i>
                             </button>
                         </form>
                         <a href="{{ route('admin.user.reports', $request->user->id) }}" class="btn btn-info" style="display:inline-block;">
-                            View Reports
+                            <button type="submit" class="btn btn-solve">
+                            <i class="fas fa-file-alt"></i>
+                            </button>
                         </a>
                     </td>
                 </tr>

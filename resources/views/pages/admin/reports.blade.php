@@ -28,8 +28,8 @@
                         @if(!$report->solved)
                             <form action="{{ route('admin.reports.resolve', $report->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to mark this report as resolved?')">
-                                    Resolve
+                                <button type="submit" class="btn btn-solve" onclick="return confirm('Are you sure you want to mark this report as resolved?')">
+                                    <i class="fas fa-check"></i>
                                 </button>
                             </form>
                         @else
@@ -45,16 +45,14 @@
         </tbody>
     </table>
 
-    <!-- Paginação -->
     <div class="pagination-container">
         {{ $reports->links() }}
     </div>
 
-    <!-- Botão para desbloquear o usuário -->
-    <form action="{{ route('admin.users.unblock', $user->id) }}" method="POST" style="display:inline-block;">
+    <form action="{{ route('admin.unblock.requests') }}" method="GET" style="display:inline-block;">
         @csrf
-        <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to unblock this user?')">
-            Unblock User
+        <button type="submit" id="btn-edit">
+            <i class="fas fa-arrow-circle-left"></i> Back
         </button>
     </form>
 
