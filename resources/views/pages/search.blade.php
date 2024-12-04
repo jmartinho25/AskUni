@@ -3,15 +3,26 @@
 @section('content')
 <div class="container">
     <h1>Search Results</h1>
-    <form method="GET" action="{{ route('questions.search') }}">
+    <form id="search-filters" method="GET" action="{{ route('questions.search') }}">
         <input type="hidden" name="query" value="{{ request()->input('query') }}">
         <input type="hidden" name="exact_match" value="{{ request()->input('exact_match') }}">
-        <label for="order">Order By:</label>
-        <select name="order" id="order">
-            <option value="relevance" {{ request()->input('order') == 'relevance' ? 'selected' : '' }}>Relevance</option>
-            <option value="date_desc" {{ request()->input('order') == 'date_desc' ? 'selected' : '' }}>Newest</option>
-            <option value="date_asc" {{ request()->input('order') == 'date_asc' ? 'selected' : '' }}>Oldest</option>
-        </select>
+        <div id="order-container">
+            <label for="order">Order By:</label>
+            <select name="order" id="order">
+                <option value="relevance" {{ request()->input('order') == 'relevance' ? 'selected' : '' }}>Relevance</option>
+                <option value="date_desc" {{ request()->input('order') == 'date_desc' ? 'selected' : '' }}>Newest</option>
+                <option value="date_asc" {{ request()->input('order') == 'date_asc' ? 'selected' : '' }}>Oldest</option>
+            </select>
+        </div>
+        <div id="tags-container">
+            <select name="tags[]" id="tags" multiple class="modern-multi-select">
+                @foreach($allTags as $tag)
+                    <option value="{{ $tag->id }}" {{ in_array($tag->id, request()->input('tags', [])) ? 'selected' : '' }}>
+                        {{ $tag->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
     </form>
 
     <div id="results-container" class="all-questions">
@@ -33,7 +44,7 @@
     </div>
 
     <div id="pagination-container">
-        {{ $results->appends(['query' => $query, 'exact_match' => request()->input('exact_match'), 'order' => request()->input('order')])->links() }}
+        {{ $results->appends(['query' => $query, 'exact_match' => request()->input('exact_match'), 'order' => request()->input('order'), 'tags' => request()->input('tags')])->links() }}
     </div>  
 </div>
 @endsection

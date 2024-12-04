@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -125,24 +126,30 @@ class QuestionController extends Controller
         $query = $this->sanitizeQuery($request->input('query'));
         $exactMatch = $request->input('exact_match');
         $order = $request->input('order', 'relevance');
+        $tags = $request->input('tags', []);
         $offset = 10;
     
-        $results = $this->performSearch($query, $exactMatch, $offset, $order);
+        $results = $this->performSearch($query, $exactMatch, $offset, $order, $tags);
+    
+        $allTags = Tag::all();
     
         return view('pages.search', [
             'query' => $query,
             'results' => $results,
+            'tags' => $tags,
+            'allTags' => $allTags,
         ]);
     }
-
+    
     public function searchAPI(Request $request)
     {
         $query = $this->sanitizeQuery($request->input('query'));
         $exactMatch = $request->input('exact_match');
         $order = $request->input('order', 'relevance');
+        $tags = $request->input('tags', []);
         $offset = 10;
     
-        $results = $this->performSearch($query, $exactMatch, $offset, $order);
+        $results = $this->performSearch($query, $exactMatch, $offset, $order, $tags);
     
         $results->getCollection()->transform(function ($question) {
             return [
@@ -156,14 +163,17 @@ class QuestionController extends Controller
     
         return response()->json([
             'results' => $results->items(),
-            'pagination' => (string) $results->appends(['query' => $query, 'exact_match' => $exactMatch, 'order' => $order])->links()
+            'pagination' => (string) $results->appends(['query' => $query, 'exact_match' => $exactMatch, 'order' => $order, 'tags' => $tags])->links()
         ]);
     }
 
-    protected function performSearch($query, $exactMatch, $offset, $order = null)
+
+    protected function performSearch($query, $exactMatch, $offset, $order = null, $tags = [])
     {
         $queryBuilder = Question::with('post.user')
             ->join('posts', 'questions.posts_id', '=', 'posts.id')
+            ->leftJoin('posts_tags', 'posts.id', '=', 'posts_tags.posts_id')
+            ->leftJoin('tags', 'posts_tags.tags_id', '=', 'tags.id')
             ->select('questions.*', 'posts.date');
     
         if ($exactMatch) {
@@ -176,8 +186,16 @@ class QuestionController extends Controller
                         ELSE 2 
                     END AS rank_order,
                     ts_rank(questions.tsvectors, to_tsquery('english', ?)) AS rank", ["%{$query}%", $query])
-                ->whereRaw("questions.tsvectors @@ to_tsquery('english', ?)", [$query])
-                ->orWhere('questions.title', 'ILIKE', "%{$query}%");
+                ->where(function ($q) use ($query) {
+                    $q->whereRaw("questions.tsvectors @@ to_tsquery('english', ?)", [$query])
+                      ->orWhere('questions.title', 'ILIKE', "%{$query}%");
+                });
+        }
+    
+        if (!empty($tags)) {
+            $queryBuilder->whereIn('posts_tags.tags_id', $tags)
+                ->groupBy('questions.posts_id', 'posts.id')
+                ->havingRaw('COUNT(DISTINCT posts_tags.tags_id) = ?', [count($tags)]);
         }
     
         switch ($order) {
