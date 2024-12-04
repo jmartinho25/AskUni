@@ -17,14 +17,13 @@ DROP TABLE IF EXISTS users_dislikes_posts CASCADE;
 DROP TABLE IF EXISTS users_follow_tags CASCADE;
 DROP TABLE IF EXISTS posts_tags CASCADE;
 DROP TABLE IF EXISTS comments_tagging_users CASCADE;
-DROP TABLE IF EXISTS users_join_super_tags CASCADE;
+DROP TABLE IF EXISTS users_join_tags CASCADE;
 DROP TABLE IF EXISTS earned_badges CASCADE;
 DROP TABLE IF EXISTS comments_notifications CASCADE;
 DROP TABLE IF EXISTS questions_notifications CASCADE;
 DROP TABLE IF EXISTS answers_notifications CASCADE;
 DROP TABLE IF EXISTS badges_notifications CASCADE;
 DROP TABLE IF EXISTS users_follow_questions CASCADE;
-DROP TABLE IF EXISTS super_tags CASCADE;
 DROP TABLE IF EXISTS content_reports CASCADE;
 DROP TABLE IF EXISTS edit_histories CASCADE;
 DROP TABLE IF EXISTS posts CASCADE;
@@ -104,14 +103,10 @@ CREATE TABLE tags (
     name TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE super_tags (
-    tags_id INTEGER REFERENCES tags(id) ON DELETE CASCADE PRIMARY KEY
-);
-
-CREATE TABLE users_join_super_tags (
+CREATE TABLE users_join_tags (
     users_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    super_tags_id INTEGER REFERENCES super_tags(tags_id) ON DELETE CASCADE,
-    PRIMARY KEY (users_id, super_tags_id)
+    tags_id INTEGER REFERENCES tags(id) ON DELETE CASCADE,
+    PRIMARY KEY (users_id, tags_id)
 );
 
 CREATE TABLE users_follow_tags (
@@ -1160,35 +1155,23 @@ INSERT INTO posts (content, date, users_id) VALUES
 ('The finite element method is essential for analyzing complex structures and systems; it allows for simulations of how materials will behave under various conditions.', now(), 10);
 
 INSERT INTO tags (name) VALUES 
-('LEIC'), 
-('MEIC'), 
-('LBAW'),
-('RCOM'),
-('LEGI'),
-('LEM'), 
+('LEIC'),
+('LBIO'),
+('LAERO'),
 ('LEC'),
-('LEEC'),
-('MESW'),
 ('LEMAT'),
-('THER'),
-('DYNAM'),
-('FLUID'),
-('STATS'),
-('CAD'),
-('PROJ'),
-('ETHICS');
+('LEGI'),
+('LEEC'),
+('LEM'),
+('LEQ'),
+('Ethics'),
+('Investigation'),
+('Social'),
+('Sports'),
+('Business');
 
-INSERT INTO super_tags (tags_id) VALUES 
-(1), 
-(2),
-(5),
-(6),
-(7),
-(8),
-(9),
-(10);
 
-INSERT INTO users_join_super_tags (users_id, super_tags_id) VALUES 
+INSERT INTO users_join_tags (users_id, tags_id) VALUES 
 (1, 1), 
 (2, 2), 
 (3, 1);
@@ -1199,26 +1182,26 @@ INSERT INTO users_follow_tags (users_id, tags_id) VALUES
 (3, 3);
 
 INSERT INTO posts_tags (posts_id, tags_id) VALUES 
-(1, 12),
-(2, 8),
-(3, 6),
-(4, 11),
-(5, 7),
-(6, 9),
-(7, 6),
-(8, 1),
-(9, 5),
-(10, 10),
-(11, 9),
-(12, 13),
-(13, 8),
-(14, 6),
-(15, 9),
-(16, 10),
-(17, 6),
-(18, 1),
-(19, 1),
-(20, 17);
+(1, 8),
+(2, 7),
+(3, 5),
+(4, 8),
+(5, 4),
+(6, 1),
+(7, 8),
+(8, 11),
+(9, 3),
+(10, 4),
+(11, 8),
+(12, 8),
+(13, 12),
+(14, 3),
+(15, 12),
+(16, 5),
+(17, 4),
+(18, 12),
+(19, 14),
+(20, 10);
 
 INSERT INTO questions (posts_id, title) VALUES 
 (1, 'Effective Study Techniques for Engineering Mathematics?'),

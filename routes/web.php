@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -124,4 +125,11 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::get('/faq/{id}/edit', [FaqController::class, 'edit'])->name('faq.edit');
     Route::put('/faq/{id}', [FaqController::class, 'update'])->name('faq.update');
     Route::delete('/faq/{id}', [FaqController::class, 'destroy'])->name('faq.destroy');
+});
+
+// Tag Routes
+
+Route::controller(TagController::class)->group(function () {
+    Route::get('/tags', 'index')->name('tags.index');
+    Route::get('/tags/{name}', 'show')->name('tags.show');
 });
