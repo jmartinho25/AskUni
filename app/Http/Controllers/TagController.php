@@ -17,10 +17,27 @@ class TagController extends Controller
     {
         $tag = Tag::where('name', $name)->firstOrFail();
         $sort = $request->query('sort', 'newest');
-        $offset = 10;
-    
+        $questions = $this->fetchQuestions($tag, $sort);
+
+        return view('pages.tags.show', compact('tag', 'questions', 'sort'));
+    }
+
+    public function getQuestionsAPI(Request $request, $name)
+    {
+        $tag = Tag::where('name', $name)->firstOrFail();
+        $sort = $request->query('sort', 'newest');
+        $questions = $this->fetchQuestions($tag, $sort);
+
+        return response()->json([
+            'data' => $questions->items(),
+            'links' => (string) $questions->links(),
+        ]);
+    }
+
+    private function fetchQuestions($tag, $sort, $offset = 10)
+    {
         if ($sort == 'popularity') {
-            $questions = $tag->questions()
+            return $tag->questions()
                 ->with(['post.user'])
                 ->select('questions.*')
                 ->selectSub(function ($query) {
@@ -49,14 +66,12 @@ class TagController extends Controller
                 ->paginate($offset);
         }
         else {
-            $questions = $tag->questions()
+            return $tag->questions()
                 ->join('posts', 'questions.posts_id', '=', 'posts.id')
                 ->with('post.user')
                 ->orderBy('posts.date', 'DESC')
                 ->select('questions.*')
                 ->paginate($offset);
         }
-    
-        return view('pages.tags.show', compact('tag', 'questions', 'sort'));
     }
 }
