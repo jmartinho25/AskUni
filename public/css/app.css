@@ -330,6 +330,43 @@ body {
   margin-bottom: 1em;
 }
 
+/**************************************Tags**************************************/
+
+#explore-tags {
+  text-align: center;
+}
+
+.tag-container {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.tag-card {
+  width: 200px;
+  border: 1px solid #ff8800;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #e9ecef;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.tag-card a, .tag-card h3 {
+  color: #333;
+  text-decoration: none;
+}
+
+.tag-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tag-card p {
+  margin: 10px 0 0;
+  color: #666;
+}
+
+
 /**************************************FOOTER**************************************/
 .footer {
   background-color: #f4f4f4;

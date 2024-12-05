@@ -35,7 +35,7 @@
 
     <p>
         @foreach ($question->tags as $tag)
-             <span class="tag">#{{ $tag->name }}</span>
+            <a href="{{ route('tags.show', $tag->name) }}"> <span class="tag">#{{ $tag->name }}</span> </a>
         @endforeach
     </p>
 

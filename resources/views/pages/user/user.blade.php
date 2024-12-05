@@ -23,6 +23,14 @@
             @endif
             <p>Score: {{ $user->score }}</p>
 
+            @if ($user->tags->isNotEmpty())
+                <p>
+                    @foreach ($user->tags as $tag)
+                        <a href="{{ route('tags.show', $tag->name) }}"> <span class="tag">#{{ $tag->name }}</span> </a>
+                    @endforeach
+                </p>
+            @endif
+
             @can ('editUser', $user)
                 <a class="button" href="{{ route('edit-profile') }}" class="btn btn-primary">Edit Profile</a>
             @endcan

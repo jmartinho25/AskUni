@@ -12,6 +12,11 @@
             </select>
         </form>
     </div>
+    @auth
+        <button id="follow-button" class="btn btn-primary" data-tag-name="{{ $tag->name }}">
+            {{ $isFollowing ? 'Unfollow' : 'Follow' }}
+        </button>
+    @endauth
     @if($questions->isEmpty())
         <p>No questions found for this tag.</p>
     @else
@@ -33,4 +38,29 @@
         </div>
     @endif
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const followButton = document.getElementById('follow-button');
+        if (followButton) {
+            followButton.addEventListener('click', function() {
+                const tagName = followButton.getAttribute('data-tag-name');
+                fetch(`/tags/${tagName}/follow`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    followButton.textContent = data.following ? 'Unfollow' : 'Follow';
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+    });
+</script>
 @endsection

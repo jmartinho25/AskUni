@@ -17,7 +17,6 @@ DROP TABLE IF EXISTS users_dislikes_posts CASCADE;
 DROP TABLE IF EXISTS users_follow_tags CASCADE;
 DROP TABLE IF EXISTS posts_tags CASCADE;
 DROP TABLE IF EXISTS comments_tagging_users CASCADE;
-DROP TABLE IF EXISTS users_join_tags CASCADE;
 DROP TABLE IF EXISTS earned_badges CASCADE;
 DROP TABLE IF EXISTS comments_notifications CASCADE;
 DROP TABLE IF EXISTS questions_notifications CASCADE;
@@ -102,13 +101,9 @@ CREATE TABLE users_dislikes_posts (
 
 CREATE TABLE tags (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE
-);
-
-CREATE TABLE users_join_tags (
-    users_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    tags_id INTEGER REFERENCES tags(id) ON DELETE CASCADE,
-    PRIMARY KEY (users_id, tags_id)
+    name TEXT NOT NULL UNIQUE,
+    category TEXT NOT NULL,
+    description TEXT
 );
 
 CREATE TABLE users_follow_tags (
@@ -1156,27 +1151,21 @@ INSERT INTO posts (content, date, users_id) VALUES
 ('Approach complex engineering problems by defining the problem, breaking it down into smaller parts, and using tools like flowcharts or systems diagrams for clarity.', now(), 9),
 ('The finite element method is essential for analyzing complex structures and systems; it allows for simulations of how materials will behave under various conditions.', now(), 10);
 
-INSERT INTO tags (name) VALUES 
-('LEIC'),
-('LBIO'),
-('LAERO'),
-('LEC'),
-('LEMAT'),
-('LEGI'),
-('LEEC'),
-('LEM'),
-('LEQ'),
-('Ethics'),
-('Investigation'),
-('Social'),
-('Sports'),
-('Business');
-
-
-INSERT INTO users_join_tags (users_id, tags_id) VALUES 
-(1, 1), 
-(2, 2), 
-(3, 1);
+INSERT INTO tags (name, category, description) VALUES 
+('LEIC', 'Bachelor''s Degree', 'Informatics and Computing Engineering'),
+('LBIO', 'Bachelor''s Degree', 'Bioengineering'),
+('LAERO', 'Bachelor''s Degree', 'Aerospace Engineering'),
+('LEC', 'Bachelor''s Degree', 'Civil Engineering'),
+('LEMAT', 'Bachelor''s Degree', 'Materials Engineering'),
+('LEGI', 'Bachelor''s Degree', 'Industrial Engineering and Management'),
+('LEEC', 'Bachelor''s Degree', 'Electrical and Computer Engineering'),
+('LEM', 'Bachelor''s Degree', 'Mechanical Engineering'),
+('LEQ', 'Bachelor''s Degree', 'Chemical Engineering'),
+('Ethics', 'General', 'Topics related to ethical principles, frameworks and applications'),
+('Investigation', 'General', 'General topics on research and investigative methods'),
+('Social', 'General', 'Matters pertaining to society, culture and social dynamics'),
+('Sports', 'General', 'Topics covering sports, physical activities and related industries'),
+('Business', 'General', 'Topics related to business, management, jobs and entrepreneurship');
 
 INSERT INTO users_follow_tags (users_id, tags_id) VALUES 
 (1, 1), 

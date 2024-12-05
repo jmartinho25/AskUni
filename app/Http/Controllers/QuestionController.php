@@ -48,12 +48,12 @@ class QuestionController extends Controller
             'users_id' => auth()->user()->id, 
         ]);
 
+        $post->tags()->sync($request->input('tags', []));
+    
         $question = Question::create([
             'posts_id' => $post->id,
             'title' => $validated['title'],
         ]);
-
-        $question->tags()->sync($request->input('tags', []));
     
         return redirect()->route('questions.index')->with('success', 'Question created successfully');
     }

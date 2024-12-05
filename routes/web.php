@@ -149,4 +149,5 @@ Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'index')->name('tags.index');
     Route::get('/tags/{name}', 'show')->name('tags.show');
     Route::get('/api/tags/{name}', 'getQuestionsAPI')->name('tags.questions');
+    Route::post('/tags/{name}/follow', 'follow')->name('tags.follow')->middleware('auth');
 });

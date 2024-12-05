@@ -84,4 +84,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const initialTagName = sortSelect.dataset.tagName;
     const initialSortValue = sortSelect.value;
     addPaginationEventListeners(initialTagName, initialSortValue);
+
+
+    const followButton = document.getElementById('follow-button');
+    if (followButton) {
+        followButton.addEventListener('click', function() {
+            const tagName = followButton.getAttribute('data-tag-name');
+            followButton.disabled = true;
+            fetch(`/tags/${tagName}/follow`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                followButton.textContent = data.following ? 'Unfollow' : 'Follow';
+                followButton.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                followButton.disabled = false;
+            });
+        });
+    }
 });
