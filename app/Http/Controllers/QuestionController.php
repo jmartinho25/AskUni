@@ -6,6 +6,8 @@ use App\Models\Question;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use App\Models\Answer;
+use App\Models\Comment;
 
 class QuestionController extends Controller
 {
@@ -126,14 +128,27 @@ class QuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Question $question)
+    public function destroy($id)
     {
+        $question = Question::findOrFail($id);
         $this->authorize('delete', $question);
-        // Delete the question from the database
         $question->delete();
+        return redirect()->route('feed')->with('success', 'Question deleted successfully.');
+    }
+    public function destroyAnswer($id)
+    {
+        $answer = Answer::findOrFail($id);
+        $this->authorize('delete', $answer);
+        $answer->delete();
+        return redirect()->route('feed')->with('success', 'Answer deleted successfully.');
+    }
 
-        // Redirect to the questions index page with a success message
-        return redirect()->route('questions.index')->with('success', 'Question deleted successfully');
+    public function destroyComment($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $this->authorize('delete', $comment);
+        $comment->delete();
+        return redirect()->route('feed')->with('success', 'Comment deleted successfully.');
     }
 
     public function search(Request $request)
@@ -239,6 +254,30 @@ class QuestionController extends Controller
         $query = str_replace(' ', ' & ', $query);
         $query = substr($query, 0, 255);
         return $query;
+    }
+
+    public function follow($id)
+    {
+        $question = Question::findOrFail($id);
+        $user = auth()->user();
+
+        if (!$user->followedQuestions()->where('questions_id', $id)->exists()) {
+            $user->followedQuestions()->attach($id);
+        }
+
+        return redirect()->route('questions.show', $id)->with('success', 'You are now following this question.');
+    }
+
+    public function unfollow($id)
+    {
+        $question = Question::findOrFail($id);
+        $user = auth()->user();
+
+        if ($user->followedQuestions()->where('questions_id', $id)->exists()) {
+            $user->followedQuestions()->detach($id);
+        }
+
+        return redirect()->route('questions.show', $id)->with('success', 'You have unfollowed this question.');
     }
 }
 

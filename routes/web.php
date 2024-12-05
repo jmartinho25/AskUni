@@ -165,3 +165,17 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::get('/about-us/edit', [AboutUsController::class, 'edit'])->name('aboutUs.edit');
     Route::put('/about-us', [AboutUsController::class, 'update'])->name('aboutUs.update');
 });
+
+Route::middleware('auth')->group(function () {
+    Route::post('questions/{id}/follow', [QuestionController::class, 'follow'])->name('questions.follow');
+    Route::post('questions/{id}/unfollow', [QuestionController::class, 'unfollow'])->name('questions.unfollow');
+});
+
+
+// Delete Questions, Answers, Comments
+
+Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
+    Route::delete('questions/{id}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+    Route::delete('answers/{id}', [QuestionController::class, 'destroyAnswer'])->name('answers.destroy');
+    Route::delete('comments/{id}', [QuestionController::class, 'destroyComment'])->name('comments.destroy');
+});

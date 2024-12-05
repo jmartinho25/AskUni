@@ -37,14 +37,15 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment): bool
     {
-        return $user->id === $comment->users_id;
+        return $user->id === $comment->users_id || $user->hasRole('admin');
     }
+
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Comment $comment): bool
     {
-        return $user->id === $comment->users_id;
+        return $user->id === $comment->users_id || $user->hasRole('admin');
     }
 
     /**

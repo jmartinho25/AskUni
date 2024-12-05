@@ -53,6 +53,10 @@ class Question extends Model
     {
         return $this->belongsToMany(Tag::class, 'posts_tags', 'posts_id', 'tags_id');
     }
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'users_follow_questions', 'questions_id', 'users_id');
+    }
 
     public static function boot()
     {
