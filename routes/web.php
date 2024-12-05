@@ -9,14 +9,15 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\DislikeController;
+use App\Http\Controllers\ReportController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedController;
-use App\Models\Role;
 use App\Http\Controllers\FaqController;
-
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\AboutUsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -105,6 +106,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('posts/{id}/dislike', [DislikeController::class, 'destroy'])->name('dislike.destroy');
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('/report/create', [ReportController::class, 'create'])->name('report.create');
+    Route::post('/report', [ReportController::class, 'store'])->name('report.store');
+});
+
 // Admin Routes
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     Route::get('dashboard', [UserController::class, 'index'])->name('admin.dashboard');
@@ -134,4 +140,20 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::get('/faq/{id}/edit', [FaqController::class, 'edit'])->name('faq.edit');
     Route::put('/faq/{id}', [FaqController::class, 'update'])->name('faq.update');
     Route::delete('/faq/{id}', [FaqController::class, 'destroy'])->name('faq.destroy');
+});
+
+// Tag Routes
+
+Route::controller(TagController::class)->group(function () {
+    Route::get('/tags', 'index')->name('tags.index');
+    Route::get('/tags/{name}', 'show')->name('tags.show');
+});
+
+
+// About Us Routes
+
+Route::get('/about-us', [AboutUsController::class, 'index'])->name('aboutUs.index');
+Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
+    Route::get('/about-us/edit', [AboutUsController::class, 'edit'])->name('aboutUs.edit');
+    Route::put('/about-us', [AboutUsController::class, 'update'])->name('aboutUs.update');
 });

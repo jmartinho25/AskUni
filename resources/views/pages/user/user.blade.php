@@ -105,18 +105,18 @@
                             <div class="answer-card">
                                 <p>{{ $answer->content }}</p>
                                 <p>Date: {{ $answer->date }}</p>
-                                <a class="button" href="{{ route('questions.show', $answer->answer->questions_id) }}" id="btn-edit">
+                                <a class="button" href="{{ route('questions.show', $answer->answer->questions_id) }}" id="btn-edit" title="Details">
                                     <i class="fas fa-book-open"></i>
                                 </a>
 
                                 @if (auth()->check() && auth()->user()->id === $answer->users_id)
-                                    <a class="button" href="{{ route('answers.edit', $answer->id) }}" id="btn-edit">
+                                    <a class="button" href="{{ route('answers.edit', $answer->id) }}" id="btn-edit" title="Edit">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
                                     <form action="{{ route('answers.destroy', $answer->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Answer?')">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Answer?')" title="Delete">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
@@ -138,16 +138,16 @@
                             <p>{{ $comment->content }}</p>
                             <p>Date: {{ $comment->date }}</p>
                             @if($comment->question!=null)
-                                <a class="button" href="{{ route('questions.show', $comment->question->posts_id) }}" id="btn-edit">
+                                <a class="button" href="{{ route('questions.show', $comment->question->posts_id) }}" id="btn-edit" title="Details">
                                 <i class="fas fa-book-open"></i>
                                 </a>
                             @elseif($comment->answer!=null)
-                                <a class="button" href="{{ route('questions.show', $comment->answer->questions_id) }}" id="btn-edit">
+                                <a class="button" href="{{ route('questions.show', $comment->answer->questions_id) }}" id="btn-edit" title="Details">
                                 <i class="fas fa-book-open"></i>
                                 </a>
                             @endif
                             @can('update', $comment)
-                                <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
+                                <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit" title="Edit">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
                             @endcan
@@ -155,7 +155,7 @@
                                 <form action="{{ route('comments.destroy', $comment) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')" title="Delete">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
@@ -184,7 +184,7 @@
                             <div class="answer-card">
                                 <p>{{ $answer->post->content }}</p>
                                 <p>Date: {{ $answer->post->date }}</p>
-                                <a class="button" href="{{ route('questions.show', $answer->questions_id) }}" id="btn-edit">
+                                <a class="button" href="{{ route('questions.show', $answer->questions_id) }}" id="btn-edit" title="Details">
                                     <i class="fas fa-book-open"></i>
                                 </a>
                             </div>
@@ -208,7 +208,7 @@
                             <div class="answer-card">
                                 <p>{{ $answer->post->content }}</p>
                                 <p>Date: {{ $answer->post->date }}</p>
-                                <a class="button" href="{{ route('questions.show', $answer->questions_id) }}" id="btn-edit">
+                                <a class="button" href="{{ route('questions.show', $answer->questions_id) }}" id="btn-edit" title="Details">
                                     <i class="fas fa-book-open"></i>
                                 </a>
                             </div>

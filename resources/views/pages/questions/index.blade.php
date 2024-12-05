@@ -25,8 +25,7 @@
                 @else
                     <span class="question-user-name">Deleted User</span>
                 @endif
-                
-                <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}">Read More</a>
+                <p><a class="read_more" href="{{ route('questions.show', $question->posts_id) }}">Read More</a></p>
             </div>
 
             @endforeach

@@ -11,7 +11,7 @@ class LikeController extends Controller
         $post = Post::findOrFail($id);
         $post->likes()->attach(auth()->id());
 
-        return back()->with('success', 'Liked successfully!');
+        return back()->with('success');
     }
 
     public function destroy(Request $request, $id)
@@ -19,6 +19,6 @@ class LikeController extends Controller
         $post = Post::findOrFail($id);
         $post->likes()->detach(auth()->id());
 
-        return back()->with('success', 'Like removed successfully!');
+        return back()->with('success');
     }
 }

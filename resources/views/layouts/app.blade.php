@@ -52,7 +52,7 @@
             
         @if (Auth::check())
             <div class="explore-tags">
-                <a href="#">Explore Tags</a>
+                <a href="{{ route('tags.index') }}">Explore Tags</a>
             </div>
 
         
@@ -79,11 +79,11 @@
                         <i class="fa fa-user"></i>
                     </a>
                 </div>
-                <a class="btn btn-danger" id="sign-out" href="{{ url('/logout') }}">
+                <a class="btn btn-danger" id="sign-out" href="{{ url('/logout') }}" title="Sign-Out">
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             @else
-                <a class="btn btn-solve" id="sign-in" href="{{ url('/login') }}">
+                <a class="btn btn-solve" id="sign-in" href="{{ url('/login') }}" title="Sign-In">
                     <i class="fas fa-sign-in-alt"></i>
                 </a>
             @endif
@@ -97,6 +97,7 @@
 
     <footer class="footer">
         <a href="{{ route('faq.index') }}">FAQ</a>
+        <a href="{{ route('aboutUs.index') }}">About Us</a>
         <p>@AskUni</p>
     </footer>
     </main>

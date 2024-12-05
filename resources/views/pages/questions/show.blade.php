@@ -90,21 +90,24 @@
     @endif
     </p>
 
-    <a class="button" href="{{ route('home') }}" id="btn-edit">
+    <a class="button" href="{{ route('home') }}" id="btn-edit" title="Home Page">
         <i class="fas fa-home"></i>
     </a>
 
     @if (Auth::check())
-    <a class="button" href="{{ route('answers.create', $question) }}" id="btn-edit">
+    <a class="button" href="{{ route('answers.create', $question) }}" id="btn-edit" title="Answer">
         <i class="fas fa-reply"></i>
     </a>
-    <a class="button" href="{{ route('comments.create', ['question', $question->posts_id]) }}" id="btn-edit">
+    <a class="button" href="{{ route('comments.create', ['question', $question->posts_id]) }}" id="btn-edit" title="Comment">
         <i class="fas fa-comment"></i>
+    </a>
+    <a class="button" href="{{ route('report.create', ['type' => 'post', 'id' => $question->posts_id, 'redirect_url' => url()->current()]) }}" id="btn-danger" title="Report">
+                <i class="fas fa-exclamation-triangle"></i> 
     </a>
     @endif
 
     @can('update', $question)
-        <a class="button" href="{{ route('questions.edit', $question) }}" id="btn-edit">
+        <a class="button" href="{{ route('questions.edit', $question) }}" id="btn-edit" title="Edit">
             <i class="fas fa-pencil-alt"></i>
         </a>
     @endcan
@@ -113,7 +116,7 @@
         <form action="{{ route('questions.destroy', $question) }}" method="POST" class="delete-form">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Question?')">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Question?')" title="Delete">
                 <i class="fas fa-trash-alt"></i>
             </button>
         </form>
@@ -194,7 +197,7 @@
             </p>
 
             @can('update', $answer)
-                <a class="button" href="{{ route('answers.edit', $answer) }}" id="btn-edit">
+                <a class="button" href="{{ route('answers.edit', $answer) }}" id="btn-edit" title="Edit">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
             @endcan
@@ -203,15 +206,18 @@
                 <form action="{{ route('answers.destroy', $answer) }}" method="POST" class="delete-form">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Answer?')">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Answer?')" title="Delete">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </form>
             @endcan
 
             @if (Auth::check())
-            <a class="button" href="{{ route('comments.create', ['answer', $answer->posts_id]) }}" id="btn-edit">
+            <a class="button" href="{{ route('comments.create', ['answer', $answer->posts_id]) }}" id="btn-edit" title="Comment">
                 <i class="fas fa-comment"></i>
+            </a>
+            <a class="button" href="{{ route('report.create', ['type' => 'post', 'id' => $answer->posts_id, 'redirect_url' => url()->current()]) }}" id="btn-danger" title="Report">
+                <i class="fas fa-exclamation-triangle"></i>
             </a>
             @endif
 
@@ -234,7 +240,7 @@
                         <p>Date: {{ $comment->date }}</p>
                         <div class="comment-actions">
                         @can('update', $comment)
-                            <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
+                            <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                             </a>
                         @endcan
@@ -242,11 +248,16 @@
                             <form action="{{ route('comments.destroy', $comment) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')" title="Delete">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
                         @endcan
+                        @if (Auth::check())
+                        <a class="button" href="{{ route('report.create', ['type' => 'comment', 'id' => $comment->id, 'redirect_url' => url()->current()]) }}" id="btn-danger" title="Report">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </a>
+                        @endif
                         </div>
                     </div>
                     @endforeach
@@ -279,7 +290,7 @@
                     <p>Date: {{ $comment->date }}</p>
                     <div class="comment-actions">
                     @can('update', $comment)
-                        <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit">
+                        <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit" title="Edit">
                         <i class="fas fa-pencil-alt"></i>
                         </a>
                     @endcan
@@ -287,11 +298,16 @@
                         <form action="{{ route('comments.destroy', $comment) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')" title="Delete">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
                     @endcan
+                    @if (Auth::check())
+                        <a class="button" href="{{ route('report.create', ['type' => 'comment', 'id' => $comment->id, 'redirect_url' => url()->current()]) }}" id="btn-danger" title="Report">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </a>
+                    @endif
                     </div>
                 </div>
             @endforeach
