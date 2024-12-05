@@ -30,6 +30,7 @@
                     </form>
                 @endif
 
+                
             @endauth
 
             <p>Created by: 
@@ -54,7 +55,7 @@
 
             <p>
                 @foreach ($question->tags as $tag)
-                    <span class="tag">#{{ $tag->name }}</span>
+                    <span class="tag">#{{ $tag->name  }}</span>
                 @endforeach
             </p>
 
@@ -132,6 +133,11 @@
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                 @endif
+            @endcan
+            @can ('admin', Auth::user())
+                <a class="button" href="{{ route('questions.edit-tags', $question) }}" id="btn-edit" title="Edit Tags">
+                    <i class="fas fa-tags"></i>
+                </a>
             @endcan
 
             @can('delete', $question)

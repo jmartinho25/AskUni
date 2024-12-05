@@ -178,4 +178,6 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::delete('questions/{id}', [QuestionController::class, 'destroy'])->name('questions.destroy');
     Route::delete('answers/{id}', [QuestionController::class, 'destroyAnswer'])->name('answers.destroy');
     Route::delete('comments/{id}', [QuestionController::class, 'destroyComment'])->name('comments.destroy');
+    Route::get('questions/{id}/edit-tags', [QuestionController::class, 'editTags'])->name('questions.edit-tags');
+    Route::put('questions/{id}/update-tags', [QuestionController::class, 'updateTags'])->name('questions.update-tags');
 });

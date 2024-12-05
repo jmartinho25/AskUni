@@ -29,6 +29,28 @@ class QuestionController extends Controller
 
         return view('pages.questions.create', compact('allTags'));
     }
+    public function editTags($id)
+    {
+        $question = Question::findOrFail($id);
+        $this->authorize('update', $question);
+        $allTags = Tag::all();
+        return view('pages.questions.edit-tags', compact('question', 'allTags'));
+    }
+
+    public function updateTags(Request $request, $id)
+    {
+        $question = Question::findOrFail($id);
+        $this->authorize('update', $question);
+
+        $validated = $request->validate([
+            'tags' => 'required|array',
+            'tags.*' => 'exists:tags,id',
+        ]);
+
+        $question->tags()->sync($validated['tags']);
+
+        return redirect()->route('questions.show', $question->posts_id)->with('success', 'Tags updated successfully.');
+    }
 
     /**
      * Store a newly created resource in storage.

@@ -12,7 +12,7 @@ class QuestionPolicy
 
     public function update(User $user, Question $question)
     {
-        return $user->id === $question->post->users_id || $user->hasRole('admin');
+        return $user->id === $question->post->users_id;
     }
 
     public function delete(User $user, Question $question)
