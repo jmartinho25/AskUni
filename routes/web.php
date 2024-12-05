@@ -18,6 +18,8 @@ use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\AdminController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,6 +124,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
+Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');
+});
 
 // Mail Routes
 Route::get('password/reset/{token}', [MailController::class, 'showResetForm'])->name('password.reset');
@@ -141,6 +147,7 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::put('/faq/{id}', [FaqController::class, 'update'])->name('faq.update');
     Route::delete('/faq/{id}', [FaqController::class, 'destroy'])->name('faq.destroy');
 });
+
 
 // Tag Routes
 

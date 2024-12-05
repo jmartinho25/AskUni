@@ -9,22 +9,17 @@ class UserRole extends Model
 {
     use HasFactory;
 
-    // No automatic timestamps.
     public $timestamps = false;
 
-    /**
-     * Get the user associated with the user_role.
-     */
+    protected $fillable = ['users_id', 'roles_id'];
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users_id');
     }
 
-    /**
-     * Get the role associated with the user_role.
-     */
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'roles_id');
     }
 }
