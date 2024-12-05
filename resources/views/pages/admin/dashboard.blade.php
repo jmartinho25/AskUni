@@ -18,10 +18,8 @@
 
     <h2>Users</h2>
 
-    <!-- Botão para a página de pedidos de desbloqueio -->
     <a href="{{ route('admin.unblock.requests') }}" class="btn btn-primary mb-3">View Unblock Requests</a>
 
-    <!-- Formulário de Pesquisa -->
     <form action="{{ route('admin.dashboard') }}" method="GET" id="user-search-bar">
         <input type="text" name="query" id="user-search-input" value="{{ $query ?? '' }}" placeholder="Search users...">
         <button type="submit" id="user-search-button">
@@ -64,11 +62,24 @@
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
+
+                                <!-- Botão de elevação a admin -->
+                                <form action="{{ route('admin.users.elevate', $user->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to elevate this user to admin?')" title="Elevate to Admin">
+                                        <i class="fas fa-user-shield"></i>
+                                    </button>
+                                </form>
                             @else
-                                <span class="text-muted">Cannot delete admin</span>
+                                @if($user->hasRole('admin'))
+                                    <span class="text-muted">Admin</span>
+                                @else
+                                    <span class="text-muted">Cannot modify yourself</span>
+                                @endif
                             @endif
                         @endif
                     </td>
+
                 </tr>
             @empty
                 <tr>
