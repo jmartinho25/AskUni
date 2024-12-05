@@ -11,7 +11,7 @@ class DislikeController extends Controller
         $post = Post::findOrFail($id);
         $post->dislikes()->attach(auth()->id());
 
-        return back()->with('success', 'Disliked successfully!');
+        return back()->with('success');
     }
 
     public function destroy(Request $request, $id)
@@ -19,6 +19,6 @@ class DislikeController extends Controller
         $post = Post::findOrFail($id);
         $post->dislikes()->detach(auth()->id());
 
-        return back()->with('success', 'Dislike removed successfully!');
+        return back()->with('success');
     }
 }

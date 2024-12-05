@@ -322,6 +322,10 @@ body {
   margin-bottom: 20px;
 }
 
+.question-card p{
+  margin-bottom: 0;
+}
+
 #question-tags {
   margin-bottom: 1em;
 }
