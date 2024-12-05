@@ -147,6 +147,7 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'index')->name('tags.index');
     Route::get('/tags/{name}', 'show')->name('tags.show');
+    Route::get('/api/tags/{name}', 'getQuestionsAPI')->name('tags.questions');
 });
 
 
