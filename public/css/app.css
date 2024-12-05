@@ -132,14 +132,14 @@ body {
     border-color: #005fa3;
   }
 
-  button.btn.btn-danger, button.btn.btn-solve {
+  button.btn.btn-danger, button.btn.btn-solve,#btn-danger {
     background:none;
     border: none;
     color:#0784d2;
     font-size: 2rem;
   }
 
-  button.btn.btn-danger:hover{
+  button.btn.btn-danger:hover, #btn-danger:hover{
     color: red;
   }
 

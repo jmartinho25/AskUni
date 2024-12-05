@@ -51,7 +51,7 @@
                             <span class="text-danger">Deleted</span>
                             <form action="{{ route('users.restore', $user->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to restore this user?')">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to restore this user?')" title="Restore User">
                                     <i class="fas fa-undo"></i>
                                 </button>
                             </form>
@@ -60,7 +60,7 @@
                                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?')" title="Delete User">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>

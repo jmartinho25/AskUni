@@ -33,4 +33,9 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'users_id');
     }
+
+    public function reports()
+    {
+        return $this->hasMany(ContentReports::class, 'comments_id');
+    }
 }

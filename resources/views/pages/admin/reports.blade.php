@@ -28,7 +28,7 @@
                         @if(!$report->solved)
                             <form action="{{ route('admin.reports.resolve', $report->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn btn-solve" onclick="return confirm('Are you sure you want to mark this report as resolved?')">
+                                <button type="submit" class="btn btn-solve" onclick="return confirm('Are you sure you want to mark this report as resolved?')" title="Solve">
                                     <i class="fas fa-check"></i>
                                 </button>
                             </form>

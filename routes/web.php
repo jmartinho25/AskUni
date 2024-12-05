@@ -9,6 +9,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\DislikeController;
+use App\Http\Controllers\ReportController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -104,6 +105,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('posts/{id}/like', [LikeController::class, 'destroy'])->name('like.destroy');
     Route::post('posts/{id}/dislike', [DislikeController::class, 'store'])->name('dislike.store');
     Route::delete('posts/{id}/dislike', [DislikeController::class, 'destroy'])->name('dislike.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/report/create', [ReportController::class, 'create'])->name('report.create');
+    Route::post('/report', [ReportController::class, 'store'])->name('report.store');
 });
 
 // Admin Routes
