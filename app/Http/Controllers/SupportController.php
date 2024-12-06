@@ -23,4 +23,11 @@ class SupportController extends Controller
 
         return redirect()->back()->with('success', 'Question marked as solved.');
     }
+
+    public function mySupportQuestions()
+    {
+        $user = auth()->user();
+        $supportQuestions = SupportQuestion::where('users_id', $user->id)->with('answers.user')->get();
+        return view('pages.user.my-support-questions', compact('supportQuestions'));
+    }
 }

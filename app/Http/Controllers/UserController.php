@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\ContentReports;
 use App\Models\Question;
 use App\Models\Answer;
+use App\Models\SupportQuestion;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -53,8 +54,10 @@ class UserController extends Controller
         $dislikedAnswers = Answer::whereHas('post.dislikes', function ($query) use ($user) {
             $query->where('users_id', $user->id);
         })->get();
+
+        $supportQuestions = SupportQuestion::where('users_id', $id)->with('answers.user')->get();
         
-        return view('pages.user.user', compact('user', 'posts', 'answers','questions', 'badges', 'comments', 'likedQuestions', 'likedAnswers', 'dislikedQuestions', 'dislikedAnswers'));
+        return view('pages.user.user', compact('user', 'posts', 'answers','questions', 'badges', 'comments', 'likedQuestions', 'likedAnswers', 'dislikedQuestions', 'dislikedAnswers', 'supportQuestions'));
     }
 
     // Show search page
@@ -269,6 +272,13 @@ class UserController extends Controller
         return redirect()->route('admin.dashboard')->with('success', 'User deleted successfully.');
     }
     
+
+    public function showSupportContacts($id)
+    {
+    $user = User::findOrFail($id);
+    $supportQuestions = SupportQuestion::where('users_id', $id)->with('answers.user')->get();
+    return view('user', compact('user', 'supportQuestions'));
+    }
 
 
 }

@@ -156,3 +156,7 @@ Route::controller(TagController::class)->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/support-questions/{id}/solve', [SupportController::class, 'solve'])->name('support-questions.solve');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-support-questions', [SupportController::class, 'mySupportQuestions'])->name('my.support.questions');
+});

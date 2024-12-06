@@ -29,6 +29,9 @@
             @if (auth()->check() && auth()->user()->roles->contains('name', 'admin') && auth()->user()->id === $user->id)
                 <a class="button" href="{{ route('admin.dashboard') }}" class="btn btn-warning">Admin Dashboard</a>
             @endif
+            @if (auth()->check() && auth()->user()->id === $user->id)
+                <a class="button" href="{{ route('my.support.questions') }}" class="btn btn-primary">My Support Questions</a>
+            @endif
             @if (!$badges->isEmpty())
             <section id="badges" class="tab-panel">
                 <h2>Achievements</h2>

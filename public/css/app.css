@@ -1291,12 +1291,6 @@ body {
   font-weight: bold;
 }
 
-/*.answer-item p i {
-  margin-right: 10px; 
-  white-space: nowrap; 
-}*/
-
-/*.answer-item p span {
-  display: inline-block;
-  white-space: nowrap; 
-}*/
+.card.support-question-item form{
+  margin-bottom: 0;
+}
