@@ -20,6 +20,7 @@
             <div class="card-body">
                 <p>{{ $question->content }}</p>
             </div>
+            @if(!$question->answers->isEmpty())
             <div class="answers-section">
                 @foreach($question->answers as $answer)
                     <div class="answer-item">
@@ -27,6 +28,19 @@
                         <p>{{ $answer->content }}</p>
                     </div>
                 @endforeach
+            </div>
+            @endif
+            <p></p>
+            <div class="answer-item">
+                <form action="{{ route('support-answers.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="support_question_id" value="{{ $question->id }}">
+                    <div class="form-group">
+                        <label for="content">Your Answer</label>
+                        <textarea name="content" id="content" class="form-control" rows="2" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Submit Answer</button>
+                </form>
             </div>
         </div>
     @empty

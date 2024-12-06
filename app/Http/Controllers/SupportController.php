@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SupportQuestion;
+use App\Models\SupportAnswer;
 
 class SupportController extends Controller
 {
@@ -50,5 +51,22 @@ class SupportController extends Controller
         $supportQuestion->save();
 
         return redirect()->route('my.support.questions')->with('success', 'Support question created successfully.');
+    }
+
+    public function storeAnswer(Request $request)
+    {
+        $request->validate([
+            'content' => 'required|string|max:1000',
+            'support_question_id' => 'required|exists:support_questions,id',
+        ]);
+
+        $supportAnswer = new SupportAnswer();
+        $supportAnswer->support_questions_id = $request->input('support_question_id');
+        $supportAnswer->users_id = auth()->id();
+        $supportAnswer->content = $request->input('content');
+        $supportAnswer->date = now();
+        $supportAnswer->save();
+
+        return redirect()->back()->with('success', 'Support answer created successfully.');
     }
 }

@@ -162,3 +162,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/support-questions', [SupportController::class, 'store'])->name('support-questions.store');
     Route::get('/support-questions/create', [SupportController::class, 'create'])->name('support-questions.create');
 });
+
+Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
+    Route::post('/support-answers', [SupportController::class, 'storeAnswer'])->name('support-answers.store');
+});
