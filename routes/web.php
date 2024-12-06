@@ -153,6 +153,13 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
 
 // Tag Routes
 
+Route::middleware(['auth', 'can:manage,App\Models\Tag'])->group(function () {
+    Route::get('/tags/manage', [TagController::class, 'manage'])->name('tags.manage');
+    Route::post('/tags', [TagController::class, 'store'])->name('tags.store');
+    Route::put('/tags/{id}', [TagController::class, 'update'])->name('tags.update');
+    Route::delete('/tags/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
+});
+
 Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'index')->name('tags.index');
     Route::get('/tags/{name}', 'show')->name('tags.show');

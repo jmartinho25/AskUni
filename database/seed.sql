@@ -420,7 +420,7 @@ BEGIN
         END IF;
     END IF;
 
-    RETURN NULL; 
+    RETURN NEW; 
 END $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER tags_search_update BEFORE INSERT OR UPDATE ON tags

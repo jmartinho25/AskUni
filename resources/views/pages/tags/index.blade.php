@@ -3,6 +3,11 @@
 @section('content')
 <div class="container">
     <h1 id="explore-tags">Explore Tags</h1>
+
+    @can('manage', App\Models\Tag::class)
+        <a href="{{ route('tags.manage') }}" class="btn btn-primary mb-3">Manage Tags</a>
+    @endcan
+
     @foreach($tags as $category => $categoryTags)
         <h2>{{ $category }}</h2>
         <div class="tag-container">
