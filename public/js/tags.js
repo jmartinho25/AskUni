@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addPaginationEventListeners(initialTagName, initialSortValue);
 
 
-    const followButton = document.getElementById('follow-button');
+    const followButton = document.getElementById('follow-button-tags');
     if (followButton) {
         followButton.addEventListener('click', function() {
             const tagName = followButton.getAttribute('data-tag-name');
