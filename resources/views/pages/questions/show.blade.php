@@ -147,7 +147,13 @@
         @if ($question->answers->isEmpty())
             <p>No answers available.</p>
         @else
-            @foreach ($question->answers as $answer)
+            @php
+                $answers = $question->answers->sortByDesc(function ($answer) use ($question) {
+                    return $answer->posts_id === $question->answers_id ? 1 : 0;
+                });
+            @endphp
+
+            @foreach ($answers as $answer)
                 <div class="answer-item">
                     @if ($question->answers_id === $answer->posts_id)
                         <p class="correct-answer"><i class="fa-solid fa-check" style="color: #209770;"></i> Correct Answer</p>
