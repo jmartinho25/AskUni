@@ -12,6 +12,8 @@ class Tag extends Model
 
     protected $fillable = ['name', 'category', 'description'];
 
+    public $timestamps = false;
+
     public function questions(): BelongsToMany
     {
         return $this->belongsToMany(Question::class, 'posts_tags', 'tags_id', 'posts_id');

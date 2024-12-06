@@ -94,4 +94,52 @@ class TagController extends Controller
                 ->paginate($offset);
         }
     }
+
+
+    public function manage()
+    {
+        $this->authorize('manage', Tag::class);
+        $tags = Tag::all();
+        return view('pages.tags.manage', compact('tags'));
+    }
+
+    public function store(Request $request)
+    {
+        $this->authorize('manage', Tag::class);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:tags,name',
+            'category' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        Tag::create($validated);
+
+        return redirect()->route('tags.manage')->with('success', 'Tag created successfully.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $tag = Tag::findOrFail($id);
+        $this->authorize('manage', $tag);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:tags,name,' . $tag->id,
+            'category' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        $tag->update($validated);
+
+        return redirect()->route('tags.manage')->with('success', 'Tag updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $tag = Tag::findOrFail($id);
+        $this->authorize('manage', $tag);
+        $tag->delete();
+
+        return redirect()->route('tags.manage')->with('success', 'Tag deleted successfully.');
+    }
 }
