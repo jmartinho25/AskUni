@@ -13,4 +13,10 @@ class TagPolicy
     {
         return $user !== null && $tag !== null;
     }
+
+    public function manage(User $user)
+    {
+        return $user->roles->contains('name', 'admin');
+    }
+    
 }
