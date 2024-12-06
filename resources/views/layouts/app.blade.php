@@ -98,6 +98,7 @@
 
     <footer class="footer">
         <a href="{{ route('faq.index') }}">FAQ</a>
+        <a href="{{ route('aboutUs.index') }}">About Us</a>
         <p>@AskUni</p>
     </footer>
     </main>

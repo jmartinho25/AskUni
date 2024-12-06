@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UsersRoles extends Model
+class AboutUs extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
+    protected $fillable = ['title', 'content'];
 
-    protected $fillable = [
-        'users_id', 
-        'roles_id'
-    ];
+    protected $table = 'about_us';
 }

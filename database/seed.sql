@@ -230,7 +230,6 @@ CREATE TABLE frequently_asked_questions (
     answer TEXT NOT NULL
 );  
 
-
 --------------------------------
 -- Create Indexes
 --------------------------------
@@ -1307,3 +1306,4 @@ INSERT INTO frequently_asked_questions (question, answer) VALUES
 ('How do I edit my question or answer?', 'To edit your question or answer, go to your question or answer and click on  <i class="fas fa-pencil-alt"></i>. '),
 ('How do I delete my question or answer?', 'To delete your question or answer, go to your question or answer and click on  <i class="fas fa-trash-alt"></i>. '),
 ('How do I upvote or downvote a question or answer?', 'To upvote or downvote a question or answer, click on <i class="far fa-thumbs-up"></i> or <i class="far fa-thumbs-down"></i> .');
+

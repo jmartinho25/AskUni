@@ -17,6 +17,6 @@ class AnswerPolicy
 
     public function delete(User $user, Answer $answer)
     {
-        return $user->id === $answer->post->users_id;
+        return $user->id === $answer->post->users_id || $user->hasRole('admin');
     }
 }

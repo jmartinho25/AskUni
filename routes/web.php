@@ -15,9 +15,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedController;
-use App\Models\Role;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -123,6 +124,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
+Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');
+});
 
 // Mail Routes
 Route::get('password/reset/{token}', [MailController::class, 'showResetForm'])->name('password.reset');
@@ -143,6 +148,7 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::delete('/faq/{id}', [FaqController::class, 'destroy'])->name('faq.destroy');
 });
 
+
 // Tag Routes
 
 Route::controller(TagController::class)->group(function () {
@@ -150,4 +156,29 @@ Route::controller(TagController::class)->group(function () {
     Route::get('/tags/{name}', 'show')->name('tags.show');
     Route::get('/api/tags/{name}', 'getQuestionsAPI')->name('tags.questions');
     Route::post('/tags/{name}/follow', 'follow')->name('tags.follow')->middleware('auth');
+});
+
+
+// About Us Routes
+
+Route::get('/about-us', [AboutUsController::class, 'index'])->name('aboutUs.index');
+Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
+    Route::get('/about-us/edit', [AboutUsController::class, 'edit'])->name('aboutUs.edit');
+    Route::put('/about-us', [AboutUsController::class, 'update'])->name('aboutUs.update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('questions/{id}/follow', [QuestionController::class, 'follow'])->name('questions.follow');
+    Route::post('questions/{id}/unfollow', [QuestionController::class, 'unfollow'])->name('questions.unfollow');
+});
+
+
+// Delete Questions, Answers, Comments
+
+Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
+    Route::delete('questions/{id}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+    Route::delete('answers/{id}', [QuestionController::class, 'destroyAnswer'])->name('answers.destroy');
+    Route::delete('comments/{id}', [QuestionController::class, 'destroyComment'])->name('comments.destroy');
+    Route::get('questions/{id}/edit-tags', [QuestionController::class, 'editTags'])->name('questions.edit-tags');
+    Route::put('questions/{id}/update-tags', [QuestionController::class, 'updateTags'])->name('questions.update-tags');
 });

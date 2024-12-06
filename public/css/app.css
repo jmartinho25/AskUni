@@ -432,6 +432,10 @@ body {
   display: inline-block;
   white-space: nowrap; /* Garante que o texto e o ícone fiquem juntos */
 }
+.tag {
+  margin-right: 5px; /* Adiciona um espaço de 5px entre as tags */
+  display: inline-block; /* Garante que os elementos fiquem na mesma linha */
+}
 
 
 /*********************************ANSWERS************************************/
@@ -1071,6 +1075,8 @@ body {
   margin:auto;
   margin-top: 20px;
 }
+
+
 
 /***********************************FAQ*************************************/
 /* Estilos para a seção de FAQ */
