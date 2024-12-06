@@ -1123,3 +1123,180 @@ body {
 .feedback-content .btn {
   margin-top: 20px;
 }
+
+/***********************************SUPPORT*************************************/
+/* Estilo para a seção de perguntas */
+.support-questions-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #e9f7fe;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para cada pergunta */
+.support-question-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #b3d4fc;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.support-question-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.support-question-item h1 {
+  margin-left: 20px;
+}
+
+.support-question-item p {
+  font-size: 1.2em;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* Permite que o texto quebre para a próxima linha */
+}
+
+.support-question-item p i {
+  margin-right: 10px; /* Espaço entre o ícone e o texto */
+  white-space: nowrap; /* Garante que o ícone e o texto fiquem juntos */
+}
+
+.support-question-item p span {
+  display: inline-block;
+  white-space: nowrap; /* Garante que o texto e o ícone fiquem juntos */
+}
+
+/* Estilo para o cabeçalho do cartão */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  padding: 0.75rem 1.25rem;
+}
+
+/* Estilo para o nome do usuário */
+.card-header strong {
+  font-size: 1.4rem;
+}
+
+/* Estilo para o corpo do cartão */
+.card-body {
+  padding: 1.25rem;
+  background-color: #ffffff;
+}
+
+/* Estilo para o rodapé do cartão */
+.card-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  padding: 1rem;
+}
+
+/* Estilo para o texto da resposta */
+.card-footer p {
+  margin: 0;
+}
+
+/* Estilo para o botão de marcar como resolvido */
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+
+/* Estilo para o título da página */
+.container.support-questions-section h2 {
+  margin-bottom: 3rem;
+}
+
+
+/* Estilo para os cartões */
+.card {
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para o espaçamento entre perguntas e respostas */
+.card + .card {
+  margin-top: 2rem;
+}
+
+.card-footer + .card-footer {
+  margin-top: 1rem;
+}
+
+
+/* Estilo para cada resposta */
+.card.support-question-item .answer-item {
+  margin-bottom: 0;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1.2px solid #0784d2;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.answer-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.answer-item p {
+  font-size: 1.2em;
+  margin-left: 10px;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* Permite que o texto quebre para a próxima linha */
+}
+
+.card.support-question-item .answer-item strong {
+  font-size: 1.4rem;
+  color: #555555;
+}
+
+.card-header .badge {
+  font-size: 1rem;
+  padding: 0.5em 0.75em;
+  font-weight: bold;
+}
+
+/* Estilo para o status Solved */
+.badge-solved {
+  background-color: #28a745;
+  color: #ffffff;
+  padding: 0.5em 0.75em;
+  border-radius: 0.25rem;
+  font-weight: bold;
+}
+
+/* Estilo para o status Unsolved */
+.badge-unsolved {
+  background-color: #dc3545;
+  color: #ffffff;
+  padding: 0.5em 0.75em;
+  border-radius: 0.25rem;
+  font-weight: bold;
+}
+
+/*.answer-item p i {
+  margin-right: 10px; 
+  white-space: nowrap; 
+}*/
+
+/*.answer-item p span {
+  display: inline-block;
+  white-space: nowrap; 
+}*/

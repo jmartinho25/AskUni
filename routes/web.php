@@ -10,6 +10,7 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\DislikeController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SupportController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -122,6 +123,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     Route::post('/reports/resolve/{id}', [UserController::class, 'resolveReport'])->name('admin.reports.resolve');
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('support-contacts', [SupportController::class, 'index'])->name('admin.support.contacts');
 });
 
 // Mail Routes
@@ -148,4 +150,9 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'index')->name('tags.index');
     Route::get('/tags/{name}', 'show')->name('tags.show');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/support-questions/{id}/solve', [SupportController::class, 'solve'])->name('support-questions.solve');
 });

@@ -37,6 +37,8 @@ DROP TABLE IF EXISTS roles CASCADE;
 DROP TABLE IF EXISTS badges CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS frequently_asked_questions CASCADE;
+DROP TABLE IF EXISTS support_questions CASCADE;
+DROP TABLE IF EXISTS support_answers CASCADE;
 
 DROP TYPE IF EXISTS comments_notifications_types CASCADE;
 DROP TYPE IF EXISTS questions_notifications_types CASCADE;
@@ -234,6 +236,24 @@ CREATE TABLE frequently_asked_questions (
     question TEXT NOT NULL,
     answer TEXT NOT NULL
 );  
+
+
+CREATE TABLE support_questions (
+    id SERIAL PRIMARY KEY,
+    users_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    content TEXT NOT NULL,
+    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP CHECK (date <= now()),
+    solved BOOLEAN DEFAULT FALSE
+);
+
+
+CREATE TABLE support_answers (
+    id SERIAL PRIMARY KEY,
+    support_questions_id INTEGER REFERENCES support_questions(id) ON DELETE CASCADE,
+    users_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    content TEXT NOT NULL,
+    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP CHECK (date <= now())
+);
 
 
 --------------------------------
@@ -1318,3 +1338,15 @@ INSERT INTO frequently_asked_questions (question, answer) VALUES
 ('How do I edit my question or answer?', 'To edit your question or answer, go to your question or answer and click on  <i class="fas fa-pencil-alt"></i>. '),
 ('How do I delete my question or answer?', 'To delete your question or answer, go to your question or answer and click on  <i class="fas fa-trash-alt"></i>. '),
 ('How do I upvote or downvote a question or answer?', 'To upvote or downvote a question or answer, click on <i class="far fa-thumbs-up"></i> or <i class="far fa-thumbs-down"></i> .');
+
+
+INSERT INTO support_questions(users_id, content, solved) VALUES
+(1, 'How do I change my password?', TRUE),
+(2, 'How can I change my profile information?', FALSE),
+(3, 'How do I report a post?', FALSE);
+
+
+INSERT INTO support_answers(support_questions_id, users_id, content) VALUES
+(1, 3, 'To change your password, go to your profile page and click on the "Change Password" button.'),
+(2, 3, 'To change your profile information, go to your profile page and click on the "Edit Profile" button.'),
+(3, 3, 'To report a post, click on the "Report" button on the post you want to report.');

@@ -16,12 +16,17 @@
     <h1>Admin Dashboard</h1>
     <p>Welcome, {{ Auth::user()->name }}! Here you can manage the platform.</p>
 
+    <a href="{{ route('admin.unblock.requests') }}" class="btn btn-primary mb-3">
+        <i class="fas fa-unlock"></i> View Unblock Requests
+    </a>
+    <p></p>
+    <a href="{{ route('admin.support.contacts') }}" class="btn btn-primary" title="View Support Contacts">
+        <i class="fas fa-headset"></i> View Support Contacts
+    </a>
+
     <h2>Users</h2>
 
-    <!-- Botão para a página de pedidos de desbloqueio -->
-    <a href="{{ route('admin.unblock.requests') }}" class="btn btn-primary mb-3">View Unblock Requests</a>
 
-    <!-- Formulário de Pesquisa -->
     <form action="{{ route('admin.dashboard') }}" method="GET" id="user-search-bar">
         <input type="text" name="query" id="user-search-input" value="{{ $query ?? '' }}" placeholder="Search users...">
         <button type="submit" id="user-search-button">
