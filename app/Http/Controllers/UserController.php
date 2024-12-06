@@ -38,6 +38,8 @@ class UserController extends Controller
 
         $badges = $user->badges()->get();
 
+        $tags = $user->tags()->get();
+
         $likedQuestions = Question::whereHas('post.likes', function ($query) use ($user) {
             $query->where('users_id', $user->id);
         })->get();
@@ -46,7 +48,6 @@ class UserController extends Controller
             $query->where('users_id', $user->id);
         })->get();
 
-        // Buscar perguntas e respostas que o usuário deu dislike
         $dislikedQuestions = Question::whereHas('post.dislikes', function ($query) use ($user) {
             $query->where('users_id', $user->id);
         })->get();

@@ -32,7 +32,7 @@
                     <h3>{{ $question->title }}</h3>
                     <div class="tags">
                         @foreach ($question->tags as $tag)
-                            <span class="tag">#{{ $tag->name }}</span>
+                            <a href="{{ route('tags.show', $tag->name) }}"> <span class="tag">#{{ $tag->name }}</span> </a>
                         @endforeach
                     </div>
                     <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}">Read More</a>

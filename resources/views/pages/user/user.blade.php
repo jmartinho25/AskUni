@@ -23,6 +23,14 @@
             @endif
             <p>Score: {{ $user->score }}</p>
 
+            @if ($user->tags->isNotEmpty())
+                <p>
+                    @foreach ($user->tags as $tag)
+                        <a href="{{ route('tags.show', $tag->name) }}"> <span class="tag">#{{ $tag->name }}</span> </a>
+                    @endforeach
+                </p>
+            @endif
+
             @can ('editUser', $user)
                 <a class="button" href="{{ route('edit-profile') }}" class="btn btn-primary">Edit Profile</a>
             @endcan
@@ -116,6 +124,9 @@
                                     <a class="button" href="{{ route('answers.edit', $answer->id) }}" id="btn-edit" title="Edit">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
+                                @endif
+
+                                @if (auth()->check() && (auth()->user()->roles->contains('name', 'admin') || auth()->user()->id === $user->id))
                                     <form action="{{ route('answers.destroy', $answer->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
@@ -124,7 +135,6 @@
                                         </button>
                                     </form>
                                 @endif
-
                             </div>
                         @endforeach
                         @endif

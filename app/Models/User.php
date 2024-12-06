@@ -120,7 +120,10 @@ class User extends Authenticatable
     {
         return $this->roles()->where('name', $role)->exists();
     }
-
+    public function followedQuestions()
+    {
+        return $this->belongsToMany(Question::class, 'users_follow_questions', 'users_id', 'questions_id');
+    }
     /**
      * Get the tags followed by the user.
      *

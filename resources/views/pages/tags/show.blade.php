@@ -6,12 +6,17 @@
     <div class="sort-buttons">
         <form id="sort-form" action="{{ route('tags.show', ['name' => $tag->name]) }}" method="GET">
             <label for="sort">Sort by:</label>
-            <select name="sort" id="sort" class="form-control" onchange="document.getElementById('sort-form').submit();">
+            <select name="sort" id="sort" class="form-control" data-tag-name="{{ $tag->name }}">
                 <option value="newest" {{ $sort == 'newest' ? 'selected' : '' }}>Newest</option>
                 <option value="popularity" {{ $sort == 'popularity' ? 'selected' : '' }}>Popularity</option>
             </select>
         </form>
     </div>
+    @auth
+        <button id="follow-button-tags" class="btn btn-primary" data-tag-name="{{ $tag->name }}">
+            {{ $isFollowing ? 'Unfollow' : 'Follow' }}
+        </button>
+    @endauth
     @if($questions->isEmpty())
         <p>No questions found for this tag.</p>
     @else

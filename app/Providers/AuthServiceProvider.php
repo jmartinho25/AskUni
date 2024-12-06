@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Question;
 use App\Models\Post;
@@ -14,6 +13,9 @@ use App\Policies\CommentPolicy;
 use App\Policies\PostPolicy;
 use App\Models\User;
 use App\Policies\UserPolicy;
+use App\Models\Tag;
+use App\Policies\TagPolicy;
+use App\Models\Answer;
 use App\Models\SupportQuestion;
 use App\Policies\SupportQuestionPolicy;
 
@@ -30,6 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         Comment::class => CommentPolicy::class,
         Post::class => PostPolicy::class,
         User::class => UserPolicy::class,
+        Tag::class => TagPolicy::class,
         SupportQuestion::class => SupportQuestionPolicy::class,
     ];
 

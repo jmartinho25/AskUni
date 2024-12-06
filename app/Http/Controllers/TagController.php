@@ -4,23 +4,60 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
     public function index()
     {
-        $tags = Tag::all();
+        $tags = Tag::all()->groupBy('category');
         return view('pages.tags.index', compact('tags'));
+    }
+
+    public function follow(Request $request, $name)
+    {
+        $tag = Tag::where('name', $name)->firstOrFail();
+        $user = Auth::user();
+    
+        $this->authorize('follow', $tag);
+    
+        if ($user->tags->contains($tag->id)) {
+            $user->tags()->detach($tag->id);
+            $following = false;
+        } else {
+            $user->tags()->attach($tag->id);
+            $following = true;
+        }
+    
+        return response()->json(['following' => $following]);
     }
 
     public function show(Request $request, $name)
     {
         $tag = Tag::where('name', $name)->firstOrFail();
         $sort = $request->query('sort', 'newest');
-        $offset = 10;
+        $questions = $this->fetchQuestions($tag, $sort);
+        $isFollowing = Auth::check() && Auth::user()->tags->contains($tag->id);
     
+        return view('pages.tags.show', compact('tag', 'questions', 'sort', 'isFollowing'));
+    }
+
+    public function getQuestionsAPI(Request $request, $name)
+    {
+        $tag = Tag::where('name', $name)->firstOrFail();
+        $sort = $request->query('sort', 'newest');
+        $questions = $this->fetchQuestions($tag, $sort);
+
+        return response()->json([
+            'data' => $questions->items(),
+            'links' => (string) $questions->links(),
+        ]);
+    }
+
+    private function fetchQuestions($tag, $sort, $offset = 10)
+    {
         if ($sort == 'popularity') {
-            $questions = $tag->questions()
+            return $tag->questions()
                 ->with(['post.user'])
                 ->select('questions.*')
                 ->selectSub(function ($query) {
@@ -49,14 +86,12 @@ class TagController extends Controller
                 ->paginate($offset);
         }
         else {
-            $questions = $tag->questions()
+            return $tag->questions()
                 ->join('posts', 'questions.posts_id', '=', 'posts.id')
                 ->with('post.user')
                 ->orderBy('posts.date', 'DESC')
                 ->select('questions.*')
                 ->paginate($offset);
         }
-    
-        return view('pages.tags.show', compact('tag', 'questions', 'sort'));
     }
 }
