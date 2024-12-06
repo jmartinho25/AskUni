@@ -1297,6 +1297,10 @@ body {
   transition: box-shadow 0.3s ease;
 }
 
+.card.support-question-item .answer-item:not(:last-child) {
+  margin-bottom: 20px; /* Espaço entre as respostas */
+}
+
 .answer-item:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

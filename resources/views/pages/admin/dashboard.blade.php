@@ -26,7 +26,6 @@
 
     <h2>Users</h2>
 
-    <a href="{{ route('admin.unblock.requests') }}" class="btn btn-primary mb-3">View Unblock Requests</a>
 
     <form action="{{ route('admin.dashboard') }}" method="GET" id="user-search-bar">
         <input type="text" name="query" id="user-search-input" value="{{ $query ?? '' }}" placeholder="Search users...">
