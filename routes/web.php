@@ -69,6 +69,8 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/search', 'search')->name('questions.search');
     Route::get('/api/questions/search', 'searchAPI')->name('api.questions.search');
+    Route::post('/questions/{question}/answers/{answer}/correct', 'markAsCorrect')->name('answers.markAsCorrect');
+    Route::post('/questions/{question}/answers/{answer}/uncorrect', 'unmarkAsCorrect')->name('answers.unmarkAsCorrect');
 });
 
 // Question Routes (Web)

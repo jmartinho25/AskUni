@@ -23,7 +23,7 @@
                 </button>
             @endauth
 
-            <p>Created by: 
+            <p>Created by:&nbsp;
                 @if ($question->post->user)
                     @if ($question->post->user->trashed())
                         <span>Deleted User</span>
@@ -147,10 +147,48 @@
         @if ($question->answers->isEmpty())
             <p>No answers available.</p>
         @else
-            @foreach ($question->answers as $answer)
+            @php
+                $correctAnswer = $question->answers->firstWhere('posts_id', $question->answers_id);
+                $otherAnswers = $question->answers->where('posts_id', '!=', $question->answers_id);
+            @endphp
+
+            @if ($correctAnswer)
+                <div class="answer-item correct-answer">
+                    <p class="correct-answer"><i class="fa-solid fa-check" style="color: #209770;"></i> Correct Answer</p>
+                    @can('update', $question)
+                        <form action="{{ route('answers.unmarkAsCorrect', ['question' => $question->posts_id, 'answer' => $correctAnswer->posts_id]) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-warning">Unmark as Correct</button>
+                        </form>
+                    @endcan
+                    <p>{{ $correctAnswer->post->content }}</p>
+                    <p>Answered by:&nbsp;
+                        @if ($correctAnswer->post->user)
+                            @if ($correctAnswer->post->user->trashed())
+                                <span>Deleted User</span>
+                            @else
+                                <a href="{{ route('profile', $correctAnswer->post->user->id) }}">{{ $correctAnswer->post->user->name }}</a>
+                            @endif
+                        @else
+                            <span>Deleted User</span>
+                        @endif
+                    </p>
+                    <p>Date: {{ $correctAnswer->post->date }}</p>
+                </div>
+            @endif
+
+            @foreach ($otherAnswers as $answer)
                 <div class="answer-item">
+                    @can('update', $question)
+                        @if (is_null($question->answers_id))
+                            <form action="{{ route('answers.markAsCorrect', ['question' => $question->posts_id, 'answer' => $answer->posts_id]) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-success">Mark as Correct</button>
+                            </form>
+                        @endif
+                    @endcan
                     <p>{{ $answer->post->content }}</p>
-                    <p>Answered by: 
+                    <p>Answered by:&nbsp;
                         @if ($answer->post->user)
                             @if ($answer->post->user->trashed())
                                 <span>Deleted User</span>
@@ -162,129 +200,6 @@
                         @endif
                     </p>
                     <p>Date: {{ $answer->post->date }}</p>
-
-                    <p>
-                        @if (Auth::check() && $answer->post->isLikedBy(Auth::user()))
-                            <form action="{{ route('like.destroy', $answer->posts_id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-like">
-                                    <i class="fas fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
-                                </button>
-                            </form>
-                        @else
-                            @can('like', $answer->post)
-                                <form action="{{ route('like.store', $answer->posts_id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-like">
-                                        <i class="far fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
-                                    </button>
-                                </form>
-                            @else
-                                <form style="display:inline;">
-                                    <button type="button" class="btn btn-like" disabled>
-                                        <i class="far fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
-                                    </button>
-                                </form>
-                            @endcan
-                        @endif
-
-                        @if (Auth::check() && $answer->post->isDislikedBy(Auth::user()))
-                            <form action="{{ route('dislike.destroy', $answer->posts_id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-like">
-                                    <i class="fas fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
-                                </button>
-                            </form>
-                        @else
-                            @can('dislike', $answer->post)
-                                <form action="{{ route('dislike.store', $answer->posts_id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-like">
-                                        <i class="far fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
-                                    </button>
-                                </form>
-                            @else
-                                <form style="display:inline;">
-                                    <button type="button" class="btn btn-like" disabled>
-                                        <i class="far fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
-                                    </button>
-                                </form>
-                            @endcan
-                        @endif
-                    </p>
-
-                    @can('update', $answer)
-                        @if(Auth::user()->id === $answer->post->users_id)
-                            <a class="button" href="{{ route('answers.edit', $answer) }}" id="btn-edit" title="Edit">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-                        @endif
-                    @endcan
-
-                    @can('delete', $answer)
-                        <form action="{{ route('answers.destroy', $answer) }}" method="POST" class="delete-form">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Answer?')" title="Delete">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    @endcan
-
-                    @if (Auth::check())
-                        <a class="button" href="{{ route('comments.create', ['answer', $answer->posts_id]) }}" id="btn-edit" title="Comment">
-                            <i class="fas fa-comment"></i>
-                        </a>
-                        <a class="button" href="{{ route('report.create', ['type' => 'post', 'id' => $answer->posts_id, 'redirect_url' => url()->current()]) }}" id="btn-danger" title="Report">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </a>
-                    @endif
-
-                    @if (!$answer->comments->isEmpty())
-                        <h3>Comments</h3>
-                        @foreach ($answer->comments as $comment)
-                            <div class="comment-item">
-                                <p>{{ $comment->content }}</p>
-                                <p>Commented by: 
-                                    @if ($comment->user)
-                                        @if ($comment->user->trashed())
-                                            <span>Deleted User</span>
-                                        @else
-                                            <a href="{{ route('profile', $comment->user->id) }}">{{ $comment->user->name }}</a>
-                                        @endif
-                                    @else
-                                        <span>Deleted User</span>
-                                    @endif
-                                </p>
-                                <p>Date: {{ $comment->date }}</p>
-                                <div class="comment-actions">
-                                    @can('update', $comment)
-                                        @if(Auth::user()->id === $comment->users_id)
-                                            <a class="button" href="{{ route('comments.edit', $comment) }}" id="btn-edit" title="Edit">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </a>
-                                        @endif
-                                    @endcan
-                                    @can('delete', $comment)
-                                        <form action="{{ route('comments.destroy', $comment) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Comment?')" title="Delete">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    @endcan
-                                    @if (Auth::check())
-                                        <a class="button" href="{{ route('report.create', ['type' => 'comment', 'id' => $comment->id, 'redirect_url' => url()->current()]) }}" id="btn-danger" title="Report">
-                                            <i class="fas fa-exclamation-triangle"></i>
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
-                    @endif
                 </div>
             @endforeach
         @endif
@@ -298,7 +213,7 @@
             @foreach ($question->comments as $comment)
                 <div class="question-comment-item">
                     <p>{{ $comment->content }}</p>
-                    <p>Commented by: 
+                    <p>Commented by:&nbsp;
                         @if ($comment->user)
                             @if ($comment->user->trashed())
                                 <span>Deleted User</span>

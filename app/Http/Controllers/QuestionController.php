@@ -301,5 +301,37 @@ class QuestionController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function markAsCorrect($questionId, $answerId)
+    {
+        $question = Question::findOrFail($questionId);
+        $this->authorize('update', $question);
+
+        $answer = Answer::findOrFail($answerId);
+
+        if ($answer->questions_id !== $question->posts_id) {
+            return redirect()->back()->with('error', 'Answer does not belong to this question.');
+        }
+
+        $question->answers_id = $answerId;
+        $question->save();
+
+        return redirect()->route('questions.show', $question->posts_id)->with('success', 'Answer marked as correct.');
+    }
+
+    public function unmarkAsCorrect($questionId, $answerId)
+    {
+        $question = Question::findOrFail($questionId);
+        $this->authorize('update', $question);
+
+        if ((int) $question->answers_id !== (int) $answerId) {
+            return redirect()->back()->with('error', 'This answer is not marked as correct.');
+        }
+
+        $question->answers_id = null;
+        $question->save();
+
+        return redirect()->route('questions.show', $question->posts_id)->with('success', 'Answer unmarked as correct.');
+    }
 }
 
