@@ -159,4 +159,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/my-support-questions', [SupportController::class, 'mySupportQuestions'])->name('my.support.questions');
+    Route::post('/support-questions', [SupportController::class, 'store'])->name('support-questions.store');
+    Route::get('/support-questions/create', [SupportController::class, 'create'])->name('support-questions.create');
 });

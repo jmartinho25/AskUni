@@ -9,6 +9,9 @@
             {{ session('success') }}
         </div>
     @endif
+    @if ($supportQuestions->isEmpty())
+        <h4> No questions available. </h4>
+    @else
     @forelse($supportQuestions as $question)
         <div class="card support-question-item">
             <div class="card-header">
@@ -29,6 +32,7 @@
                     </form>
                 @endif
             </div>
+            @if (!$question->answers->isEmpty())
             <div class="answers-section">
                 @foreach($question->answers as $answer)
                     <div class="answer-item">
@@ -37,9 +41,15 @@
                     </div>
                 @endforeach
             </div>
+            @endif
         </div>
     @empty
         <div class="alert alert-info">No support contacts found.</div>
     @endforelse
+    <div class="pagination-container">
+        {{ $supportQuestions->links() }}
+    </div>
+    @endif
 </div>
+
 @endsection

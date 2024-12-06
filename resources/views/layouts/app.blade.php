@@ -62,6 +62,12 @@
                     <button>Add Question</button>
             </div>
 
+            <div class="support">
+                    <a href="{{ route('support-questions.create') }} " id="support">
+                        <i class="fa fa-headset"></i>
+                    </a>
+            </div>
+
             <div class="notifications">
                 <a href="#" id="notification-bell">
                     <i id="notification-icon" class="fa-regular fa-bell"></i>
@@ -73,6 +79,8 @@
                     </ul>
                 </div>
             </div>
+
+                
 
                 <div class="profile">
                     <a href="{{ route('profile', Auth::user()->id) }} " id="user">

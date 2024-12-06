@@ -32,5 +32,9 @@
     @empty
         <div class="alert alert-info">No support contacts found.</div>
     @endforelse
+
+    <div class="pagination-container">
+        {{ $supportQuestions->links() }}
+    </div>
 </div>
 @endsection

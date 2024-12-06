@@ -645,8 +645,13 @@ body {
 }
 
 .top-nav .notifications i,
-.top-nav .profile i {
+.top-nav .profile i,
+.top-nav .support i {
   font-size: 1.5em;
+}
+
+.support .fa.fa-headset:hover{
+  color: #cc6600;
 }
 
 @media (max-width: 768px) {
