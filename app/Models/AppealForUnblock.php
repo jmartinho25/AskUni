@@ -9,10 +9,14 @@ class AppealForUnblock extends Model
 {
     use HasFactory;
 
+    protected $table = 'appeal_for_unblocks';
+
     protected $fillable = [
-        'content', 
-        'users_id'
+        'content',
+        'users_id',
     ];
+
+    public $timestamps = false;
 
     public function user()
     {

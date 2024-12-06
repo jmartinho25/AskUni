@@ -26,7 +26,6 @@
 
     <h2>Users</h2>
 
-
     <form action="{{ route('admin.dashboard') }}" method="GET" id="user-search-bar">
         <input type="text" name="query" id="user-search-input" value="{{ $query ?? '' }}" placeholder="Search users...">
         <button type="submit" id="user-search-button">
@@ -43,6 +42,7 @@
             <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -51,6 +51,13 @@
                 <tr @if($user->deleted_at) class="table-danger" @endif>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
+                    <td>
+                        @if($user->is_blocked)
+                            <span class="text-danger">Blocked</span>
+                        @else
+                            <span class="text-success">Active</span>
+                        @endif
+                    </td>
                     <td>
                         @if($user->deleted_at)
                             <span class="text-danger">Deleted</span>
@@ -77,6 +84,26 @@
                                         <i class="fas fa-user-shield"></i>
                                     </button>
                                 </form>
+
+                                <!-- Botão de bloqueio -->
+                                @if(!$user->is_blocked)
+                                    <form action="{{ route('admin.users.block', $user->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to block this user?')" title="Block User">
+                                            <i class="fas fa-ban"></i>
+                                        </button>
+                                    </form>
+                                @endif
+
+                                <!-- Botão de desbloqueio -->
+                                @if($user->is_blocked)
+                                    <form action="{{ route('admin.users.unblock', $user->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to unblock this user?')" title="Unblock User">
+                                            <i class="fas fa-unlock"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             @else
                                 @if($user->hasRole('admin'))
                                     <span class="text-muted">Admin</span>
@@ -86,22 +113,18 @@
                             @endif
                         @endif
                     </td>
-
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3">No users found for your search.</td>
+                    <td colspan="4">No users found for your search.</td>
                 </tr>
             @endforelse
         </tbody>
     </table>
 
-    <!-- Paginação -->
     <div id="pagination-container-user">
         {{ $users->appends(['query' => $query])->links() }}
     </div>
 
 </div>
-
-
 @endsection

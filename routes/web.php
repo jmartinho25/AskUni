@@ -20,7 +20,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\AppealForUnblockController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -198,3 +198,9 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::post('/support-answers', [SupportController::class, 'storeAnswer'])->name('support-answers.store');
 });
+
+// Appeal for Unblock
+Route::post('/appeal-for-unblock', [AppealForUnblockController::class, 'store'])->name('appealForUnblock.store');
+Route::get('/appeal-for-unblock', [AppealForUnblockController::class, 'index'])->name('appealForUnblock.index');
+Route::post('/admin/users/{id}/block', [AdminController::class, 'block'])->name('admin.users.block');
+Route::post('/admin/users/{id}/unblock', [AdminController::class, 'unblock'])->name('admin.users.unblock');

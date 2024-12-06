@@ -205,7 +205,8 @@ CREATE TABLE badges_notifications (
 CREATE TABLE appeal_for_unblocks (
     id SERIAL PRIMARY KEY,
     content TEXT NOT NULL,
-    users_id INTEGER REFERENCES users(id) ON DELETE SET NULL
+    users_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP CHECK (created_at <= now())
 );
 
 CREATE TABLE content_reports (

@@ -40,7 +40,6 @@
         </tbody>
     </table>
 
-    <!-- Paginação -->
     <div class="pagination-container">
         {{ $unblockRequests->links() }}
     </div>

@@ -14,13 +14,11 @@ class Question extends Model
 
     protected $primaryKey = 'posts_id';
 
-    // Don't add create and update timestamps in database.
     public $timestamps = false;
 
-    // Define the fillable fields for mass assignment
     protected $fillable = [
-        'posts_id', // Relationship with the Post
-        'title',// Question title
+        'posts_id', 
+        'title',
     ];
 
     /**

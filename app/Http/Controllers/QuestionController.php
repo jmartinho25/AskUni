@@ -287,7 +287,7 @@ class QuestionController extends Controller
             $user->followedQuestions()->attach($id);
         }
 
-        return redirect()->route('questions.show', $id)->with('success', 'You are now following this question.');
+        return response()->json(['success' => true]);
     }
 
     public function unfollow($id)
@@ -299,7 +299,7 @@ class QuestionController extends Controller
             $user->followedQuestions()->detach($id);
         }
 
-        return redirect()->route('questions.show', $id)->with('success', 'You have unfollowed this question.');
+        return response()->json(['success' => true]);
     }
 }
 

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\File;
 
 class AboutUsController extends Controller
 {
-    protected $filePath = 'resources/about_us.md';
+    protected $filePath = 'storage/about_us.md';
 
     public function index()
     {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\AppealForUnblock;
 
 class AdminController extends Controller
 {
@@ -16,6 +17,7 @@ class AdminController extends Controller
                 $q->where('name', 'like', '%' . $query . '%')
                   ->orWhere('email', 'like', '%' . $query . '%');
             })
+            ->orderBy('name') 
             ->paginate(10);
 
         return view('pages.admin.dashboard', compact('users', 'query'));
@@ -25,15 +27,45 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Verificar se o usuário já é admin ou está eliminado
         if ($user->hasRole('admin') || $user->deleted_at) {
             return redirect()->route('admin.dashboard')->with('error', 'User cannot be elevated to admin.');
         }
 
-        // Adicionar o papel de admin
         $adminRole = Role::where('name', 'admin')->first();
         $user->roles()->attach($adminRole);
 
         return redirect()->route('admin.dashboard')->with('success', 'User has been elevated to admin.');
+    }
+
+    public function block($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->is_blocked) {
+            return redirect()->route('admin.dashboard')->with('error', 'User is already blocked.');
+        }
+
+        $user->is_blocked = true;
+        $user->save();
+
+        return redirect()->route('admin.dashboard')->with('success', 'User has been blocked.');
+    }
+    public function unblock($id)
+    {
+        $user = User::findOrFail($id);
+
+        if (!$user->is_blocked) {
+            return redirect()->route('admin.dashboard')->with('error', 'User is not blocked.');
+        }
+
+        $user->is_blocked = false;
+        $user->save();
+
+        $appeal = AppealForUnblock::where('users_id', $user->id)->first();
+        if ($appeal) {
+            $appeal->delete(); 
+        }
+
+        return redirect()->route('admin.dashboard')->with('success', 'User has been unblocked!');
     }
 }

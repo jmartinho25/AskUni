@@ -15,9 +15,3 @@ We are a passionate team of developers, educators, and learners committed to mak
 Become a part of our growing community today. Whether you're here to ask, answer, or explore, there's a place for you at AskUni. Together, let’s build a future where knowledge is free and accessible to all.
 
 For questions, feedback, or to learn more about us, feel free to contact us.
-
-
-
-
-
-
