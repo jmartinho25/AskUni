@@ -1,8 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+@if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+@if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+@endif
+
 <div class="container">
     <h1>Frequently Asked Questions</h1>
+
 
     @can('admin', Auth::user())
         <div class="mb-3">

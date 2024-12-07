@@ -9,6 +9,11 @@
             {{ session('success') }}
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     @if ($supportQuestions->isEmpty())
         <h4> No questions available. </h4>
     @else
