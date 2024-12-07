@@ -23,7 +23,7 @@
                 </button>
             @endauth
 
-            <p>Created by: 
+            <p>Created by:&nbsp;
                 @if ($question->post->user)
                     @if ($question->post->user->trashed())
                         <span>Deleted User</span>
@@ -147,10 +147,34 @@
         @if ($question->answers->isEmpty())
             <p>No answers available.</p>
         @else
-            @foreach ($question->answers as $answer)
-                <div class="answer-item">
+            @php
+                $answers = $question->answers->sortByDesc(function ($answer) use ($question) {
+                    return $answer->posts_id === $question->answers_id ? 1 : 0;
+                });
+            @endphp
+
+            @foreach ($answers as $answer)
+                <div id="answer-{{ $answer->posts_id }}" class="answer-item">
+                    @if ($question->answers_id === $answer->posts_id)
+                        <p class="correct-answer"><i class="fa-solid fa-check" style="color: #209770;"></i> Correct Answer</p>
+                        @can('update', $question)
+                            <form action="{{ route('answers.unmarkAsCorrect', ['question' => $question->posts_id, 'answer' => $answer->posts_id]) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-warning">Unmark as Correct</button>
+                            </form>
+                        @endcan
+                    @else
+                        @can('update', $question)
+                            @if (is_null($question->answers_id))
+                                <form action="{{ route('answers.markAsCorrect', ['question' => $question->posts_id, 'answer' => $answer->posts_id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success">Mark as Correct</button>
+                                </form>
+                            @endif
+                        @endcan
+                    @endif
                     <p>{{ $answer->post->content }}</p>
-                    <p>Answered by: 
+                    <p>Answered by:&nbsp;
                         @if ($answer->post->user)
                             @if ($answer->post->user->trashed())
                                 <span>Deleted User</span>
@@ -245,9 +269,9 @@
                     @if (!$answer->comments->isEmpty())
                         <h3>Comments</h3>
                         @foreach ($answer->comments as $comment)
-                            <div class="comment-item">
+                            <div id="comment-{{ $comment->id }}" class="comment-item">
                                 <p>{{ $comment->content }}</p>
-                                <p>Commented by: 
+                                <p>Commented by:&nbsp;
                                     @if ($comment->user)
                                         @if ($comment->user->trashed())
                                             <span>Deleted User</span>
@@ -296,9 +320,9 @@
             <p>No comments available.</p>
         @else
             @foreach ($question->comments as $comment)
-                <div class="question-comment-item">
+                <div id="comment-{{ $comment->id }}" class="question-comment-item">
                     <p>{{ $comment->content }}</p>
-                    <p>Commented by: 
+                    <p>Commented by:&nbsp;
                         @if ($comment->user)
                             @if ($comment->user->trashed())
                                 <span>Deleted User</span>
