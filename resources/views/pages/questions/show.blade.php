@@ -99,10 +99,13 @@
                     </a>
                 @endif
             @endcan
-            @can('update-tags', $question)
-                <a class="button" href="{{ route('questions.edit-tags', $question) }}" id="btn-edit" title="Edit Tags">
-                    <i class="fas fa-tags"></i>
-                </a>
+            
+            @can('admin', Auth::user())
+                @if(Auth::user()->id !== $question->post->users_id) <!-- Verifica se o usuário não é o autor -->
+                    <a class="button" href="{{ route('questions.edit-tags', $question) }}" id="btn-edit" title="Edit Tags">
+                        <i class="fas fa-tags"></i>
+                    </a>
+                @endif
             @endcan
 
             @can('delete', $question)
@@ -283,6 +286,4 @@
         @endif
     </div>
 </div>
-
-
 @endsection
