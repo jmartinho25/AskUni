@@ -154,7 +154,7 @@
             @endphp
 
             @foreach ($answers as $answer)
-                <div class="answer-item">
+                <div id="answer-{{ $answer->posts_id }}" class="answer-item">
                     @if ($question->answers_id === $answer->posts_id)
                         <p class="correct-answer"><i class="fa-solid fa-check" style="color: #209770;"></i> Correct Answer</p>
                         @can('update', $question)
@@ -269,7 +269,7 @@
                     @if (!$answer->comments->isEmpty())
                         <h3>Comments</h3>
                         @foreach ($answer->comments as $comment)
-                            <div class="comment-item">
+                            <div id="comment-{{ $comment->id }}" class="comment-item">
                                 <p>{{ $comment->content }}</p>
                                 <p>Commented by:&nbsp;
                                     @if ($comment->user)
@@ -320,7 +320,7 @@
             <p>No comments available.</p>
         @else
             @foreach ($question->comments as $comment)
-                <div class="question-comment-item">
+                <div id="comment-{{ $comment->id }}" class="question-comment-item">
                     <p>{{ $comment->content }}</p>
                     <p>Commented by:&nbsp;
                         @if ($comment->user)
