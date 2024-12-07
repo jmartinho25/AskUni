@@ -55,34 +55,34 @@ class Post extends Model
         return $this->belongsToMany(Tag::class, 'posts_tags', 'posts_id', 'tags_id');
     }
 
-    public function likes(): BelongsToMany
+    public function likes()
     {
-        return $this->belongsToMany(User::class, 'users_likes_posts', 'posts_id', 'users_id');
+        return $this->hasMany(Like::class, 'posts_id', 'id'); 
     }
 
+    public function dislikes(): HasMany
+    {
+        return $this->hasMany(Dislike::class, 'posts_id', 'id'); 
+    }
+
+    public function likesCount(): int
+    {
+        return $this->likes()->count(); 
+    }
+
+    public function dislikesCount(): int
+    {
+        return $this->dislikes()->count(); 
+    }
+    
     public function isLikedBy(User $user): bool
     {
         return $this->likes()->where('users_id', $user->id)->exists();
     }
 
-    public function likesCount(): int
-    {
-        return $this->likes()->count();
-    }
-
-    public function dislikes(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'users_dislikes_posts', 'posts_id', 'users_id');
-    }
-
     public function isDislikedBy(User $user): bool
     {
         return $this->dislikes()->where('users_id', $user->id)->exists();
-    }
-
-    public function dislikesCount(): int
-    {
-        return $this->dislikes()->count();
     }
 
 }

@@ -28,8 +28,7 @@
     <script type="text/javascript" src="{{ url('js/search-users.js') }}" defer></script>
     <script type="text/javascript" src="{{ url('js/search-questions.js') }}" defer></script>
     <script type="text/javascript" src="{{ url('js/tags.js') }}" defer></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="{{ url('js/like-dislike.js') }}" defer></script>    
     <script type="text/javascript" src="{{ url('js/follow-unfollow.js') }}" defer></script>
 </head>
 <body>
@@ -102,7 +101,6 @@
         </div>
     </header>
 
-        <!-- Seção de Conteúdo -->
         <section id="content">
             @yield('content')
         </section>
