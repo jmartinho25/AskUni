@@ -362,31 +362,4 @@
         @endif
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#follow-btn').click(function() {
-            var questionId = {{ $question->posts_id }};
-            var isFollowing = $(this).hasClass('btn-warning');
-
-            $.ajax({
-                url: isFollowing ? '{{ route("questions.unfollow", ":id") }}'.replace(':id', questionId) : '{{ route("questions.follow", ":id") }}'.replace(':id', questionId),
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.success) {
-                        $('#follow-btn').toggleClass('btn-warning btn-primary');
-                        $('#follow-btn').text(isFollowing ? 'Follow' : 'Unfollow');
-                    }
-                },
-                error: function(xhr) {
-                    alert('An error occurred. Please try again.');
-                }
-            });
-        });
-    });
-</script>
 @endsection
