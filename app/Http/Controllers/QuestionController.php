@@ -32,26 +32,25 @@ class QuestionController extends Controller
     public function editTags($id)
     {
         $question = Question::findOrFail($id);
-        $this->authorize('update', $question);
-        $allTags = Tag::all();
+        $this->authorize('manage', Tag::class); 
+
+        $allTags = Tag::all(); 
         return view('pages.questions.edit-tags', compact('question', 'allTags'));
     }
-
     public function updateTags(Request $request, $id)
     {
         $question = Question::findOrFail($id);
-        $this->authorize('update', $question);
+        $this->authorize('manage', Tag::class); 
 
-        $validated = $request->validate([
-            'tags' => 'required|array',
+        $request->validate([
+            'tags' => 'array',
             'tags.*' => 'exists:tags,id',
         ]);
 
-        $question->tags()->sync($validated['tags']);
+        $question->tags()->sync($request->tags);
 
-        return redirect()->route('questions.show', $question->posts_id)->with('success', 'Tags updated successfully.');
+        return redirect()->route('questions.show', $id)->with('success', 'Tags updated successfully.');
     }
-
     /**
      * Store a newly created resource in storage.
      */
