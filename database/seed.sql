@@ -105,7 +105,9 @@ CREATE TABLE tags (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,
     category TEXT NOT NULL,
-    description TEXT
+    description TEXT,
+    about TEXT,
+    picture TEXT DEFAULT 'img/tags/default.png'
 );
 
 CREATE TABLE users_follow_tags (
@@ -1172,21 +1174,22 @@ INSERT INTO posts (content, date, users_id) VALUES
 ('Approach complex engineering problems by defining the problem, breaking it down into smaller parts, and using tools like flowcharts or systems diagrams for clarity.', now(), 9),
 ('The finite element method is essential for analyzing complex structures and systems; it allows for simulations of how materials will behave under various conditions.', now(), 10);
 
-INSERT INTO tags (name, category, description) VALUES 
-('LEIC', 'Bachelor''s Degree', 'Informatics and Computing Engineering'),
-('LBIO', 'Bachelor''s Degree', 'Bioengineering'),
-('LAERO', 'Bachelor''s Degree', 'Aerospace Engineering'),
-('LEC', 'Bachelor''s Degree', 'Civil Engineering'),
-('LEMAT', 'Bachelor''s Degree', 'Materials Engineering'),
-('LEGI', 'Bachelor''s Degree', 'Industrial Engineering and Management'),
-('LEEC', 'Bachelor''s Degree', 'Electrical and Computer Engineering'),
-('LEM', 'Bachelor''s Degree', 'Mechanical Engineering'),
-('LEQ', 'Bachelor''s Degree', 'Chemical Engineering'),
-('Ethics', 'General', 'Topics related to ethical principles, frameworks and applications'),
-('Investigation', 'General', 'General topics on research and investigative methods'),
-('Social', 'General', 'Matters pertaining to society, culture and social dynamics'),
-('Sports', 'General', 'Topics covering sports, physical activities and related industries'),
-('Business', 'General', 'Topics related to business, management, jobs and entrepreneurship');
+INSERT INTO tags (name, category, description, about, picture) VALUES 
+('LEIC', 'Bachelor''s Degree', 'Informatics and Computing Engineering', 'Informatics and Computing Engineering (LEIC) is a field that merges technology, mathematics, and computational theory to design and develop complex systems. Students in this program learn a wide range of skills from programming and algorithm design to data structures and software development. This tag covers topics related to the various aspects of computing and information technologies.', 'img/tags/leic.png'),
+('LBIO', 'Bachelor''s Degree', 'Bioengineering', 'Bioengineering (LBIO) combines principles from biology, engineering, and medicine to innovate and design technologies that improve healthcare and the biological world. This tag includes topics like medical device design, genetic engineering, and bioinformatics, among others. Students and professionals in this field are focused on bridging the gap between biology and engineering to enhance human life.', 'img/tags/lbio.png'),
+('LAERO', 'Bachelor''s Degree', 'Aerospace Engineering', 'Aerospace Engineering (LAERO) focuses on the design, development, and innovation of aircraft and spacecraft. It incorporates principles of aerodynamics, propulsion, avionics, and materials science. This tag is dedicated to topics such as satellite technology, aircraft design, and space exploration, aimed at advancing technologies for air and space travel.', 'img/tags/laero.png'),
+('LEC', 'Bachelor''s Degree', 'Civil Engineering', 'Civil Engineering (LEC) is a branch of engineering dedicated to the design, construction, and maintenance of infrastructure such as bridges, roads, buildings, and water systems. Topics covered by this tag involve structural engineering, geotechnical engineering, environmental considerations, and project management in large-scale civil projects.', 'img/tags/lec.png'),
+('LEMAT', 'Bachelor''s Degree', 'Materials Engineering', 'Materials Engineering (LEMAT) deals with the study and manipulation of materials to develop products with new functionalities. This field includes materials selection, composites, metallurgy, polymers, and ceramics, aimed at improving the performance and sustainability of materials used in various industries. This tag covers the application of materials science in engineering design.', 'img/tags/lemat.png'),
+('LEGI', 'Bachelor''s Degree', 'Industrial Engineering and Management', 'Industrial Engineering and Management (LEGI) combines engineering principles with business management to optimize systems and processes. This program focuses on improving productivity, quality, and efficiency across various industries, with a strong emphasis on supply chain management, operations, and human resources. This tag includes topics related to business strategies in the industrial context.', 'img/tags/legi.png'),
+('LEEC', 'Bachelor''s Degree', 'Electrical and Computer Engineering', 'Electrical and Computer Engineering (LEEC) explores the principles of electrical systems, electronic devices, and computational systems. This field covers circuit design, power systems, robotics, and communications. This tag encompasses topics related to electrical engineering applications in consumer electronics, telecommunications, and automation technologies.', 'img/tags/leec.png'),
+('LEM', 'Bachelor''s Degree', 'Mechanical Engineering', 'Mechanical Engineering (LEM) is one of the broadest engineering disciplines, focusing on the design, analysis, and manufacturing of mechanical systems. From robotics to thermal systems, mechanical engineers work with motion, energy, and materials. This tag encompasses the study of thermodynamics, fluid mechanics, mechanical design, and robotics.', 'img/tags/lem.png'),
+('LEQ', 'Bachelor''s Degree', 'Chemical Engineering', 'Chemical Engineering (LEQ) combines chemistry, physics, biology, and mathematics to solve problems involving the production of chemicals, energy, and materials. This tag is focused on processes such as chemical production, environmental engineering, and the design of systems that transform raw materials into useful products.', 'img/tags/leq.png'),
+('Ethics', 'General', 'Topics related to ethical principles, frameworks and applications', 'The Ethics tag explores philosophical questions about what is right and wrong, and how ethical principles apply to real-world situations. Topics under this tag include bioethics, professional ethics, moral dilemmas, and ethics in technology. It provides a space to discuss and debate the moral implications of decisions in various fields.', 'img/tags/ethics.png'),
+('Investigation', 'General', 'General topics on research and investigative methods', 'The Investigation tag covers methodologies and techniques used in scientific research, investigations, and problem-solving. It includes topics such as data collection, statistical analysis, experimental design, and qualitative research methods. It also explores different types of investigations, including scientific, legal, and journalistic investigations.', 'img/tags/investigation.png'),
+('Social', 'General', 'Matters pertaining to society, culture and social dynamics', 'The Social tag addresses issues related to society, culture, and the dynamics that shape human interaction. Topics include sociology, anthropology, political science, social movements, and cultural studies. This tag explores how individuals and groups affect social change and the roles that culture, politics, and economics play in shaping society.', 'img/tags/social.png'),
+('Sports', 'General', 'Topics covering sports, physical activities and related industries', 'The Sports tag encompasses all aspects of sports, physical activities, and related industries. It covers athletic performance, sports science, team management, fitness, health, and sports marketing. Discussions in this category range from competitive sports to recreational activities and the ever-growing sports industry.', 'img/tags/sports.png'),
+('Business', 'General', 'Topics related to business, management, jobs and entrepreneurship', 'Business topics span a broad range of subjects related to the creation, management, and operation of companies. This tag covers everything from entrepreneurship and leadership to marketing, finance, and human resources. Whether it is starting a new business or optimizing an established one, this tag includes valuable insights into the world of business.', 'img/tags/business.png');
+
 
 INSERT INTO users_follow_tags (users_id, tags_id) VALUES 
 (1, 1), 

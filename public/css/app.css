@@ -366,6 +366,40 @@ body {
   color: #666;
 }
 
+.tag-layout {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  gap: 2em;
+}
+
+.tag-info {
+  grid-column: 1;
+  border-right: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 1.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: justify;
+}
+
+.tag-questions {
+  grid-column: 2;
+}
+
+.tag-image {
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-bottom: 1em;
+}
+
+#follow-button-tags {
+  margin-bottom: 2em;
+}
+
 
 /**************************************FOOTER**************************************/
 .footer {

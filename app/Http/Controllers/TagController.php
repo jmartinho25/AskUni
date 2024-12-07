@@ -110,8 +110,17 @@ class TagController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:tags,name',
             'category' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:255',
+            'about' => 'nullable|string|max:1000',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('img/tags'), $filename);
+            $validated['picture'] = 'img/tags/' . $filename;
+        }
 
         Tag::create($validated);
 
@@ -127,7 +136,19 @@ class TagController extends Controller
             'name' => 'required|string|max:255|unique:tags,name,' . $tag->id,
             'category' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
+            'about' => 'nullable|string|max:1000',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if ($request->hasFile('picture')) {
+            if ($tag->picture && $tag->picture !== 'img/tags/default.png' && file_exists(public_path($tag->picture))) {
+                unlink(public_path($tag->picture));
+            }
+            $file = $request->file('picture');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('img/tags'), $filename);
+            $validated['picture'] = 'img/tags/' . $filename;
+        }
 
         $tag->update($validated);
 
@@ -138,6 +159,11 @@ class TagController extends Controller
     {
         $tag = Tag::findOrFail($id);
         $this->authorize('manage', $tag);
+
+        if ($tag->picture && $tag->picture !== 'img/tags/default.png' && file_exists(public_path($tag->picture))) {
+            unlink(public_path($tag->picture));
+        }
+        
         $tag->delete();
 
         return redirect()->route('tags.manage')->with('success', 'Tag deleted successfully.');
