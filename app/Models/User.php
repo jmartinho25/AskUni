@@ -139,4 +139,51 @@ class User extends Authenticatable
         return $this->belongsToMany(Badge::class, 'earned_badges', 'users_id', 'badges_id')
                     ->withPivot('date');
     }
+    public function likes()
+    {
+        return $this->belongsToMany(Post::class, 'users_likes_posts', 'users_id', 'posts_id');
+    }
+
+    public function dislikes()
+    {
+        return $this->belongsToMany(Post::class, 'users_dislikes_posts', 'users_id', 'posts_id');
+    }
+
+    public function hasLiked(Post $post): bool
+    {
+        return $this->likes()->where('posts_id', $post->id)->exists();
+    }
+
+    public function like(Post $post): void
+    {
+        if (!$this->hasLiked($post)) {
+            $this->likes()->attach($post->id);
+        }
+    }
+
+    public function unlike(Post $post): void
+    {
+        if ($this->hasLiked($post)) {
+            $this->likes()->detach($post->id);
+        }
+    }
+
+    public function hasDisliked(Post $post): bool
+    {
+        return $this->dislikes()->where('posts_id', $post->id)->exists();
+    }
+
+    public function dislike(Post $post): void
+    {
+        if (!$this->hasDisliked($post)) {
+            $this->dislikes()->attach($post->id);
+        }
+    }
+
+    public function undislike(Post $post): void
+    {
+        if ($this->hasDisliked($post)) {
+            $this->dislikes()->detach($post->id);
+        }
+    }
 }

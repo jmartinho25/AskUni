@@ -1,23 +1,30 @@
-$(document).ready(function() {
-    $('.follow-btn').click(function() {
-        var questionId = $(this).data('question-id');
-        var isFollowing = $(this).hasClass('btn-warning');
+document.addEventListener('DOMContentLoaded', function() {
+    const followButtons = document.querySelectorAll('.follow-btn');
 
-        $.ajax({
-            url: isFollowing ? '/questions/' + questionId + '/unfollow' : '/questions/' + questionId + '/follow',
-            type: 'POST',
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                if (response.success) {
-                    $(this).toggleClass('btn-warning btn-primary');
-                    $(this).text(isFollowing ? 'Follow' : 'Unfollow');
+    followButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const questionId = this.getAttribute('data-question-id');
+            const isFollowing = this.classList.contains('btn-warning');
+
+            fetch(isFollowing ? `/questions/${questionId}/unfollow` : `/questions/${questionId}/follow`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
-            }.bind(this),
-            error: function(xhr) {
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.classList.toggle('btn-warning');
+                    this.classList.toggle('btn-primary');
+                    this.textContent = isFollowing ? 'Follow' : 'Unfollow';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
                 alert('An error occurred. Please try again.');
-            }
+            });
         });
     });
 });

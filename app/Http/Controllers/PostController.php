@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -97,32 +98,44 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        // Delete the post
         $post->delete();
 
-        // Redirect with a success message
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }
 
-    /**
-     * Like a post.
-     */
-    public function like(Post $post, Request $request)
+    public function like(Request $request, $postId)
     {
-        // Example logic: Increment likes for a post
-        $post->likes()->attach($request->user()->id);
+        $user = auth()->user(); 
+        $post = Post::findOrFail($postId);
 
-        return response()->json(['message' => 'Post liked successfully.']);
+        if ($post->isLikedBy($user)) { 
+            $post->likes()->where('users_id', $user->id)->delete(); 
+        } else {
+            $post->likes()->create(['users_id' => $user->id]); 
+        }
+
+        return response()->json([
+            'success' => true,
+            'likesCount' => $post->likesCount(), 
+            'dislikesCount' => $post->dislikesCount(),
+        ]);
     }
 
-    /**
-     * Dislike a post.
-     */
-    public function dislike(Post $post, Request $request)
+    public function dislike(Request $request, $postId)
     {
-        // Example logic: Increment dislikes for a post
-        $post->dislikes()->attach($request->user()->id);
+        $user = auth()->user();
+        $post = Post::findOrFail($postId);
 
-        return response()->json(['message' => 'Post disliked successfully.']);
+        if ($post->isDislikedBy($user)) {
+            $post->dislikes()->where('users_id', $user->id)->delete();
+        } else {
+            $post->dislikes()->create(['users_id' => $user->id]); 
+        }
+
+        return response()->json([
+            'success' => true,
+            'likesCount' => $post->likesCount(),
+            'dislikesCount' => $post->dislikesCount(), 
+        ]);
     }
 }

@@ -1,24 +1,46 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Http\Request;
 
 class LikeController extends Controller
 {
-    public function store(Request $request, $id)
+    public function store($id)
     {
         $post = Post::findOrFail($id);
-        $post->likes()->attach(auth()->id());
+        $user = auth()->user();
 
-        return back()->with('success');
+        if ($post->isLikedBy($user)) {
+            $post->likes()->where('users_id', $user->id)->delete();
+        } else {
+            $post->likes()->insert(['users_id' => $user->id, 'posts_id' => $post->id]);
+
+            if ($post->isDislikedBy($user)) {
+                $post->dislikes()->where('users_id', $user->id)->delete();
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'likesCount' => $post->likesCount(),
+            'dislikesCount' => $post->dislikesCount(),
+        ]);
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
         $post = Post::findOrFail($id);
-        $post->likes()->detach(auth()->id());
+        $user = auth()->user();
 
-        return back()->with('success');
+        if ($post->isLikedBy($user)) {
+            $post->likes()->where('users_id', $user->id)->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'likesCount' => $post->likesCount(), 
+            'dislikesCount' => $post->dislikesCount(),
+        ]);
     }
 }

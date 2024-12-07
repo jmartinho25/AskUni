@@ -81,63 +81,38 @@
                 @endif
             </p>
 
-    <p>
-        @foreach ($question->tags as $tag)
-            <a href="{{ route('tags.show', $tag->name) }}"> <span class="tag">#{{ $tag->name }}</span> </a>
-        @endforeach
-    </p>
-
+            <p>
+                @foreach ($question->tags as $tag)
+                    <a href="{{ route('tags.show', $tag->name) }}"> <span class="tag">#{{ $tag->name }}</span> </a>
+                @endforeach
+            </p>
+            
             <p>
                 @if (Auth::check() && $question->post->isLikedBy(Auth::user()))
-                    <form action="{{ route('like.destroy', $question->posts_id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-like">
-                            <i class="fas fa-thumbs-up"></i> {{ $question->post->likesCount() }}
-                        </button>
-                    </form>
+                    <button class="btn btn-like like-btn btn-like-active" data-post-id="{{ $question->posts_id }}">
+                        <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ $question->post->likesCount() }}</span>
+                    </button>
                 @else
-                    @can('like', $question->post)
-                        <form action="{{ route('like.store', $question->posts_id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-like">
-                                <i class="far fa-thumbs-up"></i> {{ $question->post->likesCount() }}
-                            </button>
-                        </form>
-                    @else
-                        <form style="display:inline;">
-                            <button type="button" class="btn btn-like" disabled>
-                                <i class="far fa-thumbs-up"></i> {{ $question->post->likesCount() }}
-                            </button>
-                        </form>
-                    @endcan
+                   
+                    <button class="btn btn-like like-btn" data-post-id="{{ $question->posts_id }}">
+                        <i class="far fa-thumbs-up"></i> <span class="like-count">{{ $question->post->likesCount() }}</span>
+                    </button>
+                    
                 @endif
 
                 @if (Auth::check() && $question->post->isDislikedBy(Auth::user()))
-                    <form action="{{ route('dislike.destroy', $question->posts_id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-like">
-                            <i class="fas fa-thumbs-down"></i> {{ $question->post->dislikesCount() }}
-                        </button>
-                    </form>
+                    <button class="btn btn-like dislike-btn btn-like-active" data-post-id="{{ $question->posts_id }}">
+                        <i class="fas fa-thumbs-down"></i> <span class="dislike-count">{{ $question->post->dislikesCount() }}</span>
+                    </button>
                 @else
-                    @can('dislike', $question->post)
-                        <form action="{{ route('dislike.store', $question->posts_id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-like">
-                                <i class="far fa-thumbs-down"></i> {{ $question->post->dislikesCount() }}
-                            </button>
-                        </form>
-                    @else
-                        <form style="display:inline;">
-                            <button type="button" class="btn btn-like" disabled>
-                                <i class="far fa-thumbs-down"></i> {{ $question->post->dislikesCount() }}
-                            </button>
-                        </form>
-                    @endcan
+                    <button class="btn btn-like dislike-btn" data-post-id="{{ $question->posts_id }}">
+                        <i class="far fa-thumbs-down"></i> <span class="dislike-count">{{ $question->post->dislikesCount() }}</span>
+                    </button>
+                    
                 @endif
             </p>
+
+            
 
             <a class="button" href="{{ route('home') }}" id="btn-edit" title="Home Page">
                 <i class="fas fa-home"></i>
@@ -162,7 +137,7 @@
                     </a>
                 @endif
             @endcan
-            @can ('admin', Auth::user())
+            @can('update-tags', $question)
                 <a class="button" href="{{ route('questions.edit-tags', $question) }}" id="btn-edit" title="Edit Tags">
                     <i class="fas fa-tags"></i>
                 </a>
@@ -249,7 +224,7 @@
                         @endcan
                     @endif
                     <p>{{ $answer->post->content }}</p>
-                    <p>Answered by:&nbsp;
+                    <p>Answered by: 
                         @if ($answer->post->user)
                             @if ($answer->post->user->trashed())
                                 <span>Deleted User</span>
@@ -264,53 +239,23 @@
 
                     <p>
                         @if (Auth::check() && $answer->post->isLikedBy(Auth::user()))
-                            <form action="{{ route('like.destroy', $answer->posts_id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-like">
-                                    <i class="fas fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
-                                </button>
-                            </form>
+                            <button class="btn btn-like like-btn btn-like-active" data-post-id="{{ $answer->post->id }}">
+                                <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ $answer->post->likesCount() }}</span>
+                            </button>
                         @else
-                            @can('like', $answer->post)
-                                <form action="{{ route('like.store', $answer->posts_id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-like">
-                                        <i class="far fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
-                                    </button>
-                                </form>
-                            @else
-                                <form style="display:inline;">
-                                    <button type="button" class="btn btn-like" disabled>
-                                        <i class="far fa-thumbs-up"></i> {{ $answer->post->likesCount() }}
-                                    </button>
-                                </form>
-                            @endcan
+                            <button class="btn btn-like like-btn" data-post-id="{{ $answer->post->id }}">
+                                <i class="far fa-thumbs-up"></i> <span class="like-count">{{ $answer->post->likesCount() }}</span>
+                            </button>
                         @endif
 
                         @if (Auth::check() && $answer->post->isDislikedBy(Auth::user()))
-                            <form action="{{ route('dislike.destroy', $answer->posts_id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-like">
-                                    <i class="fas fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
-                                </button>
-                            </form>
+                            <button class="btn btn-like dislike-btn btn-like-active" data-post-id="{{ $answer->post->id }}">
+                                <i class="fas fa-thumbs-down"></i> <span class="dislike-count">{{ $answer->post->dislikesCount() }}</span>
+                            </button>
                         @else
-                            @can('dislike', $answer->post)
-                                <form action="{{ route('dislike.store', $answer->posts_id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-like">
-                                        <i class="far fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
-                                    </button>
-                                </form>
-                            @else
-                                <form style="display:inline;">
-                                    <button type="button" class="btn btn-like" disabled>
-                                        <i class="far fa-thumbs-down"></i> {{ $answer->post->dislikesCount() }}
-                                    </button>
-                                </form>
-                            @endcan
+                            <button class="btn btn-like dislike-btn" data-post-id="{{ $answer->post->id }}">
+                                <i class="far fa-thumbs-down"></i> <span class="dislike-count">{{ $answer->post->dislikesCount() }}</span>
+                            </button>
                         @endif
                     </p>
 
