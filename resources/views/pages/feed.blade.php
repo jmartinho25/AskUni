@@ -6,6 +6,11 @@
         {{ session('success') }}
     </div>
 @endif
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 <div class="container">
 <h2>Trending Questions</h2>
     <div class="trending-questions">

@@ -8,6 +8,11 @@
             {{ session('success') }}
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="card mb-3">
         <div class="card-body">
             <form action="{{ route('support-questions.store') }}" method="POST">

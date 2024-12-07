@@ -8,6 +8,11 @@
             {{ session('success') }}
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+    </div>
+    @endif
     @forelse($supportQuestions as $question)
         <div class="card support-question-item">
             <div class="card-header">

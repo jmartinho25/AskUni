@@ -30,7 +30,7 @@ class AppealForUnblockController extends Controller
         }
 
         if (!$user->is_blocked) {
-            return redirect()->route('feed.index')->with('error', 'You are not blocked, no appeal needed.'); // Redireciona para o feed
+            return redirect()->route('feed')->with('error', 'You are not blocked, no appeal needed.'); // Redireciona para o feed
         }
 
         $appeal = AppealForUnblock::where('users_id', $user->id)->first();

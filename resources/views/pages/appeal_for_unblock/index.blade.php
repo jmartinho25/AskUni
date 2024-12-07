@@ -1,14 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Appeal for Unblock</h1>
-
-    @if(session('success'))
+@if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+<div class="container">
+    <h1>Appeal for Unblock</h1>
+
 
     <form action="{{ route('appealForUnblock.store') }}" method="POST">
         @csrf
