@@ -28,8 +28,7 @@
     <script type="text/javascript" src="{{ url('js/search-users.js') }}" defer></script>
     <script type="text/javascript" src="{{ url('js/search-questions.js') }}" defer></script>
     <script type="text/javascript" src="{{ url('js/tags.js') }}" defer></script>
-
-    <script type="text/javascript" src="{{ url('js/follow-unfollow.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url('js/modal.js') }}" defer></script>
 </head>
 <body>
     <main>

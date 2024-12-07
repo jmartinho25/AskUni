@@ -85,5 +85,10 @@ class Post extends Model
         return $this->dislikes()->count();
     }
 
+    public function editHistories(): HasMany
+    {
+        return $this->hasMany(EditHistory::class, 'posts_id');
+    }
+
 }
 

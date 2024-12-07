@@ -21,6 +21,8 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppealForUnblockController;
+use App\Http\Controllers\EditHistoryController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -213,3 +215,8 @@ Route::post('/appeal-for-unblock', [AppealForUnblockController::class, 'store'])
 Route::get('/appeal-for-unblock', [AppealForUnblockController::class, 'index'])->name('appealForUnblock.index');
 Route::post('/admin/users/{id}/block', [AdminController::class, 'block'])->name('admin.users.block');
 Route::post('/admin/users/{id}/unblock', [AdminController::class, 'unblock'])->name('admin.users.unblock');
+
+// Edit History
+Route::controller(EditHistoryController::class)->group(function () {
+    Route::get('/api/edit-history/{id}', 'getEditHistoryAPI')->name('edit-history');
+});

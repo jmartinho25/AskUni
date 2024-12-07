@@ -38,4 +38,9 @@ class Comment extends Model
     {
         return $this->hasMany(ContentReports::class, 'comments_id');
     }
+
+    public function editHistories()
+    {
+        return $this->hasMany(EditHistory::class, 'comments_id');
+    }
 }
