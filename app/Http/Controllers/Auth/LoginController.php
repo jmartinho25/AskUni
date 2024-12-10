@@ -34,13 +34,18 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
- 
+
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
- 
+
+            $user = Auth::user();
+            if ($user->is_blocked) {
+                return redirect()->route('appealForUnblock.index'); 
+            }
+
             return redirect()->intended('/feed')->withSuccess('You have logged in successfully!');
         }
- 
+
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');

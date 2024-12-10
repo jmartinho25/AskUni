@@ -187,6 +187,9 @@ class UserController extends Controller
         return view('pages.admin.reports', compact('user', 'reports'));
     }
 
+   
+
+
     /**
      * Unblock a user and delete the appeal.
      */
