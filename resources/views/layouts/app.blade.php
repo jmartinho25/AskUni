@@ -68,13 +68,13 @@
             </div>
 
             <div class="support">
-                    <a href="{{ route('support-questions.create') }} " id="support">
+                    <a href="{{ route('support-questions.create') }} " id="support" title="Support">
                         <i class="fa fa-headset"></i>
                     </a>
             </div>
 
             <div class="notifications">
-                <a href="#" id="notification-bell">
+                <a href="#" id="notification-bell" title="Notifications">
                     <i id="notification-icon" class="fa-regular fa-bell"></i>
                 </a>
                 <div class="notifications-dropdown" id="notifications-dropdown">
@@ -88,7 +88,7 @@
                 
 
                 <div class="profile">
-                    <a href="{{ route('profile', Auth::user()->id) }} " id="user">
+                    <a href="{{ route('profile', Auth::user()->id) }} " id="user" title="Profile">
                         <i class="fa fa-user"></i>
                     </a>
                 </div>
