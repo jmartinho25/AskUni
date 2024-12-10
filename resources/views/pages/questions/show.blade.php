@@ -15,51 +15,9 @@
     <div class="question-section">
         <div class="question-item">
 
-            @if($question->post->editHistories->isNotEmpty())
-                <p> Last edited on: {{ $question->post->editHistories->sortByDesc('date')->first()->date }}</p>
-            @endif
-            @auth
-            @if(auth()->user()->id === $question->post->users_id || auth()->user()->hasRole('admin'))
-            <button class="modal-button"> <i class="fas fa-history"></i> Edit History </button>
-            <div class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    @if($question->post->editHistories->isEmpty())
-                        <p>No edit history available.</p>
-                    @else
-                        <div class="edit-history">
-                            <div class="dates">
-                                @php
-                                    $groupedHistories = $question->post->editHistories->sortByDesc('date')->groupBy(function($history) {
-                                        return $history->date;
-                                    });
-                                @endphp
-                                @foreach($groupedHistories as $date => $histories)
-                                    @foreach($histories as $history)
-                                        <div class="date-item" data-history-id="{{ $history->id }}">
-                                           <h3> {{ $date }} </h3>
-                                        </div>
-                                    @endforeach
-                                @endforeach
-                            </div>
-                            <div class="edit-history-details">
-                                <p>Select an edit history to view details.</p>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-            @endif
-            @endauth
 
             <h1>{{ $question->title }}</h1>
             <p>{{ $question->post->content }}</p>
-
-            @auth
-                <button class="follow-btn btn {{ auth()->user()->followedQuestions()->where('questions_id', $question->posts_id)->exists() ? 'btn-warning' : 'btn-primary' }}" data-question-id="{{ $question->posts_id }}">
-                    {{ auth()->user()->followedQuestions()->where('questions_id', $question->posts_id)->exists() ? 'Unfollow' : 'Follow' }}
-                </button>
-            @endauth
 
             <p>Created by:&nbsp;
                 @if ($question->post->user)
@@ -88,6 +46,14 @@
             </p>
             
             <p>
+            @auth
+                <button class="follow-btn btn {{ auth()->user()->followedQuestions()->where('questions_id', $question->posts_id)->exists() ? 'btn-warning' : 'btn-primary' }}" data-question-id="{{ $question->posts_id }}">
+                    {{ auth()->user()->followedQuestions()->where('questions_id', $question->posts_id)->exists() ? 'Unfollow' : 'Follow' }}
+                </button>
+            @endauth
+            </p>
+
+            <p id="likes">
                 @if (Auth::check() && $question->post->isLikedBy(Auth::user()))
                     <button class="btn btn-like like-btn btn-like-active" data-post-id="{{ $question->posts_id }}">
                         <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ $question->post->likesCount() }}</span>
@@ -122,7 +88,6 @@
             </p>
 
             
-
             <a class="button" href="{{ route('home') }}" id="btn-edit" title="Home Page">
                 <i class="fas fa-home"></i>
             </a>
@@ -164,7 +129,49 @@
                     </button>
                 </form>
             @endcan
+
+            <div class="edit-history-container">
+            @auth
+            @if(auth()->user()->id === $question->post->users_id || auth()->user()->hasRole('admin'))
+            <button class="modal-button"> <i class="fas fa-history"></i> Edit History </button>
+            @endif
+            @endauth
+            @if($question->post->editHistories->isNotEmpty())
+                <p> Last edited on: {{ $question->post->editHistories->sortByDesc('date')->first()->date }}</p>
+            @endif
+            </div>
+
+
+            <div class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    @if($question->post->editHistories->isEmpty())
+                        <p>No edit history available.</p>
+                    @else
+                        <div class="edit-history">
+                            <div class="dates">
+                                @php
+                                    $groupedHistories = $question->post->editHistories->sortByDesc('date')->groupBy(function($history) {
+                                        return $history->date;
+                                    });
+                                @endphp
+                                @foreach($groupedHistories as $date => $histories)
+                                    @foreach($histories as $history)
+                                        <div class="date-item" data-history-id="{{ $history->id }}">
+                                           <h3> {{ $date }} </h3>
+                                        </div>
+                                    @endforeach
+                                @endforeach
+                            </div>
+                            <div class="edit-history-details">
+                                <p>Select an edit history to view details.</p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
         </div>
+
     </div>
 
     <div class="answers-section">
@@ -180,42 +187,7 @@
 
             @foreach ($answers as $answer)
                 <div id="answer-{{ $answer->posts_id }}" class="answer-item">
-                    @if($answer->post->editHistories->isNotEmpty())
-                        <p> Last edited on: {{ $answer->post->editHistories->sortByDesc('date')->first()->date }}</p>
-                    @endif
-                    @auth
-                    @if(auth()->user()->id === $answer->post->users_id || auth()->user()->hasRole('admin'))
-                    <button class="modal-button"> <i class="fas fa-history"></i> Edit History </button>
-                    <div class="modal">
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            @if($answer->post->editHistories->isEmpty())
-                                <p>No edit history available.</p>
-                            @else
-                                <div class="edit-history">
-                                    <div class="dates">
-                                        @php
-                                            $groupedHistories = $answer->post->editHistories->sortByDesc('date')->groupBy(function($history) {
-                                                return $history->date;
-                                            });
-                                        @endphp
-                                        @foreach($groupedHistories as $date => $histories)
-                                            @foreach($histories as $history)
-                                                <div class="date-item" data-history-id="{{ $history->id }}">
-                                                <h3> {{ $date }} </h3>
-                                                </div>
-                                            @endforeach
-                                        @endforeach
-                                    </div>
-                                    <div class="edit-history-details">
-                                        <p>Select an edit history to view details.</p>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                    @endif
-                    @endauth
+                
 
                     @if ($question->answers_id === $answer->posts_id)
                         <p class="correct-answer"><i class="fa-solid fa-check" style="color: #209770;"></i> Correct Answer</p>
@@ -249,7 +221,7 @@
                     </p>
                     <p>Date: {{ $answer->post->date }}</p>
 
-                    <p>
+                    <p id="likes">
                         @if (Auth::check() && $answer->post->isLikedBy(Auth::user()))
                             <button class="btn btn-like like-btn btn-like-active" data-post-id="{{ $answer->post->id }}">
                                 <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ $answer->post->likesCount() }}</span>
@@ -310,46 +282,49 @@
                         </a>
                     @endif
 
+                    <div class="edit-history-container">
+                    @auth
+                    @if(auth()->user()->id === $answer->post->users_id || auth()->user()->hasRole('admin'))
+                    <button class="modal-button"> <i class="fas fa-history"></i> Edit History </button>
+                    @endif
+                    @endauth
+                    @if($answer->post->editHistories->isNotEmpty())
+                        <p> Last edited on: {{ $answer->post->editHistories->sortByDesc('date')->first()->date }}</p>
+                    @endif
+                    </div>
+                    <div class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            @if($answer->post->editHistories->isEmpty())
+                                <p>No edit history available.</p>
+                            @else
+                                <div class="edit-history">
+                                    <div class="dates">
+                                        @php
+                                            $groupedHistories = $answer->post->editHistories->sortByDesc('date')->groupBy(function($history) {
+                                                return $history->date;
+                                            });
+                                        @endphp
+                                        @foreach($groupedHistories as $date => $histories)
+                                            @foreach($histories as $history)
+                                                <div class="date-item" data-history-id="{{ $history->id }}">
+                                                <h3> {{ $date }} </h3>
+                                                </div>
+                                            @endforeach
+                                        @endforeach
+                                    </div>
+                                    <div class="edit-history-details">
+                                        <p>Select an edit history to view details.</p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
                     @if (!$answer->comments->isEmpty())
                         <h3>Comments</h3>
                         @foreach ($answer->comments as $comment)
                             <div id="comment-{{ $comment->id }}" class="comment-item">
-                                @if($comment->editHistories->isNotEmpty())
-                                    <p> Last edited on: {{ $comment->editHistories->sortByDesc('date')->first()->date }}</p>
-                                @endif
-                                @auth
-                                @if(auth()->user()->id === $comment->users_id || auth()->user()->hasRole('admin'))
-                                <button class="modal-button"> <i class="fas fa-history"></i> Edit History </button>
-                                <div class="modal">
-                                    <div class="modal-content">
-                                        <span class="close">&times;</span>
-                                        @if($comment->editHistories->isEmpty())
-                                            <p>No edit history available.</p>
-                                        @else
-                                            <div class="edit-history">
-                                                <div class="dates">
-                                                    @php
-                                                        $groupedHistories = $comment->editHistories->sortByDesc('date')->groupBy(function($history) {
-                                                            return $history->date;
-                                                        });
-                                                    @endphp
-                                                    @foreach($groupedHistories as $date => $histories)
-                                                        @foreach($histories as $history)
-                                                            <div class="date-item" data-history-id="{{ $history->id }}">
-                                                            <h3> {{ $date }} </h3>
-                                                            </div>
-                                                        @endforeach
-                                                    @endforeach
-                                                </div>
-                                                <div class="edit-history-details">
-                                                    <p>Select an edit history to view details.</p>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-                                @endif
-                                @endauth
                                 <p>{{ $comment->content }}</p>
                                 <p>Commented by:&nbsp;
                                     @if ($comment->user)
@@ -386,6 +361,44 @@
                                         </a>
                                     @endif
                                 </div>
+                                <div class="edit-history-container">
+                                @auth
+                                @if(auth()->user()->id === $comment->users_id || auth()->user()->hasRole('admin'))
+                                <button class="modal-button"> <i class="fas fa-history"></i> Edit History </button>
+                                @endif
+                                @endauth
+                                @if($comment->editHistories->isNotEmpty())
+                                    <p> Last edited on: {{ $comment->editHistories->sortByDesc('date')->first()->date }}</p>
+                                @endif
+                                </div>
+                                <div class="modal">
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        @if($comment->editHistories->isEmpty())
+                                            <p>No edit history available.</p>
+                                        @else
+                                            <div class="edit-history">
+                                                <div class="dates">
+                                                    @php
+                                                        $groupedHistories = $comment->editHistories->sortByDesc('date')->groupBy(function($history) {
+                                                            return $history->date;
+                                                        });
+                                                    @endphp
+                                                    @foreach($groupedHistories as $date => $histories)
+                                                        @foreach($histories as $history)
+                                                            <div class="date-item" data-history-id="{{ $history->id }}">
+                                                            <h3> {{ $date }} </h3>
+                                                            </div>
+                                                        @endforeach
+                                                    @endforeach
+                                                </div>
+                                                <div class="edit-history-details">
+                                                    <p>Select an edit history to view details.</p>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         @endforeach
                     @endif
@@ -401,42 +414,6 @@
         @else
             @foreach ($question->comments as $comment)
                 <div id="comment-{{ $comment->id }}" class="question-comment-item">
-                    @if($comment->editHistories->isNotEmpty())
-                        <p> Last edited on: {{ $comment->editHistories->sortByDesc('date')->first()->date }}</p>
-                    @endif
-                    @auth
-                    @if(auth()->user()->id === $comment->users_id || auth()->user()->hasRole('admin'))
-                    <button class="modal-button"> <i class="fas fa-history"></i> Edit History </button>
-                    <div class="modal">
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            @if($comment->editHistories->isEmpty())
-                                <p>No edit history available.</p>
-                            @else
-                                <div class="edit-history">
-                                    <div class="dates">
-                                        @php
-                                            $groupedHistories = $comment->editHistories->sortByDesc('date')->groupBy(function($history) {
-                                                return $history->date;
-                                            });
-                                        @endphp
-                                        @foreach($groupedHistories as $date => $histories)
-                                            @foreach($histories as $history)
-                                                <div class="date-item" data-history-id="{{ $history->id }}">
-                                                <h3> {{ $date }} </h3>
-                                                </div>
-                                            @endforeach
-                                        @endforeach
-                                    </div>
-                                    <div class="edit-history-details">
-                                        <p>Select an edit history to view details.</p>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                    @endif
-                    @endauth
 
                     <p>{{ $comment->content }}</p>
                     <p>Commented by:&nbsp;
@@ -473,6 +450,44 @@
                                 <i class="fas fa-exclamation-triangle"></i>
                             </a>
                         @endif
+                    </div>
+                    <div class="edit-history-container">
+                    @auth
+                    @if(auth()->user()->id === $comment->users_id || auth()->user()->hasRole('admin'))
+                    <button class="modal-button"> <i class="fas fa-history"></i> Edit History </button>
+                    @endif
+                    @if($comment->editHistories->isNotEmpty())
+                        <p> Last edited on: {{ $comment->editHistories->sortByDesc('date')->first()->date }}</p>
+                    @endif
+                    @endauth
+                    </div>
+                    <div class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            @if($comment->editHistories->isEmpty())
+                                <p>No edit history available.</p>
+                            @else
+                                <div class="edit-history">
+                                    <div class="dates">
+                                        @php
+                                            $groupedHistories = $comment->editHistories->sortByDesc('date')->groupBy(function($history) {
+                                                return $history->date;
+                                            });
+                                        @endphp
+                                        @foreach($groupedHistories as $date => $histories)
+                                            @foreach($histories as $history)
+                                                <div class="date-item" data-history-id="{{ $history->id }}">
+                                                <h3> {{ $date }} </h3>
+                                                </div>
+                                            @endforeach
+                                        @endforeach
+                                    </div>
+                                    <div class="edit-history-details">
+                                        <p>Select an edit history to view details.</p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             @endforeach

@@ -148,9 +148,6 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');
 });
 
-
-
-
 // FAQ Routes
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 
