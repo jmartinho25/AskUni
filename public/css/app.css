@@ -1450,3 +1450,9 @@ body {
 .edit-history .date-item:hover {
   background-color: #f0f0f0;
 }
+
+/***********************************FORM*************************************/
+.about-us-edit-container .form-control {
+  height: 500px; /* Altura maior para a caixa de texto */
+  resize: vertical; /* Permite redimensionar verticalmente */
+}
