@@ -56,8 +56,8 @@ Route::controller(RegisterController::class)->group(function () {
 
 // Profile
 Route::controller(UserController::class)->group(function () {
-    Route::get('/users/edit-profile', 'editUser')->name('edit-profile');
-    Route::put('/users/edit-profile', 'updateUser')->name('update-profile');
+    Route::get('/users/{id}/edit-profile', 'editUser')->name('edit-profile');
+    Route::put('/users/{id}/edit-profile', 'updateUser')->name('update-profile');
     Route::get('/users/{id}', 'show')->name('profile');
     Route::delete('/users/{id}', 'destroy')->name('users.destroy.profile');
 });
