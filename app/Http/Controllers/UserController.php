@@ -76,16 +76,16 @@ class UserController extends Controller
     }
 
     // Show edit user page
-    public function editUser()
+    public function editUser($id)
     {
-        $user = Auth::user();
+        $user = User::findOrFail($id);
         $this->authorize('editUser', $user);
         return view('pages.user.editUser', ['user' => $user]);
     }
 
-    public function updateUser(Request $request)
+    public function updateUser(Request $request, $id)
     {
-        $user = Auth::user();
+        $user = User::findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:100',

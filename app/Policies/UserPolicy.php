@@ -16,7 +16,7 @@ class UserPolicy
 
     public function editUser(User $authUser, User $user)
     {
-        return $authUser->id === $user->id;
+        return $authUser->id === $user->id|| $authUser->roles->contains('name', 'admin');
     }
 
     public function admin(User $user)
