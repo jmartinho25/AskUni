@@ -42,6 +42,15 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/logout', 'logout')->name('logout');
 });
 
+// Mail Routes
+Route::get('password/reset/{token}', [MailController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [MailController::class, 'reset'])->name('password.update');
+Route::get('password/request', [MailController::class, 'showLinkRequestForm'])->name('password.request');
+Route::get('/send-email', [MailController::class, 'showLinkRequestForm'])->name('send.email.form');
+Route::post('/send', [MailController::class, 'send'])->name('send.email');Route::get('/feedback', function () {
+    return view('emails.feedback');
+})->name('emails.feedback');
+
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register');
@@ -139,14 +148,7 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');
 });
 
-// Mail Routes
-Route::get('password/reset/{token}', [MailController::class, 'showResetForm'])->name('password.reset');
-Route::post('password/reset', [MailController::class, 'reset'])->name('password.update');
-Route::get('password/request', [MailController::class, 'showLinkRequestForm'])->name('password.request');
-Route::get('/send-email', [MailController::class, 'showLinkRequestForm'])->name('send.email.form');
-Route::post('/send', [MailController::class, 'send'])->name('send.email');Route::get('/feedback', function () {
-    return view('emails.feedback');
-})->name('emails.feedback');
+
 
 
 // FAQ Routes
