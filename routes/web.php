@@ -34,13 +34,6 @@ use App\Http\Controllers\EditHistoryController;
 |
 */
 
-// Root
-Route::redirect('/', '/home');
-
-// Home
-Route::controller(HomeController::class)->group(function () {
-    Route::get('/home', 'index')->name('home');
-});
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
@@ -53,8 +46,19 @@ Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register');
 });
+Route::post('/appeal-for-unblock', [AppealForUnblockController::class, 'store'])->name('appealForUnblock.store');
+Route::get('/appeal-for-unblock', [AppealForUnblockController::class, 'index'])->name('appealForUnblock.index');
 
-// Profile
+Route::middleware(['auth', 'checkBlocked'])->group(function () {
+    
+    // Root
+    Route::redirect('/', '/home');
+    
+    // Home
+    Route::controller(HomeController::class)->group(function () {
+        Route::get('/home', 'index')->name('home');
+    });
+    // Profile
 Route::controller(UserController::class)->group(function () {
     Route::get('/users/edit-profile', 'editUser')->name('edit-profile');
     Route::put('/users/edit-profile', 'updateUser')->name('update-profile');
@@ -144,6 +148,8 @@ Route::post('/send', [MailController::class, 'send'])->name('send.email');Route:
     return view('emails.feedback');
 })->name('emails.feedback');
 
+
+// FAQ Routes
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 
 Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
@@ -172,13 +178,7 @@ Route::controller(TagController::class)->group(function () {
 });
 
 
-// About Us Routes
 
-Route::get('/about-us', [AboutUsController::class, 'index'])->name('aboutUs.index');
-Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
-    Route::get('/about-us/edit', [AboutUsController::class, 'edit'])->name('aboutUs.edit');
-    Route::put('/about-us', [AboutUsController::class, 'update'])->name('aboutUs.update');
-});
 
 Route::middleware('auth')->group(function () {
     Route::post('questions/{id}/follow', [QuestionController::class, 'follow'])->name('questions.follow');
@@ -187,13 +187,19 @@ Route::middleware('auth')->group(function () {
 
 
 // Delete Questions, Answers, Comments
-
 Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::delete('questions/{id}', [QuestionController::class, 'destroy'])->name('questions.destroy');
     Route::delete('answers/{id}', [QuestionController::class, 'destroyAnswer'])->name('answers.destroy');
     Route::delete('comments/{id}', [QuestionController::class, 'destroyComment'])->name('comments.destroy');
     Route::get('questions/{id}/edit-tags', [QuestionController::class, 'editTags'])->name('questions.edit-tags');
     Route::put('questions/{id}/update-tags', [QuestionController::class, 'updateTags'])->name('questions.update-tags');
+});
+
+// About Us Routes
+Route::get('/about-us', [AboutUsController::class, 'index'])->name('aboutUs.index');
+Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
+    Route::get('/about-us/edit', [AboutUsController::class, 'edit'])->name('aboutUs.edit');
+    Route::put('/about-us', [AboutUsController::class, 'update'])->name('aboutUs.update');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -211,8 +217,6 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
 });
 
 // Appeal for Unblock
-Route::post('/appeal-for-unblock', [AppealForUnblockController::class, 'store'])->name('appealForUnblock.store');
-Route::get('/appeal-for-unblock', [AppealForUnblockController::class, 'index'])->name('appealForUnblock.index');
 Route::post('/admin/users/{id}/block', [AdminController::class, 'block'])->name('admin.users.block');
 Route::post('/admin/users/{id}/unblock', [AdminController::class, 'unblock'])->name('admin.users.unblock');
 
@@ -220,3 +224,6 @@ Route::post('/admin/users/{id}/unblock', [AdminController::class, 'unblock'])->n
 Route::controller(EditHistoryController::class)->group(function () {
     Route::get('/api/edit-history/{id}', 'getEditHistoryAPI')->name('edit-history');
 });
+
+    
+    });

@@ -110,7 +110,6 @@
     <footer class="footer">
         <a href="{{ route('faq.index') }}">FAQ</a>
         <a href="{{ route('aboutUs.index') }}">About Us</a>
-        <a href="{{ route('appealForUnblock.index') }}">Appeal for Unblock</a>
         <p>@AskUni</p>
     </footer>
     </main>
