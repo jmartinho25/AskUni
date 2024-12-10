@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container about-us-edit-container">
     <h1>Edit About Us Section</h1>
 
     <form action="{{ route('aboutUs.update') }}" method="POST">
