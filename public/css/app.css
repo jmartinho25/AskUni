@@ -680,6 +680,9 @@ body {
 
 
 /**********************ALERTS**************************/
+.alert {
+  transition: opacity 0.6s ease-out;
+}
 .alert-success {
   padding: 20px;
   background-color: #4dd950;
