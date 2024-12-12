@@ -147,8 +147,16 @@ class UserController extends Controller
             } elseif ($notification->badgeNotification) {
                 $url = route('profile', $user->id) . '#badges';
             } elseif ($notification->commentNotification) {
-                $question_id = $notification->commentNotification->comment->post->question->posts_id;
-                $url = route('questions.show', $question_id) . '#comment-' . $notification->commentNotification->comments_id;
+                $comment = $notification->commentNotification->comments_id;
+                $post = $notification->commentNotification->comment->post;
+
+                if ($post->question) {
+                    $question_id = $post->question->posts_id;
+                } elseif ($post->answer) {
+                    $question_id = $post->answer->question->posts_id;
+                }
+                
+                $url = route('questions.show', $question_id) . '#comment-' . $comment;
             }
     
             return [
