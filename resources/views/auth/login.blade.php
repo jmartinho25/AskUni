@@ -9,7 +9,12 @@
 <form method="POST" action="{{ route('login') }}">
     {{ csrf_field() }}
 
-    <label for="email">E-mail</label>
+    <label for="email">E-mail
+        <div class="tooltip">
+            <i class="fas fa-info-circle"></i>
+            <span class="tooltip-text">Format: @fe.up.pt</span>
+        </div>
+    </label>
     <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
     @if ($errors->has('email'))
         <span class="error">

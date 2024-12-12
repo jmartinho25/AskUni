@@ -88,9 +88,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:100',
-            'username' => 'required|string|max:50|unique:users,username,' . $user->id,
-            'email' => 'required|email|max:100|unique:users,email,' . $user->id . '|regex:/^[^@]+@fe\.up\.pt$/',
+            'name' => 'required|string|max:250',
+            'username' => 'required|string|max:250|unique:users,username,' . $user->id,
+            'email' => 'required|email|max:250|unique:users,email,' . $user->id . '|regex:/^[^@]+@fe\.up\.pt$/',
             'password' => 'nullable|string|min:8|confirmed',
             'description' => 'nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',

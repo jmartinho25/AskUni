@@ -5,7 +5,12 @@
 <form method="POST" action="{{ route('register') }}">
     {{ csrf_field() }}
 
-    <label for="username">Username</label>
+    <label for="username">Username
+      <div class="tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span class="tooltip-text">Maximum 250 characters</span>
+      </div>
+    </label>
     <input id="username" type="text" name="username" value="{{ old('username') }}" required autofocus>
     @if ($errors->has('username'))
       <span class="error">
@@ -13,7 +18,12 @@
       </span>
     @endif
 
-    <label for="name">Name</label>
+    <label for="name">Name
+      <div class="tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span class="tooltip-text">Maximum 250 characters</span>
+      </div>
+    </label>
     <input id="name" type="text" name="name" value="{{ old('name') }}" required>
     @if ($errors->has('name'))
       <span class="error">
@@ -21,7 +31,12 @@
       </span>
     @endif
 
-    <label for="email">E-Mail Address (@fe.up.pt)</label>
+    <label for="email">E-Mail Address
+      <div class="tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span class="tooltip-text">Format: @fe.up.pt <br> Maximum 250 characters</span>
+      </div>
+    </label>
     <input id="email" type="email" name="email" value="{{ old('email') }}" required>
     @if ($errors->has('email'))
       <span class="error">
@@ -29,7 +44,12 @@
       </span>
     @endif
 
-    <label for="password">Password</label>
+    <label for="password">Password
+      <div class="tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span class="tooltip-text">Minimum 8 characters</span>
+      </div>
+    </label>
     <input id="password" type="password" name="password" required>
     @if ($errors->has('password'))
       <span class="error">

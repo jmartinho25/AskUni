@@ -8,7 +8,12 @@
         @csrf
         @method('PUT')
         <div class="mb-3">
-            <label for="tags" class="form-label">Tags</label>
+            <label for="tags" class="form-label">Tags
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">Maximum 5 tags</span>
+                </div>
+            </label>
             <select multiple class="form-control" id="tags" name="tags[]">
                 @foreach($allTags as $tag)
                     <option value="{{ $tag->id }}" {{ $question->tags->contains($tag->id) ? 'selected' : '' }}>

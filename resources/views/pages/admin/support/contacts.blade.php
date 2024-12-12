@@ -41,7 +41,12 @@
                     @csrf
                     <input type="hidden" name="support_question_id" value="{{ $question->id }}">
                     <div class="form-group">
-                        <label for="content">Your Answer</label>
+                        <label for="content">Your Answer
+                            <div class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Maximum 1000 characters</span>
+                            </div>
+                        </label>
                         <textarea name="content" id="content" class="form-control" rows="2" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary mt-2">Submit Answer</button>
