@@ -232,6 +232,9 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
 Route::post('/admin/users/{id}/block', [AdminController::class, 'block'])->name('admin.users.block');
 Route::post('/admin/users/{id}/unblock', [AdminController::class, 'unblock'])->name('admin.users.unblock');
 
+// Delete own account
+Route::delete('/users/{id}/auto-destroy', [UserController::class, 'autoDestroy'])->name('users.autoDestroy');
+
 // Edit History
 Route::controller(EditHistoryController::class)->group(function () {
     Route::get('/api/edit-history/{id}', 'getEditHistoryAPI')->name('edit-history');

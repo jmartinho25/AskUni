@@ -286,7 +286,23 @@ class UserController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'User deleted successfully.');
     }
-    
+    public function autoDestroy($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return back()->with('error', 'User not found.');
+        }
+
+        if (auth()->id() !== $user->id) {
+            return back()->with('error', 'You can only delete your own account.');
+        }
+
+        auth()->logout();
+        $user->delete();
+        
+        return redirect()->route('home')->with('success', 'Your account has been deleted successfully.');
+    }
 
     public function showSupportContacts($id)
     {

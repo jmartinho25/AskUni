@@ -37,9 +37,18 @@
                 </p>
             @endif
 
-            @can ('editUser', $user)
+            @if (auth()->check() && (auth()->user()->id === $user->id || auth()->user()->roles->contains('name', 'admin')))
                 <a class="button" href="{{ route('edit-profile', $user->id) }}" class="btn btn-primary">Edit Profile</a>
             @endcan
+            @if (auth()->check() && auth()->user()->id === $user->id)
+                <form action="{{ route('users.autoDestroy', $user->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="button delete-account" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')" title="Delete Account">
+                        <i class="fas fa-user-times"></i> Delete Account
+                    </button>
+                </form>
+            @endif
             @if (auth()->check() && auth()->user()->roles->contains('name', 'admin') && auth()->user()->id === $user->id)
                 <a class="button" href="{{ route('admin.dashboard') }}" class="btn btn-warning">Admin Dashboard</a>
             @endif

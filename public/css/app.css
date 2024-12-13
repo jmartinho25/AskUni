@@ -1193,6 +1193,15 @@ body {
   margin-top: 20px;
 }
 
+.button.delete-account {
+  background-color: #dc3545;
+  color: white;
+}
+
+.button.delete-account:hover {
+  background-color: #c82333;
+}
+
 
 
 /***********************************FAQ*************************************/
@@ -1635,3 +1644,4 @@ body {
   }
 
 }
+
