@@ -706,6 +706,7 @@ body {
   background-color: #f4f4f4;
   width: 100%;
   margin: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .top-nav .logo {
@@ -758,22 +759,63 @@ body {
   color: #cc6600;
 }
 
-@media (max-width: 768px) {
-  .top-nav .search input {
-      width: 80%; 
-  }
-
-  .top-nav .nav-items {
-      gap: 10px; 
-  }
-}
-
 .view-all-questions a{
   color: #000000;
 }
 
 .view-all-questions a:hover{
   color: #cc6600;
+}
+
+#add-question-button {
+  font-weight: 500;
+  color: white;
+  padding: 1.2em 3em;
+  background-color: #0784d2;
+  border-color: #0784d2;
+  text-transform: uppercase;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  margin-right: 1em;
+}
+
+
+#menu {
+  display: none;
+}
+
+#menu ul {
+  margin: 0;
+  padding: 0;
+}
+
+#menu ul li {
+  background-color: white;
+  list-style-type: none;
+  text-align: center;
+  padding: 1em;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+#menu ul li a{
+  text-align: center;
+  color: black;
+  text-decoration: none;
+}
+
+#menu ul li:hover {
+  background-color: #2a2f33;
+}
+
+#menu ul li:hover a{
+  color: white;
+}
+
+#hamburger, .hamburger {
+  display: none;
 }
 
 /************************************* Notification ***************************************/
@@ -1516,4 +1558,78 @@ body {
 .tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+
+
+@media (max-width: 600px) {
+
+  main > header.top-nav {
+    align-items: center;
+    justify-content: space-around; 
+  }
+
+  main > header.top-nav .logo {
+    margin-bottom: 1em;
+  }
+
+  .top-nav #search-bar input {
+    width: 85%;
+    box-sizing: border-box;
+    margin-right: 3em;
+  }
+
+  .top-nav #search-bar {
+    width: 85%;
+    margin-left: 0;
+    margin-right: 1em;
+  }
+
+  .top-nav .exact-match-label{
+    margin-right: 1em;
+  }
+
+  .top-nav .notifications .notifications-dropdown {
+    transform: translateX(-100%);
+  }
+
+  .top-nav nav.nav-items .explore-tags, 
+  .top-nav nav.nav-items .add-question,
+  .top-nav nav.nav-items .profile,
+  .top-nav nav.nav-items .support,
+  #sign-out,
+  #sign-in {
+    display: none;
+  }
+
+  #menu {
+    display: block;
+    width: 100%;
+  }
+
+  #menu .hamburger {
+    display: block;
+    background-color: #717171;
+    color: white;
+    padding: 1em;
+  }
+
+  #menu .hamburger:before {
+    content:'\2630';
+  }
+
+  #menu ul {
+    display: none;
+    flex-direction: column;
+    color: white;
+  }
+
+  #hamburger:checked + .hamburger + ul{
+    display: flex;
+  }
+
+  #hamburger:checked + .hamburger:before {
+    content:'\2715';
+  }
+
 }

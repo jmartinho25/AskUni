@@ -21,24 +21,24 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
-    <script type="text/javascript" src="{{ url('js/app.js') }}" defer></script>
+    <script src="{{ url('js/app.js') }}" defer></script>
     @if (Auth::check())
-    <script type="text/javascript" src="{{ url('js/notifications.js') }}" defer></script>
+    <script src="{{ url('js/notifications.js') }}" defer></script>
     @endif
-    <script type="text/javascript" src="{{ url('js/search-users.js') }}" defer></script>
-    <script type="text/javascript" src="{{ url('js/search-questions.js') }}" defer></script>
-    <script type="text/javascript" src="{{ url('js/tags.js') }}" defer></script>
-    <script type="text/javascript" src="{{ url('js/like-dislike.js') }}" defer></script>    
+    <script src="{{ url('js/search-users.js') }}" defer></script>
+    <script src="{{ url('js/search-questions.js') }}" defer></script>
+    <script src="{{ url('js/tags.js') }}" defer></script>
+    <script src="{{ url('js/like-dislike.js') }}" defer></script>    
 
-    <script type="text/javascript" src="{{ url('js/follow-unfollow.js') }}" defer></script>
-    <script type="text/javascript" src="{{ url('js/modal.js') }}" defer></script>
+    <script src="{{ url('js/follow-unfollow.js') }}" defer></script>
+    <script src="{{ url('js/modal.js') }}" defer></script>
 </head>
 <body>
     <main>
     <header class="top-nav">
         <div class="logo">
             <a href="{{ Auth::check() ? url('/feed') : url('/home') }}">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo" />
+                <img src="{{ asset('img/logo.png') }}" alt="Logo" title="Home">
             </a>
         </div>
         
@@ -53,7 +53,7 @@
             </button>
         </form>
 
-        <div class="nav-items">
+        <nav class="nav-items">
             
         @if (Auth::check())
             <div class="explore-tags">
@@ -63,8 +63,7 @@
         
 
             <div class="add-question">
-                <a href="{{ route('questions.create') }}">
-                    <button>Add Question</button>
+                <a id="add-question-button" href="{{ route('questions.create') }}">Add Question</a>
             </div>
 
             <div class="support">
@@ -100,7 +99,24 @@
                     <i class="fas fa-sign-in-alt"></i>
                 </a>
             @endif
-        </div>
+        </nav>
+
+        <nav id="menu">
+        <input type="checkbox" id="hamburger"> 
+        <label class="hamburger" for="hamburger"></label>
+
+        <ul>
+            @if (Auth::check())
+            <li><a href="{{ route('tags.index') }}">Explore Tags</a></li>
+            <li><a href="{{ route('questions.create') }}">Add Question</a></li>
+            <li><a href="{{ route('support-questions.create') }}">Contact Support</a></li>
+            <li><a href="{{ route('profile', Auth::user()->id) }}">Profile</a></li>
+            <li><a href="{{ url('/logout') }}">Logout</a></li>
+            @else
+            <li><a href="{{ url('/login') }}">Login</a></li>
+            @endif
+        </ul>
+        </nav>
     </header>
 
         <section id="content">
