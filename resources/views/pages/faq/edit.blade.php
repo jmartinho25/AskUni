@@ -8,7 +8,12 @@
         @csrf
         @method('PUT')
         <div class="mb-3">
-            <label for="question" class="form-label">Question</label>
+            <label for="question" class="form-label">Question
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">Maximum 255 characters</span>
+                </div>
+            </label>
             <input type="text" class="form-control" id="question" name="question" value="{{ $faq->question }}" required>
         </div>
         <div class="mb-3">

@@ -88,9 +88,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:100',
-            'username' => 'required|string|max:50|unique:users,username,' . $user->id,
-            'email' => 'required|email|max:100|unique:users,email,' . $user->id . '|regex:/^[^@]+@fe\.up\.pt$/',
+            'name' => 'required|string|max:250',
+            'username' => 'required|string|max:250|unique:users,username,' . $user->id,
+            'email' => 'required|email|max:250|unique:users,email,' . $user->id . '|regex:/^[^@]+@fe\.up\.pt$/',
             'password' => 'nullable|string|min:8|confirmed',
             'description' => 'nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -147,8 +147,16 @@ class UserController extends Controller
             } elseif ($notification->badgeNotification) {
                 $url = route('profile', $user->id) . '#badges';
             } elseif ($notification->commentNotification) {
-                $question_id = $notification->commentNotification->comment->post->question->posts_id;
-                $url = route('questions.show', $question_id) . '#comment-' . $notification->commentNotification->comments_id;
+                $comment = $notification->commentNotification->comments_id;
+                $post = $notification->commentNotification->comment->post;
+
+                if ($post->question) {
+                    $question_id = $post->question->posts_id;
+                } elseif ($post->answer) {
+                    $question_id = $post->answer->question->posts_id;
+                }
+                
+                $url = route('questions.show', $question_id) . '#comment-' . $comment;
             }
     
             return [

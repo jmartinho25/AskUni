@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Exception;
+use Carbon\Carbon;
 use App\Models\User;
 
 class MailController extends Controller
@@ -94,24 +95,24 @@ class MailController extends Controller
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8',
         ]);
-
+    
         $user = User::where('email', $request->email)
                     ->where('reset_token', $request->token)
                     ->first();
-
-        if (!$user) {
-            return back()->withErrors(['email' => 'Invalid token or email.']);
+    
+        if (!$user || Carbon::parse($user->reset_token_created_at)->addMinutes(30) < now()) {
+            return back()->withErrors(['email' => 'Invalid token or email, or the token has expired.']);
         }
-
+    
         $user->forceFill([
             'password' => Hash::make($request->password),
             'reset_token' => null,
             'reset_token_created_at' => null,
             'remember_token' => Str::random(60),
         ])->save();
-
+    
         Auth::login($user);
-
+    
         return redirect('/feed')->with('success', 'Your password has been reset successfully. You\'re now logged in!');
     }
 }

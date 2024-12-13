@@ -1,27 +1,35 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded'); // Debug
+
+    // Form submission handling
     const form = document.getElementById('create-question-form');
     const submitButton = document.getElementById('create-question-submit-button');
 
-    form.addEventListener('submit', function() {
-        submitButton.disabled = true;
-    });
-});
-document.addEventListener('DOMContentLoaded', function () {
-    // Seleciona todos os alertas
+    if (form && submitButton) {
+        form.addEventListener('submit', function() {
+            submitButton.disabled = true;
+        });
+    }
+
+    // Alert handling
     const alerts = document.querySelectorAll('.alert');
+    console.log('Alerts found:', alerts.length); // Debug
 
-    // Define um tempo (em milissegundos) antes de remover os alertas
-    const timeout = 5000; // 5 segundos
-
-    // Itera sobre os alertas encontrados
     alerts.forEach(alert => {
+        // Certifique-se de que o alerta começa visível
+        alert.style.opacity = '1';
+        alert.style.transition = 'opacity 0.6s ease-out';
+        
         setTimeout(() => {
-            // Adiciona animação de fade-out (opcional)
-            alert.classList.add('fade');
+            console.log('Starting fade out'); // Debug
             alert.style.opacity = '0';
-
-            // Remove o elemento do DOM após a animação
-            setTimeout(() => alert.remove(), 600); // 600ms para o fade-out terminar
-        }, timeout);
+            
+            setTimeout(() => {
+                console.log('Removing alert'); // Debug
+                if (alert.parentElement) {
+                    alert.parentElement.removeChild(alert);
+                }
+            }, 600);
+        }, 5000);
     });
 });

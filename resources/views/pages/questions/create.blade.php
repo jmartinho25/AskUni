@@ -19,7 +19,12 @@
         <form id="create-question-form" action="{{ route('questions.store') }}" method="POST">
             @csrf
             <div class="form-group">
-                <label for="title">Title</label>
+                <label for="title">Title
+                    <div class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltip-text">Maximum 255 characters</span>
+                    </div>
+                </label>
                 <input type="text" id="title" name="title" class="form-control" required>
             </div>
 
@@ -29,7 +34,12 @@
             </div>
 
             <div class="form-group" id="question-tags">
-                <label for="tags">Tags</label>
+                <label for="tags">Tags
+                    <div class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltip-text">Maximum 5 tags</span>
+                    </div>
+                </label>
                 <select name="tags[]" id="tags" class="form-control" multiple>
                     @foreach($allTags as $tag)
                         <option value="{{ $tag->id }}">{{ $tag->name }}</option>

@@ -18,7 +18,12 @@
             <form action="{{ route('support-questions.store') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="content">Your Question</label>
+                    <label for="content">Your Question
+                        <div class="tooltip">
+                            <i class="fas fa-info-circle"></i>
+                            <span class="tooltip-text">Maximum 1000 characters</span>
+                        </div>
+                    </label>
                     <textarea name="content" id="content" class="form-control" rows="4" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Submit</button>

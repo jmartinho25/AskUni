@@ -23,23 +23,48 @@
     <form action="{{ route('tags.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Name
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">Maximum 255 characters</span>
+                </div>
+            </label>
             <input type="text" name="name" id="name" class="form-control" required>
         </div>
         <div class="form-group">
-            <label for="category">Category</label>
+            <label for="category">Category
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">Maximum 255 characters</span>
+                </div>
+            </label>
             <input type="text" name="category" id="category" class="form-control" required>
         </div>
         <div class="form-group">
-            <label for="description">Description</label>
+            <label for="description">Description
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">Maximum 255 characters</span>
+                </div>
+            </label>
             <textarea name="description" id="description" class="form-control"></textarea>
         </div>
         <div class="form-group">
-            <label for="about">About</label>
+            <label for="about">About
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">Maximum 1000 characters</span>
+                </div>
+            </label>
             <textarea name="about" id="about" class="form-control"></textarea>
         </div>
         <div class="form-group">
-            <label for="picture">Picture</label>
+            <label for="picture">Picture
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-text">File type: jpg, jpeg, png, gif <br> Maximum size: 2MB</span>
+                </div>
+            </label>
             <input type="file" name="picture" id="picture" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Create Tag</button>

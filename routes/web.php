@@ -58,6 +58,17 @@ Route::controller(RegisterController::class)->group(function () {
 Route::post('/appeal-for-unblock', [AppealForUnblockController::class, 'store'])->name('appealForUnblock.store');
 Route::get('/appeal-for-unblock', [AppealForUnblockController::class, 'index'])->name('appealForUnblock.index');
 
+// Password Reset
+Route::get('password/request', [MailController::class, 'showLinkRequestForm'])->name('password.request');
+Route::get('/send-email', [MailController::class, 'showLinkRequestForm'])->name('send.email.form');
+Route::get('password/reset/{token}', [MailController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [MailController::class, 'reset'])->name('password.update');
+Route::post('/send', [MailController::class, 'send'])->name('send.email');Route::get('/feedback', function () {
+    return view('emails.feedback');
+})->name('emails.feedback');
+
+
+
 Route::middleware(['auth', 'checkBlocked'])->group(function () {
     
     // Root
@@ -148,6 +159,8 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');
 });
 
+
+
 // FAQ Routes
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 
@@ -225,4 +238,4 @@ Route::controller(EditHistoryController::class)->group(function () {
 });
 
     
-    });
+});
