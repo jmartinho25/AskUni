@@ -2,9 +2,14 @@
 
 @section('content')
 @if (session('success'))
-        <p class="alert-success">
-            {{ session('success') }}
-        </p>
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
 @endif
 <form method="POST" action="{{ route('login') }}">
     {{ csrf_field() }}

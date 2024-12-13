@@ -69,7 +69,7 @@ Route::post('/send', [MailController::class, 'send'])->name('send.email');Route:
 
 
 
-Route::middleware(['auth', 'checkBlocked'])->group(function () {
+Route::middleware(['checkBlocked'])->group(function () {
     
     // Root
     Route::redirect('/', '/home');
