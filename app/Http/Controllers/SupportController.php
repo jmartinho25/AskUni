@@ -10,7 +10,11 @@ class SupportController extends Controller
 {
     public function index()
     {
-        $supportQuestions = SupportQuestion::with('user', 'answers.user')->paginate(10);
+        $supportQuestions = SupportQuestion::with('user', 'answers.user')
+            ->orderBy('solved', 'asc')
+            ->orderBy('date', 'asc')
+            ->paginate(10);
+
         return view('pages.admin.support.contacts', compact('supportQuestions'));
     }
 

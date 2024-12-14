@@ -134,7 +134,7 @@
                             <div class="answer-card">
                                 <p>{{ $answer->content }}</p>
                                 <p>Date: {{ $answer->date }}</p>
-                                <a class="button" href="{{ route('questions.show', $answer->answer->questions_id) }}" id="btn-edit" title="Details">
+                                <a class="button" href="{{ route('questions.show', $answer->answer->questions_id) }}#answer-{{ $answer->id }}" id="btn-edit" title="Details">
                                     <i class="fas fa-book-open"></i>
                                 </a>
 
@@ -169,11 +169,11 @@
                             <p>{{ $comment->content }}</p>
                             <p>Date: {{ $comment->date }}</p>
                             @if($comment->question!=null)
-                                <a class="button" href="{{ route('questions.show', $comment->question->posts_id) }}" id="btn-edit" title="Details">
+                                <a class="button" href="{{ route('questions.show', $comment->question->posts_id) }} #comment-{{ $comment->id }}" id="btn-edit" title="Details">
                                 <i class="fas fa-book-open"></i>
                                 </a>
                             @elseif($comment->answer!=null)
-                                <a class="button" href="{{ route('questions.show', $comment->answer->questions_id) }}" id="btn-edit" title="Details">
+                                <a class="button" href="{{ route('questions.show', $comment->answer->questions_id) }}#comment-{{ $comment->id }}" id="btn-edit" title="Details">
                                 <i class="fas fa-book-open"></i>
                                 </a>
                             @endif

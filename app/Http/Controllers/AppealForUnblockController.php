@@ -11,7 +11,6 @@ class AppealForUnblockController extends Controller
 {
     public function index()
     {
-        // Retorna a visão da página de "Appeal for Unblock"
         return view('pages.appeal_for_unblock.index');
     }
 
@@ -20,7 +19,7 @@ class AppealForUnblockController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
-            'content' => 'required|string',
+            'content' => 'required|string|max:1000',
         ]);
 
         $user = User::where('email', $request->email)->first();

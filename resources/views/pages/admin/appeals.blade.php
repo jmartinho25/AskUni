@@ -16,7 +16,11 @@
         <tbody>
             @forelse($unblockRequests as $request)
                 <tr>
-                    <td>{{ $request->user->name }}</td>
+                    <td>
+                        <a href="{{ route('profile', $request->user->id) }}">
+                            {{ $request->user->name }}
+                        </a>
+                    </td>
                     <td>{{ $request->content }}</td>
                     <td>
                         <form action="{{ route('admin.users.unblock', $request->user->id) }}" method="POST" style="display:inline-block;">
@@ -27,7 +31,7 @@
                         </form>
                         <a href="{{ route('admin.user.reports', $request->user->id) }}" class="btn btn-info" style="display:inline-block;">
                             <button type="submit" class="btn btn-solve" title="Content Reports">
-                            <i class="fas fa-file-alt"></i>
+                                <i class="fas fa-file-alt"></i>
                             </button>
                         </a>
                     </td>

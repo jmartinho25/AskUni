@@ -54,10 +54,13 @@
             </div>
             @if(!$question->solved)
             <div class="solve-item mt-2">
-                <form action="{{ route('support-questions.solve', $question->id) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to mark this question as solved?')">Mark as Solved</button>
-                </form>
+                @can('solve', $question)
+                    <form action="{{ route('support-questions.solve', $question->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to mark this question as solved?')">Mark as Solved</button>
+                    </form>
+                @endcan
+            </div>
             @endif
         </div>
     @empty

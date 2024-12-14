@@ -22,4 +22,5 @@ class ContentReports extends Model
     {
         return $this->belongsTo(Post::class, 'posts_id');
     }
+    
 }

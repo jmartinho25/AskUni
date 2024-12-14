@@ -139,6 +139,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('posts/{id}/dislike', [DislikeController::class, 'destroy'])->name('dislike.destroy');
 });
 
+
 Route::middleware('auth')->group(function () {
     Route::get('/report/create', [ReportController::class, 'create'])->name('report.create');
     Route::post('/report', [ReportController::class, 'store'])->name('report.store');
@@ -245,11 +246,9 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
 // Delete own account
 Route::delete('/users/{id}/auto-destroy', [UserController::class, 'autoDestroy'])->name('users.autoDestroy');
 
-
 // Edit History
 Route::controller(EditHistoryController::class)->group(function () {
     Route::get('/api/edit-history/{id}', 'getEditHistoryAPI')->name('edit-history');
 });
 
-    
 });

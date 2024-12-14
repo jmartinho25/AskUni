@@ -70,4 +70,9 @@ class SupportQuestionPolicy
         return $user->roles->contains('name', 'admin') ||
                $user->roles->contains('name', 'moderator');
     }
+    
+    public function solve(User $user, SupportQuestion $supportQuestion)
+    {
+        return $user->roles->contains('name', 'admin') || $user->roles->contains('name', 'moderator');
+    }
 }
