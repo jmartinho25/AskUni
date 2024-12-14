@@ -64,7 +64,8 @@ Route::get('password/request', [MailController::class, 'showLinkRequestForm'])->
 Route::get('/send-email', [MailController::class, 'showLinkRequestForm'])->name('send.email.form');
 Route::get('password/reset/{token}', [MailController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [MailController::class, 'reset'])->name('password.update');
-Route::post('/send', [MailController::class, 'send'])->name('send.email');Route::get('/feedback', function () {
+Route::post('/send', [MailController::class, 'send'])->name('send.email');
+Route::get('/feedback', function () {
     return view('emails.feedback');
 })->name('emails.feedback');
 
@@ -148,6 +149,7 @@ Route::middleware(['auth', 'role:admin|moderator'])->group(function () {
     Route::get('admin/unblock-requests', [UserController::class, 'unblockRequests'])->name('admin.unblock.requests');
     Route::get('admin/support-contacts', [SupportController::class, 'index'])->name('admin.support.contacts');
     Route::post('/users/unblock/{id}', [UserController::class, 'unblock'])->name('admin.users.unblock');
+    Route::post('/users/{id}/block', [AdminController::class, 'block'])->name('admin.users.block');
     Route::post('/reports/resolve/{id}', [UserController::class, 'resolveReport'])->name('admin.reports.resolve');
     Route::get('user/{id}/reports', [UserController::class, 'userReports'])->name('admin.user.reports');
     Route::get('dashboard', [UserController::class, 'index'])->name('admin.dashboard');
@@ -161,7 +163,6 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');
 });
 Route::post('/admin/users/{id}/elevate-moderator', [ModeratorController::class, 'elevateToModerator'])
@@ -236,9 +237,6 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::post('/support-answers', [SupportController::class, 'storeAnswer'])->name('support-answers.store');
 });
 
-// Appeal for Unblock
-Route::post('/admin/users/{id}/block', [AdminController::class, 'block'])->name('admin.users.block');
-Route::post('/admin/users/{id}/unblock', [AdminController::class, 'unblock'])->name('admin.users.unblock');
 
 // Delete own account
 Route::delete('/users/{id}/auto-destroy', [UserController::class, 'autoDestroy'])->name('users.autoDestroy');

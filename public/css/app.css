@@ -27,14 +27,14 @@ body {
     justify-self: center;
   }
 
-  #sign-out, #sign-in{
+  #sign-out, #sign-in, #sign-out-appeal{
     font-size: 1.6em;
     margin-left: 30px;
     margin-right: 10px;
     color: black;
   }
 
-  #sign-out:hover{
+  #sign-out:hover, #sign-out-appeal:hover{
     color: red;
   }
 
