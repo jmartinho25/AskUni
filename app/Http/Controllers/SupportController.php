@@ -10,8 +10,8 @@ class SupportController extends Controller
 {
     public function index()
     {
-        $supportQuestions = SupportQuestion::with(['user', 'answers.user'])->paginate(10);
-        return view('pages/admin.support.contacts', compact('supportQuestions'));
+        $supportQuestions = SupportQuestion::with('user', 'answers.user')->paginate(10);
+        return view('pages.admin.support.contacts', compact('supportQuestions'));
     }
 
     public function solve($id)
@@ -59,6 +59,9 @@ class SupportController extends Controller
             'content' => 'required|string|max:1000',
             'support_question_id' => 'required|exists:support_questions,id',
         ]);
+
+        $question = SupportQuestion::findOrFail($request->input('support_question_id'));
+        $this->authorize('update', $question);
 
         $supportAnswer = new SupportAnswer();
         $supportAnswer->support_questions_id = $request->input('support_question_id');

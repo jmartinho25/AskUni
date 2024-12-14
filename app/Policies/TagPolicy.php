@@ -16,7 +16,7 @@ class TagPolicy
 
     public function manage(User $user)
     {
-        return $user->roles->contains('name', 'admin');
+        return $user->roles->contains('name', 'admin') || $user->roles->contains('name', 'moderator');
     }
     
 }

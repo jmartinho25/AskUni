@@ -60,15 +60,9 @@
                         <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ $question->post->likesCount() }}</span>
                     </button>
                 @else
-                    @can('like', $question->post)
                     <button class="btn btn-like like-btn" data-post-id="{{ $question->posts_id }}">
                         <i class="far fa-thumbs-up"></i> <span class="like-count">{{ $question->post->likesCount() }}</span>
                     </button>
-                    @else
-                    <button class="btn btn-like like-btn" data-post-id="{{ $question->posts_id }}" disabled>
-                        <i class="far fa-thumbs-up"></i> <span class="like-count">{{ $question->post->likesCount() }}</span>
-                    </button>
-                    @endcan
                 @endif
 
                 @if (Auth::check() && $question->post->isDislikedBy(Auth::user()))
@@ -76,15 +70,9 @@
                         <i class="fas fa-thumbs-down"></i> <span class="dislike-count">{{ $question->post->dislikesCount() }}</span>
                     </button>
                 @else
-                    @can('dislike', $question->post)
                     <button class="btn btn-like dislike-btn" data-post-id="{{ $question->posts_id }}">
                         <i class="far fa-thumbs-down"></i> <span class="dislike-count">{{ $question->post->dislikesCount() }}</span>
                     </button>
-                    @else
-                    <button class="btn btn-like dislike-btn" data-post-id="{{ $question->posts_id }}" disabled>
-                        <i class="far fa-thumbs-down"></i> <span class="dislike-count">{{ $question->post->dislikesCount() }}</span>
-                    </button>
-                    @endcan
                 @endif
             </p>
 
@@ -113,8 +101,9 @@
                 @endif
             @endcan
             
-            @can('admin', Auth::user())
-                @if(Auth::user()->id !== $question->post->users_id) <!-- Verifica se o usuário não é o autor -->
+            
+            @can('manage', App\Models\Tag::class)
+                @if(Auth::user()->id !== $question->post->users_id)
                     <a class="button" href="{{ route('questions.edit-tags', $question) }}" id="btn-edit" title="Edit Tags">
                         <i class="fas fa-tags"></i>
                     </a>

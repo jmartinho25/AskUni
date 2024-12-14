@@ -11,7 +11,7 @@
     @if (session('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
-    </div>
+        </div>
     @endif
     @forelse($supportQuestions as $question)
         <div class="card support-question-item">
@@ -37,7 +37,7 @@
             @endif
             <p></p>
             <div class="answer-item">
-                <form action="{{ route('support-answers.store') }}" method="POST">
+                <form action="{{ route('support-questions.answer') }}" method="POST">
                     @csrf
                     <input type="hidden" name="support_question_id" value="{{ $question->id }}">
                     <div class="form-group">
@@ -52,6 +52,13 @@
                     <button type="submit" class="btn btn-primary mt-2">Submit Answer</button>
                 </form>
             </div>
+            @if(!$question->solved)
+            <div class="solve-item mt-2">
+                <form action="{{ route('support-questions.solve', $question->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to mark this question as solved?')">Mark as Solved</button>
+                </form>
+            @endif
         </div>
     @empty
         <div class="alert alert-info">No support contacts found.</div>

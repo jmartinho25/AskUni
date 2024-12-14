@@ -25,4 +25,22 @@ class ModeratorController extends Controller
 
         return redirect()->back()->with('success', 'User has been elevated to moderator successfully.');
     }
+
+    public function demoteFromModerator($id)
+    {
+        $user = User::findOrFail($id);
+        $moderatorRole = Role::where('name', 'moderator')->first();
+
+        if (!$moderatorRole) {
+            return redirect()->back()->with('error', 'Moderator role not found.');
+        }
+
+        if (!$user->roles->contains($moderatorRole)) {
+            return redirect()->back()->with('error', 'User is not a moderator.');
+        }
+
+        $user->roles()->detach($moderatorRole);
+
+        return redirect()->back()->with('success', 'User has been demoted from moderator successfully.');
+    }
 }

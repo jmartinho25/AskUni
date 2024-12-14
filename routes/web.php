@@ -144,20 +144,25 @@ Route::middleware('auth')->group(function () {
     Route::post('/report', [ReportController::class, 'store'])->name('report.store');
 });
 
-// Moderator Routes
-Route::middleware(['auth', 'role:admin|moderator'])->group(function () {
-    Route::get('admin/unblock-requests', [UserController::class, 'unblockRequests'])->name('admin.unblock.requests');
-    Route::get('admin/support-contacts', [SupportController::class, 'index'])->name('admin.support.contacts');
-    Route::post('/users/unblock/{id}', [UserController::class, 'unblock'])->name('admin.users.unblock');
-    Route::post('/users/{id}/block', [AdminController::class, 'block'])->name('admin.users.block');
+// Moderator and Admin Routes
+Route::middleware(['auth', 'moderator'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');
+    Route::post('/admin/users/{id}/unblock', [AdminController::class, 'unblock'])->name('admin.users.unblock');
+    Route::delete('/admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/admin/unblock-requests', [UserController::class, 'unblockRequests'])->name('admin.unblock.requests');
     Route::post('/reports/resolve/{id}', [UserController::class, 'resolveReport'])->name('admin.reports.resolve');
     Route::get('user/{id}/reports', [UserController::class, 'userReports'])->name('admin.user.reports');
-    Route::get('dashboard', [UserController::class, 'index'])->name('admin.dashboard');
-
+    Route::post('/admin/users/{id}/block', [AdminController::class, 'block'])->name('admin.users.block');
+    Route::post('/admin/users/{id}/elevate-moderator', [ModeratorController::class, 'elevateToModerator'])->name('admin.users.elevate.moderator');
+    Route::post('/users/{id}/demote-moderator', [ModeratorController::class, 'demoteFromModerator'])->name('admin.users.demote.moderator');
+    Route::get('/admin/support-contacts', [SupportController::class, 'index'])->name('admin.support.contacts');
+    Route::post('/support-questions/{id}/solve', [SupportController::class, 'solve'])->name('support-questions.solve');
+    Route::post('/support-questions/answer', [SupportController::class, 'storeAnswer'])->name('support-questions.answer');
 });
 
 // Admin Routes
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
+Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/users/search', [UserController::class, 'searchAPI'])->name('admin.users.search');
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
@@ -208,13 +213,14 @@ Route::middleware('auth')->group(function () {
 
 
 // Delete Questions, Answers, Comments
-Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
+Route::middleware(['auth', 'can:manage,App\Models\Tag'])->group(function () {
     Route::delete('questions/{id}', [QuestionController::class, 'destroy'])->name('questions.destroy');
     Route::delete('answers/{id}', [QuestionController::class, 'destroyAnswer'])->name('answers.destroy');
     Route::delete('comments/{id}', [QuestionController::class, 'destroyComment'])->name('comments.destroy');
     Route::get('questions/{id}/edit-tags', [QuestionController::class, 'editTags'])->name('questions.edit-tags');
     Route::put('questions/{id}/update-tags', [QuestionController::class, 'updateTags'])->name('questions.update-tags');
 });
+
 
 // About Us Routes
 Route::get('/about-us', [AboutUsController::class, 'index'])->name('aboutUs.index');
@@ -223,9 +229,7 @@ Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::put('/about-us', [AboutUsController::class, 'update'])->name('aboutUs.update');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::post('/support-questions/{id}/solve', [SupportController::class, 'solve'])->name('support-questions.solve');
-});
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/my-support-questions', [SupportController::class, 'mySupportQuestions'])->name('my.support.questions');

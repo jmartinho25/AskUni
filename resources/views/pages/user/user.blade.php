@@ -49,19 +49,8 @@
                     </button>
                 </form>
             @endif
-            @if (auth()->check() && auth()->user()->id === $user->id)
-                @if(auth()->user()->roles->contains('name', 'admin'))
-                    <a class="button" href="{{ route('admin.dashboard') }}" class="btn btn-warning">Admin Dashboard</a>
-                @endif
-                
-                @if(auth()->user()->roles->contains('name', 'moderator'))
-                    <a class="button" href="{{ route('admin.unblock.requests') }}" title="View Unblock Requests">
-                        <i class="fas fa-unlock"></i> View Unblock Requests
-                    </a>
-                    <a class="button" href="{{ route('admin.support.contacts') }}" title="View Support Contacts">
-                        <i class="fas fa-headset"></i> View Support Contacts
-                    </a>
-                @endif
+            @if (auth()->check() && auth()->user()->roles->contains('name', 'moderator') && auth()->user()->id === $user->id)
+                <a class="button" href="{{ route('admin.dashboard') }}" class="btn btn-warning">Moderator Dashboard</a>
             @endif
             @if (auth()->check() && auth()->user()->roles->contains('name', 'admin') && auth()->user()->id === $user->id)
                 <a class="button" href="{{ route('admin.dashboard') }}" class="btn btn-warning">Admin Dashboard</a>

@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CheckIfBlocked
+class CheckBlocked
 {
     /**
      * Handle an incoming request.

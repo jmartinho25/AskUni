@@ -25,6 +25,6 @@ class QuestionPolicy
 
     public function delete(User $user, Question $question)
     {
-        return $user->id === $question->post->users_id || $user->hasRole('admin');
+        return $user->id === $question->post->users_id || $user->hasRole('admin') || $user->hasRole('moderator');
     }
 }

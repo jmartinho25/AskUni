@@ -7,7 +7,7 @@
     </div>
 @endif
 @if(session('error'))
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-background-danger">
         {{ session('error') }}
     </div>
 @endif
@@ -29,7 +29,7 @@
 
         <form action="{{ route('admin.dashboard') }}" method="GET" id="user-search-bar">
             <input type="text" name="query" id="user-search-input" value="{{ $query ?? '' }}" placeholder="Search users...">
-            <button type="submit" id="user-search-button">
+            <button type="submit" id="user-search-button" class="btn btn-primary">
                 <i class="fa fa-search"></i> Search
             </button>
         </form>
@@ -88,7 +88,6 @@
                                         </button>
                                     </form>
 
-                                    <!-- Botão de elevação a admin -->
                                     @if(!$user->hasRole('admin'))
                                         <form action="{{ route('admin.users.elevate', $user->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
@@ -98,7 +97,6 @@
                                         </form>
                                     @endif
 
-                                    <!-- Botão de elevação a moderador -->
                                     @if(!$user->hasRole('moderator') && !$user->hasRole('admin'))
                                         <form action="{{ route('admin.users.elevate.moderator', $user->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
@@ -107,18 +105,24 @@
                                             </button>
                                         </form>
                                     @endif
+                                    @if($user->hasRole('moderator'))
+                                        <form action="{{ route('admin.users.demote.moderator', $user->id) }}" method="POST" style="display:inline-block;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to demote this user from moderator?')" title="Demote from Moderator">
+                                                <i class="fas fa-user-minus"></i>
+                                            </button>
+                                        </form>
+                                    @endif
 
-                                    <!-- Botão de bloqueio -->
                                     @if(!$user->is_blocked)
                                         <form action="{{ route('admin.users.block', $user->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
-                                            <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to block this user?')" title="Block User">
+                                            <button type="submit" class="btn btn-warning alert-background-warning" onclick="return confirm('Are you sure you want to block this user?')" title="Block User">
                                                 <i class="fas fa-ban"></i>
                                             </button>
                                         </form>
                                     @endif
 
-                                    <!-- Botão de desbloqueio -->
                                     @if($user->is_blocked)
                                         <form action="{{ route('admin.users.unblock', $user->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
@@ -127,6 +131,8 @@
                                             </button>
                                         </form>
                                     @endif
+
+                                    
                                 @else
                                     @if($user->hasRole('admin'))
                                         <span class="text-muted">Admin</span>

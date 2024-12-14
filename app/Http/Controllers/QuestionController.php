@@ -32,15 +32,16 @@ class QuestionController extends Controller
     public function editTags($id)
     {
         $question = Question::findOrFail($id);
-        $this->authorize('manage', Tag::class); 
+        $this->authorize('manage', Tag::class);
 
-        $allTags = Tag::all(); 
+        $allTags = Tag::all();
         return view('pages.questions.edit-tags', compact('question', 'allTags'));
     }
+
     public function updateTags(Request $request, $id)
     {
         $question = Question::findOrFail($id);
-        $this->authorize('manage', Tag::class); 
+        $this->authorize('manage', Tag::class);
 
         $request->validate([
             'tags' => 'array',

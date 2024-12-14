@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\SupportQuestion;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class SupportQuestionPolicy
 {
@@ -13,7 +12,7 @@ class SupportQuestionPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->roles->contains('name', 'admin') || $user->roles->contains('name', 'moderator');
     }
 
     /**
@@ -21,7 +20,9 @@ class SupportQuestionPolicy
      */
     public function view(User $user, SupportQuestion $supportQuestion): bool
     {
-        //
+        return $user->id === $supportQuestion->users_id ||
+               $user->roles->contains('name', 'admin') ||
+               $user->roles->contains('name', 'moderator');
     }
 
     /**
@@ -29,7 +30,7 @@ class SupportQuestionPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true; // Qualquer usuário autenticado pode criar uma pergunta de suporte
     }
 
     /**
@@ -37,7 +38,9 @@ class SupportQuestionPolicy
      */
     public function update(User $user, SupportQuestion $supportQuestion): bool
     {
-        return $user->id === $supportQuestion->users_id;
+        return $user->id === $supportQuestion->users_id ||
+               $user->roles->contains('name', 'admin') ||
+               $user->roles->contains('name', 'moderator');
     }
 
     /**
@@ -45,7 +48,9 @@ class SupportQuestionPolicy
      */
     public function delete(User $user, SupportQuestion $supportQuestion): bool
     {
-        //
+        return $user->id === $supportQuestion->users_id ||
+               $user->roles->contains('name', 'admin') ||
+               $user->roles->contains('name', 'moderator');
     }
 
     /**
@@ -53,7 +58,8 @@ class SupportQuestionPolicy
      */
     public function restore(User $user, SupportQuestion $supportQuestion): bool
     {
-        //
+        return $user->roles->contains('name', 'admin') ||
+               $user->roles->contains('name', 'moderator');
     }
 
     /**
@@ -61,6 +67,7 @@ class SupportQuestionPolicy
      */
     public function forceDelete(User $user, SupportQuestion $supportQuestion): bool
     {
-        //
+        return $user->roles->contains('name', 'admin') ||
+               $user->roles->contains('name', 'moderator');
     }
 }

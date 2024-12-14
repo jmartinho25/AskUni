@@ -17,6 +17,7 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+    
     <!-- Choices.js -->
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
@@ -32,6 +33,8 @@
 
     <script src="{{ url('js/follow-unfollow.js') }}" defer></script>
     <script src="{{ url('js/modal.js') }}" defer></script>
+    
+
 </head>
 <body>
     <main>
