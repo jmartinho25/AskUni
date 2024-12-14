@@ -4,6 +4,13 @@
 <div class="container">
     <h1>Reported Content</h1>
 
+    <form action="{{ route('admin.reported.content') }}" method="GET" id="user-search-bar">
+        <input type="text" name="query" id="user-search-input" value="{{ $query ?? '' }}" placeholder="Search users...">
+        <button type="submit" id="user-search-button" class="btn btn-primary">
+            <i class="fa fa-search"></i> Search
+        </button>
+    </form>
+
     @if($reportedContent->isEmpty())
         <p>No reported content available.</p>
     @else

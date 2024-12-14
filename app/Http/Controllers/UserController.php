@@ -306,10 +306,11 @@ class UserController extends Controller
 
     public function showSupportContacts($id)
     {
-    $user = User::findOrFail($id);
-    $supportQuestions = SupportQuestion::where('users_id', $id)->with('answers.user')->get();
-    return view('user', compact('user', 'supportQuestions'));
+        $user = User::findOrFail($id);
+        $supportQuestions = SupportQuestion::where('users_id', $id)->with('answers.user')->get();
+        return view('user', compact('user', 'supportQuestions'));
     }
+    
 
 
 }

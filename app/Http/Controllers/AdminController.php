@@ -69,15 +69,26 @@ class AdminController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'User has been unblocked!');
     }
-    public function viewReportedContent()
+    public function viewReportedContent(Request $request)
     {
+        $query = $request->input('query');
         $reportedContent = ContentReports::with('post.user', 'comment.user')
             ->orderBy('solved', 'asc')
-            ->get()
-            ->sortBy(function($report) {
+            ->get();
+
+        if ($query) {
+            $reportedContent = $reportedContent->filter(function($report) use ($query) {
                 $user = $report->post ? $report->post->user : ($report->comment ? $report->comment->user : null);
-                return $user ? $user->name : 'Deleted User';
+                return $user && stripos($user->name, $query) !== false;
             });
-        return view('pages.admin.reported-content', compact('reportedContent'));
+        }
+
+        $reportedContent = $reportedContent->sortBy(function($report) {
+            $user = $report->post ? $report->post->user : ($report->comment ? $report->comment->user : null);
+            return $user ? $user->name : 'Deleted User';
+        });
+
+        return view('pages.admin.reported-content', compact('reportedContent', 'query'));
     }
+    
 }
