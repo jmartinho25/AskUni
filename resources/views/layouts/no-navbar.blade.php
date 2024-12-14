@@ -25,7 +25,7 @@
             
         @if (Auth::check())
             
-                <a class="btn btn-danger" id="sign-out" href="{{ url('/logout') }}" title="Sign-Out">
+                <a class="btn btn-danger" id="sign-out-appeal" href="{{ url('/logout') }}" title="Sign-Out">
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             @else

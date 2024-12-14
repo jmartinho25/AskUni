@@ -1,0 +1,1815 @@
+openapi: 3.0.0
+
+info:
+  version: '1.1'
+  title: 'AskUni Web API'
+  description: 'Web Resources Specification (A9) for AskUni'
+
+servers:
+- url: https://lbaw.24153.lbaw.fe.up.pt
+  description: Production server
+
+externalDocs:
+  description: Find more info here.
+  url: https://gitlab.up.pt/lbaw/lbaw2425/lbaw24153/-/wikis/EAP
+
+tags:
+  - name: 'M01: Authentication'
+  - name: 'M02: Individual Profile' 
+  - name: 'M03: Navigation and Browsing'
+  - name: 'M04: Posts'
+  - name: 'M05: Comments'
+  - name: 'M06: Notifications and Interactions'
+  - name: 'M07: Administration'
+  - name: 'M08: Support, FAQs, and Contacts'
+  - name: 'M09: Tags'
+  - name: 'M10: Edit History'
+  - name: 'M11: Appeals and Password Reset'
+
+
+
+
+################ AUTHENTICATION ################
+
+### Login ###
+
+paths:
+
+  /login:
+    get:
+      operationId: R101
+      summary: 'R101: Login Form'
+      description: 'Provide login form. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+      responses:
+        '200':
+          description: 'Ok. Show log-in UI'
+    post:
+      operationId: R102
+      summary: 'R102: Login Action'
+      description: 'Processes the login form submission. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+ 
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+ 
+      responses:
+        '302':
+          description: 'Redirect after processing the login credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect home page.'
+                  value: '/home'
+                302Error:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+ 
+### Logout ###
+
+  /logout:
+    post:
+      operationId: R103
+      summary: 'R103: Logout Action'
+      description: 'Logout the current authenticated used. Access: USR, ADM'
+      tags:
+        - 'M01: Authentication'
+      responses:
+        '302':
+          description: 'Redirect after processing logout.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful logout. Redirect to login form.'
+                  value: '/login'
+
+### REGISTER ###
+
+  /register:
+    get:
+      operationId: R104
+      summary: 'R104: Register Form'
+      description: 'Provide new user registration form. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+      responses:
+        '200':
+          description: 'Ok. Show sign-up UI'
+
+    post:
+      operationId: R105
+      summary: 'R105: Register Action'
+      description: 'Processes the new user registration form submission. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                confirm_password:
+                  type: string
+              required:
+                - name
+                - username
+                - email
+                - password
+                - confirm_password
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to home page.'
+                  value: '/home'
+                302Failure:
+                  description: 'Failed authentication. Redirect to register form.'
+                  value: '/register'
+
+################ INDIVIDUAL PROFILE ################
+
+### View Profile ###
+
+  /users/{id}:
+    get:
+      operationId: R201
+      summary: 'R201: View user profile'
+      description: 'Show the individual user profile. Access: PUB'
+      tags:
+        - 'M02: Individual Profile'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show profile UI'
+        '302':
+          description: 'Redirect if user does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'User not found.'
+                  value: '/home'
+    
+    delete:
+      operationId: R202
+      summary: 'R202: Delete user profile'
+      description: 'Processes the user profile deletion. Access: USR, ADM'
+      tags:
+        - 'M02: Individual Profile'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '302':
+          description: 'Redirect after processing the user profile deletion.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful profile deletion. Redirect to login form.'
+                  value: '/login'
+                302Failure:
+                  description: 'Failed profile deletion. Redirect to user profile.'
+                  value: '/users/{id}'
+
+### Edit Profile ###
+
+  /users/edit-profile:
+    get:
+      operationId: R203
+      summary: 'R203: Edit user profile form'
+      description: 'Show the individual user profile edit form. Access: OWN, ADM'
+      tags:
+        - 'M02: Individual Profile'
+
+      responses:
+        '200':
+          description: 'Ok. Show edit profile UI.'
+        '401':
+          description: 'Unauthorized. Redirect to user profile.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                401Unauthorized:
+                  description: 'User is not authorized to edit profile.'
+                  value: '/users/{id}'
+        
+    put:
+      operationId: R204
+      summary: 'R204: Edit user profile action'
+      description: 'Processes the user profile edit form submission. Access: OWN, ADM'
+      tags:
+        - 'M02: Individual Profile'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                confirm_password:
+                  type: string
+                description:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+              required:
+                - name
+                - username
+                - email
+                - description
+
+      responses:
+        '302':
+          description: 'Redirect after processing the user profile edit information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful profile edit. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed profile edit. Redirect to edit profile form.'
+                  value: '/users/edit-profile'
+
+
+################ NAVIGATION AND BROWSING ################
+
+### Home Page ###
+
+  /home:
+    get:
+      operationId: R301
+      summary: 'R301: View Home Page'
+      description: 'Show the home page. Access: PUB'
+      tags:
+        - 'M03: Navigation and Browsing'
+      responses:
+        '200':
+          description: 'Ok. Show home page UI.'
+  
+  /feed:
+    get:
+      operationId: R302
+      summary: 'R302: View Feed'
+      description: 'Show the feed page. Access: USR, ADM'
+      tags:
+        - 'M03: Navigation and Browsing'
+      responses:
+        '200':
+          description: 'Ok. Show feed page UI.'
+  
+### Search Questions ###
+
+  /questions/search:
+    get:
+      operationId: R303
+      summary: 'R303: Search Questions'
+      description: 'Search for questions using keywords or phrases, supporting both exact matches and full-text search. Returns the results UI. Access: PUB'
+      tags:
+        - 'M03: Navigation and Browsing'
+      parameters:
+        - in: query
+          name: query
+          schema:
+            type: string
+          description: 'Search query for questions. Supports exact phrase matches and full-text search capabilities.'
+        - in: query
+          name: exact_match
+          schema:
+            type: integer
+            enum: [0, 1]
+          description: 'Flag to indicate if the search should be an exact match or not.'
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: 'Page number for pagination.'
+      responses:
+        '200':
+          description: 'Ok. Show search results UI.'
+        '400':
+          description: 'Bad Request. Invalid query parameters.'
+
+  /api/questions/search:
+    get:
+      operationId: R304
+      summary: 'R304: Search Questions'
+      description: 'Search for questions using keywords or phrases, supporting both exact matches and full-text search. Returns the results as JSON. Access: PUB'
+      tags:
+        - 'M03: Navigation and Browsing'
+      parameters:
+        - in: query
+          name: query
+          schema:
+            type: string
+          description: 'Search query for questions. Supports exact phrase matches and full-text search capabilities.'
+        - in: query
+          name: exact_match
+          schema:
+            type: integer
+            enum: [0, 1]
+          description: 'Flag to indicate if the search should be an exact match or not.'
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: 'Page number for pagination.'
+      responses:
+        '200':
+          description: 'Ok. Show search results as JSON.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    posts_id:
+                      type: integer
+                    title:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+                    user_id:
+                      type: integer
+                    username:
+                      type: string
+              example:
+                - posts_id: 1
+                  title: "Effective Study Techniques for Engineering Mathematics?"
+                  date: "2023-10-01 12:00:00"
+                  user_id: 1
+                  username: "John Doe"
+                - posts_id: 2
+                  title: "Resources for Understanding Circuit Analysis?"
+                  date: "2023-10-02 15:30:00"
+                  user_id: 2
+                  username: "Jane Smith"
+        '400':
+          description: 'Bad Request. Invalid query parameters.'
+ 
+
+################ POSTS ################
+
+### Questions ###
+
+  /questions/{id}:
+    get:
+      operationId: R401
+      summary: 'R401: View Question'
+      description: 'Show the individual question UI. Access: PUB'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show question UI.'
+        '302':
+          description: 'Redirect if question does not exist.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'Question does not exist.'
+                  value: '/home'
+    
+    put:
+      operationId: R402
+      summary: 'R402: Edit Question Action'
+      description: 'Processes the question edit form submission. Access: OWN'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+              required:
+                - title
+                - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the question edit information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful question edit. Redirect to question.'
+                  value: '/questions/{id}'
+                302Failure:
+                  description: 'Failed question edit. Redirect to edit question form.'
+                  value: '/questions/{id}/edit'
+    delete:
+      operationId: R403
+      summary: 'R403: Delete Question'
+      description: 'Processes the question deletion. Access: OWN'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '302':
+          description: 'Redirect after processing the question deletion.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful question deletion. Redirect to questions page.'
+                  value: '/questions'
+                302Failure:
+                  description: 'Failed question deletion. Redirect to question.'
+                  value: '/questions/{id}'
+
+
+  /questions:
+    get:
+      operationId: R404
+      summary: 'R404: Browse Questions'
+      description: 'List questions for browsing. Access: PUB'
+      tags:
+        - 'M04: Posts'
+      
+      responses:
+        '200':
+          description: 'Ok. Show questions list UI.'
+    
+    post:
+      operationId: R405
+      summary: 'R405: New Question Action'
+      description: 'Processes the question submission form. Access: USR, ADM'
+      tags:
+        - 'M04: Posts'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+              required:
+                - title
+                - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the question submission.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful question submission. Redirect to questions.'
+                  value: '/questions'
+                302Failure:
+                  description: 'Failed question submission. Redirect to new question form.'
+                  value: '/questions/create'
+    
+  /questions/create:
+    get:
+      operationId: R406
+      summary: 'R406: New Question Form'
+      description: 'Show the question submission form. Access: USR, ADM'
+      tags:
+        - 'M04: Posts'
+
+      responses:
+        '200':
+          description: 'Ok. Show new question form UI.'
+
+  /questions/{id}/edit:
+    get:
+      operationId: R407
+      summary: 'R407: Edit Question Form'
+      description: 'Show the question edit form. Access: OWN'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show edit question UI.'
+        '403':
+          description: 'Forbidden. User is not authorized to edit question.'
+        '404':
+          description: 'Not Found. Question does not exist.'
+
+
+### Answers ###
+
+  /questions/{id}/answers:
+    post:
+      operationId: R408
+      summary: 'R408: Answer Action'
+      description: 'Processes the answer submission form. Access: USR, ADM'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: question_id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+              required:
+                - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the answer submission.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful answer submission. Redirect to question.'
+                  value: '/questions/{question_id}'
+                302Failure:
+                  description: 'Failed answer submission. Redirect to answer form.'
+                  value: '/questions/{question_id}/answers/create'
+
+  /questions/{id}/answers/create:
+    get:
+      operationId: R409
+      summary: 'R409: Answer Form'
+      description: 'Show the answer submission form. Access: USR, ADM'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: question_id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show answer form UI.'
+        '404':
+          description: 'Not Found. Question does not exist.'
+
+  /answers/{id}:
+    put:
+      operationId: R410
+      summary: 'R410: Edit Answer Action'
+      description: 'Processes the answer edit form submission. Access: OWN'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+              required:
+                - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the answer edit information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful answer edit. Redirect to question.'
+                  value: '/questions/{question_id}'
+                302Failure:
+                  description: 'Failed answer edit. Redirect to edit answer form.'
+                  value: '/answers/{id}/edit'
+    
+    delete:
+      operationId: R411
+      summary: 'R411: Delete Answer'
+      description: 'Processes the answer deletion. Access: OWN'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '302':
+          description: 'Redirect after processing the answer deletion.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful answer deletion. Redirect to question.'
+                  value: '/questions/{question_id}'
+                302Failure:
+                  description: 'Failed answer deletion. Redirect to question.'
+                  value: '/questions/{question_id}'
+
+
+  /answers/{id}/edit:
+    get:
+      operationId: R412
+      summary: 'R412: Edit Answer Form'
+      description: 'Show the answer edit form. Access: OWN'
+      tags:
+        - 'M04: Posts'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show edit answer UI.'
+        '403':
+          description: 'Forbidden. User is not authorized to edit answer.'
+        '404':
+          description: 'Not Found. Answer does not exist.'
+  
+  /questions/{id}/follow:
+    post:
+      operationId: R413
+      summary: 'R413: Follow Question'
+      description: 'Allows a user to follow a specific question. Access: USR, ADM'
+      tags:
+        - 'M04: Posts'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the question to follow'
+      responses:
+        '302':
+          description: 'Redirect after following the question.'
+
+  /questions/{id}/unfollow:
+    post:
+      operationId: R414
+      summary: 'R414: Unfollow Question'
+      description: 'Allows a user to unfollow a specific question. Access: USR, ADM'
+      tags:
+        - 'M04: Posts'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the question to unfollow'
+      responses:
+        '302':
+          description: 'Redirect after unfollowing the question.'
+
+################ COMMENTS ################
+
+  /{type}/{id}/comments/create:
+    get:
+      operationId: R501
+      summary: 'R501: Create Comment Form'
+      description: 'Provide the comment creation form for a specific post. Access: USR, ADM'
+      tags:
+        - 'M05: Comments'
+      parameters:
+        - in: path
+          name: type
+          required: true
+          schema:
+            type: string
+          description: 'The type of the parent post (e.g., "questions" or "answers")'
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the parent post'
+      responses:
+        '200':
+          description: 'OK. Show comment creation form.'
+
+  
+  /{type}/{id}/comments:
+    post:
+      operationId: R502
+      summary: 'R502: Create Comment Action'
+      description: 'Processes the comment creation form submission. Access: USR, ADM'
+      tags:
+        - 'M05: Comments'
+      parameters:
+        - in: path
+          name: type
+          required: true
+          schema:
+            type: string
+          description: 'The type of the parent post (e.g., "questions" or "answers")'
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the parent post'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: 'The content of the comment'
+      responses:
+        '302':
+          description: 'Redirect after processing the comment creation.'
+
+  
+  /comments/{id}/edit:
+    get:
+      operationId: R503
+      summary: 'R503: Edit Comment Form'
+      description: 'Show the comment edit form. Access: OWN'
+      tags:
+        - 'M05: Comments'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the comment to edit'
+      responses:
+        '200':
+          description: 'OK. Show comment edit form.'
+
+  
+  /comments/{id}:
+    put:
+      operationId: R504
+      summary: 'R504: Edit Comment Action'
+      description: 'Processes the comment edit form submission. Access: OWN'
+      tags:
+        - 'M05: Comments'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the comment to edit'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: 'Updated content of the comment'
+      responses:
+        '302':
+          description: 'Redirect after processing the comment update.'
+
+    delete:
+      operationId: R505
+      summary: 'R505: Delete Comment'
+      description: 'Processes the comment deletion. Access: OWN'
+      tags:
+        - 'M05: Comments'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the comment to delete'
+      responses:
+        '302':
+          description: 'Redirect after processing the comment deletion.'
+
+
+
+      
+
+################ NOTIFICATIONS AND INTERACTIONS ################
+
+  /api/notifications:
+    get:
+      operationId: R601
+      summary: 'R601: Get User Notifications'
+      description: 'List user notifications. Returns the results as JSON. Access: USR, ADM'
+      tags:
+        - 'M06: Notifications and Interactions'
+
+      responses:
+        '200':
+          description: 'Ok. Show user notifications.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    content:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+              example:
+                - id: 1
+                  content: "Your question has received a new answer. "
+                  date: "2023-10-01 12:30:00"
+                - id: 2
+                  content: "Congratulations! You have earned a new badge: First Correct Answer!"
+                  date: "2023-10-01 13:00:00"
+        '404':
+          description: 'User not found.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "User not found."
+
+  /api/notifications/{id}:
+    put:
+      operationId: R602
+      summary: 'R602: Mark Notification as Read'
+      description: 'Processes the notification status update. Access: USR, ADM'
+      tags:
+        - 'M06: Notifications and Interactions'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Notification marked as read successfully.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: 'Notification marked as read.'
+        '404':
+          description: 'Notification not found or unauthorized.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: 'Notification not found or unauthorized.'
+
+  /api/notifications/mark-all-read:
+    put:
+      operationId: R603
+      summary: 'R603: Mark All Notifications as Read'
+      description: 'Marks all user notifications as read. Access: USR, ADM'
+      tags:
+        - 'M06: Notifications and Interactions'
+      responses:
+        '200':
+          description: 'All notifications marked as read successfully.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: 'All notifications marked as read.'
+        '404':
+          description: 'No notifications found.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: 'No notifications found.'
+
+  /posts/{id}/like:
+    post:
+      operationId: R604
+      summary: 'R604: Like a Post'
+      description: 'Allows a user to like a post. Access: USR, ADM'
+      tags:
+        - 'M06: Notifications and Interactions'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the post to like'
+      responses:
+        '200':
+          description: 'OK. Like added.'
+
+    delete:
+      operationId: R605
+      summary: 'R605: Unlike a Post'
+      description: 'Allows a user to remove their like from a post. Access: USR, ADM'
+      tags:
+        - 'M06: Notifications and Interactions'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the post to unlike'
+      responses:
+        '200':
+          description: 'OK. Like removed.'
+
+  /posts/{id}/dislike:
+    post:
+      operationId: R606
+      summary: 'R606: Dislike a Post'
+      description: 'Allows a user to dislike a post. Access: USR, ADM'
+      tags:
+        - 'M06: Notifications and Interactions'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the post to dislike'
+      responses:
+        '200':
+          description: 'OK. Dislike added.'
+
+    delete:
+      operationId: R607
+      summary: 'R607: Remove Dislike from a Post'
+      description: 'Allows a user to remove their dislike from a post. Access: USR, ADM'
+      tags:
+        - 'M06: Notifications and Interactions'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the post to remove dislike from'
+      responses:
+        '200':
+          description: 'OK. Dislike removed.'
+
+
+################ ADMINISTRATION ################
+
+  /admin/dashboard:
+      get:
+        operationId: R701
+        summary: 'R701: Admin Dashboard'
+        description: 'Displays the admin dashboard. Access: ADM'
+        tags:
+          - 'M07: Administration'
+        responses:
+          '200':
+            description: 'OK. Admin dashboard displayed.'
+
+  /admin/unblock-requests:
+    get:
+      operationId: R702
+      summary: 'R702: View Unblock Requests'
+      description: 'Displays the list of unblock requests from users. Access: ADM'
+      tags:
+        - 'M07: Administration'
+      responses:
+        '200':
+          description: 'OK. Unblock requests displayed.'
+
+  /admin/user/{id}/reports:
+    get:
+      operationId: R703
+      summary: 'R703: View User Reports'
+      description: 'Displays reports associated with a specific user. Access: ADM'
+      tags:
+        - 'M07: Administration'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the user whose reports are being viewed.'
+      responses:
+        '200':
+          description: 'OK. User reports displayed.'
+
+  /admin/users/search:
+    get:
+      operationId: R704
+      summary: 'R704: Search Users'
+      description: 'Searches for users in the admin panel. Access: ADM'
+      tags:
+        - 'M07: Administration'
+      parameters:
+        - in: query
+          name: query
+          required: false
+          schema:
+            type: string
+          description: 'Search query string.'
+      responses:
+        '200':
+          description: 'OK. Search results displayed.'
+
+  /admin/users/unblock/{id}:
+    post:
+      operationId: R705
+      summary: 'R705: Unblock User'
+      description: 'Unblocks a blocked user account. Access: ADM'
+      tags:
+        - 'M07: Administration'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the user to unblock.'
+      responses:
+        '302':
+          description: 'Redirect after unblocking the user.'
+
+  /admin/users/{id}/block:
+    post:
+      operationId: R706
+      summary: 'R706: Block User'
+      description: 'Blocks a user account. Access: ADM'
+      tags:
+        - 'M07: Administration'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the user to block.'
+      responses:
+        '302':
+          description: 'Redirect after blocking the user.'
+
+  /admin/reports/resolve/{id}:
+    post:
+      operationId: R707
+      summary: 'R707: Resolve Report'
+      description: 'Processes the resolution of a report. Access: ADM'
+      tags:
+        - 'M07: Administration'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the report to resolve.'
+      responses:
+        '302':
+          description: 'Redirect after resolving the report.'
+
+  /admin/users/restore/{id}:
+    post:
+      operationId: R708
+      summary: 'R708: Restore User'
+      description: 'Restores a soft-deleted user account. Access: ADM'
+      tags:
+        - 'M07: Administration'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the user to restore.'
+      responses:
+        '302':
+          description: 'Redirect after restoring the user.'
+
+  /admin/users/{id}:
+    delete:
+      operationId: R709
+      summary: 'R709: Delete User'
+      description: 'Deletes a user account. Access: ADM'
+      tags:
+        - 'M07: Administration'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the user to delete.'
+      responses:
+        '302':
+          description: 'Redirect after deleting the user.'
+
+  /admin/support-contacts:
+    get:
+      operationId: R710
+      summary: 'R710: View Support Contacts'
+      description: 'Displays support contact requests. Access: ADM'
+      tags:
+        - 'M07: Administration'
+      responses:
+        '200':
+          description: 'OK. Support contacts displayed.'
+
+  /admin/users/{id}/elevate:
+    post:
+      operationId: R711
+      summary: 'R711: Elevate User to Admin'
+      description: 'Elevates a user account to admin privileges. Access: ADM'
+      tags:
+        - 'M07: Administration'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the user to elevate.'
+      responses:
+        '302':
+          description: 'Redirect after elevating the user.'
+
+
+################ SUPPORT, FAQS, AND CONTACTS ################
+
+  /faq:
+    get:
+      operationId: R801
+      summary: 'R801: View FAQs'
+      description: 'Displays the list of FAQs. Access: PUB'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      responses:
+        '200':
+          description: 'OK. FAQs displayed.'
+    
+    post:
+      operationId: R802
+      summary: 'R802: Create FAQ Action'
+      description: 'Processes the FAQ creation form submission. Access: ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                  description: 'The question for the FAQ'
+                answer:
+                  type: string
+                  description: 'The answer for the FAQ'
+      responses:
+        '302':
+          description: 'Redirect after processing the FAQ creation.'
+
+  /faq/create:
+    get:
+      operationId: R803
+      summary: 'R803: Create FAQ Form'
+      description: 'Provides the FAQ creation form. Access: ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      responses:
+        '200':
+          description: 'OK. FAQ creation form displayed.'
+
+
+  /faq/{id}/edit:
+    get:
+      operationId: R804
+      summary: 'R804: Edit FAQ Form'
+      description: 'Provides the FAQ edit form. Access: ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the FAQ to edit'
+      responses:
+        '200':
+          description: 'OK. FAQ edit form displayed.'
+
+  /faq/{id}:
+    put:
+      operationId: R805
+      summary: 'R805: Edit FAQ Action'
+      description: 'Processes the FAQ edit form submission. Access: ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the FAQ to edit'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                  description: 'The question for the FAQ'
+                answer:
+                  type: string
+                  description: 'The answer for the FAQ'
+      responses:
+        '302':
+          description: 'Redirect after processing the FAQ edit.'
+
+    delete:
+      operationId: R806
+      summary: 'R806: Delete FAQ'
+      description: 'Processes the FAQ deletion. Access: ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the FAQ to delete'
+      responses:
+        '302':
+          description: 'Redirect after processing the FAQ deletion.'
+
+  /support-questions/create:
+    get:
+      operationId: R807
+      summary: 'R807: Create Support Question Form'
+      description: 'Provides the support question creation form. Access: USR, ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      responses:
+        '200':
+          description: 'OK. Support question creation form displayed.'
+
+  /support-questions:
+    post:
+      operationId: R808
+      summary: 'R808: Create Support Question Action'
+      description: 'Processes the support question creation form submission. Access: USR, ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                  description: 'The support question'
+                description:
+                  type: string
+                  description: 'The description of the support question'
+      responses:
+        '302':
+          description: 'Redirect after processing the support question creation.'
+
+  /my-support-questions:
+    get:
+      operationId: R809
+      summary: 'R809: View My Support Questions'
+      description: 'Displays the list of support questions created by the user. Access: USR, ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      responses:
+        '200':
+          description: 'OK. My support questions displayed.'
+
+  /support-questions/{id}/solve:
+    post:
+      operationId: R810
+      summary: 'R810: Solve Support Question'
+      description: 'Marks a support question as solved. Access: USR, ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the support question to solve'
+      responses:
+        '302':
+          description: 'Redirect after marking the support question as solved.'
+
+  /support-answers:
+    post:
+      operationId: R811
+      summary: 'R811: Create Support Answer Action'
+      description: 'Processes the support answer creation form submission. Access: ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                answer:
+                  type: string
+                  description: 'The support answer'
+                question_id:
+                  type: integer
+                  description: 'The ID of the support question'
+      responses:
+        '302':
+          description: 'Redirect after processing the support answer creation.'
+
+  /about-us:
+    get:
+      operationId: R812
+      summary: 'R812: View About Us'
+      description: 'Displays the About Us page. Access: PUB'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      responses:
+        '200':
+          description: 'OK. About Us page displayed.'
+    
+    put:
+      operationId: R813
+      summary: 'R813: Edit About Us Action'
+      description: 'Processes the About Us edit form submission. Access: ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: 'The content for the About Us page'
+      responses:
+        '302':
+          description: 'Redirect after processing the About Us edit.'
+
+  /about-us/edit:
+    get:
+      operationId: R814
+      summary: 'R814: Edit About Us Form'
+      description: 'Provides the About Us edit form. Access: ADM'
+      tags:
+        - 'M08: Support, FAQs, and Contacts'
+      responses:
+        '200':
+          description: 'OK. About Us edit form displayed.'
+
+  ################ TAGS ################
+
+  /tags/manage:
+    get:
+      operationId: R901
+      summary: 'R901: Manage Tags'
+      description: 'Displays the tag management interface. Access: ADM'
+      tags:
+        - 'M09: Tags'
+      responses:
+        '200':
+          description: 'OK. Tag management interface displayed.'
+
+  /tags:
+    get:
+      operationId: R902
+      summary: 'R902: View Tags'
+      description: 'Displays the list of tags. Access: USR, ADM'
+      tags:
+        - 'M09: Tags'
+      responses:
+        '200':
+          description: 'OK. Tags displayed.'
+
+    post:
+      operationId: R903
+      summary: 'R903: Create Tag'
+      description: 'Processes the tag creation form submission. Access: ADM'
+      tags:
+        - 'M09: Tags'
+
+      responses:
+        '302':
+          description: 'Redirect after processing the tag creation.'
+
+  /tags/{id}:
+    put:
+      operationId: R904
+      summary: 'R904: Update Tag'
+      description: 'Processes the tag update form submission. Access: ADM'
+      tags:
+        - 'M09: Tags'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the tag to update'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the tag'
+                description:
+                  type: string
+                  description: 'The description of the tag'
+      responses:
+        '302':
+          description: 'Redirect after processing the tag update.'
+
+    delete:
+      operationId: R905
+      summary: 'R905: Delete Tag'
+      description: 'Processes the tag deletion. Access: ADM'
+      tags:
+        - 'M09: Tags'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the tag to delete'
+      responses:
+        '302':
+          description: 'Redirect after processing the tag deletion.'
+
+  /tags/{name}:
+    get:
+      operationId: R906
+      summary: 'R906: View Tag'
+      description: 'Displays the details of a specific tag. Access: USR, ADM'
+      tags:
+        - 'M09: Tags'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+          description: 'The name of the tag to view'
+      responses:
+        '200':
+          description: 'OK. Tag details displayed.'
+
+  /api/tags/{name}:
+    get:
+      operationId: R907
+      summary: 'R907: Get Questions by Tag (API)'
+      description: 'Retrieves questions associated with a specific tag. Returns the results as JSON. Access: USR, ADM'
+      tags:
+        - 'M09: Tags'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+          description: 'The name of the tag to retrieve questions for'
+      responses:
+        '200':
+          description: 'OK. Questions retrieved successfully.'
+
+  /tags/{name}/follow:
+    post:
+      operationId: R908
+      summary: 'R908: Follow Tag'
+      description: 'Allows a user to follow a specific tag. Access: USR, ADM'
+      tags:
+        - 'M09: Tags'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+          description: 'The name of the tag to follow'
+      responses:
+        '302':
+          description: 'Redirect after following the tag.'
+
+
+################ EDIT HISTORY ################
+
+  /api/edit-history/{id}:
+    get:
+      operationId: R1001
+      summary: 'R1001: Get Edit History'
+      description: 'Retrieves the edit history for a specific entity. Access: OWN'
+      tags:
+        - 'M10: Edit History'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the entity to retrieve edit history for'
+      responses:
+        '200':
+          description: 'OK. Edit history retrieved successfully.'
+
+        '404':
+          description: 'Not Found. Edit history not found for the specified entity.'
+
+
+################ APPEALS AND PASSWORD RESET ################
+
+  /appeal-for-unblock:
+    get:
+      operationId: R1101
+      summary: 'R1101: View Appeal for Unblock Form'
+      description: 'Displays the appeal for unblock form. Access: PUB'
+      tags:
+        - 'M11: Appeals and Password Reset'
+      responses:
+        '200':
+          description: 'OK. Appeal for unblock form displayed.'
+
+    post:
+      operationId: R1102
+      summary: 'R1102: Submit Appeal for Unblock'
+      description: 'Processes the appeal for unblock form submission. Access: PUB'
+      tags:
+        - 'M11: Appeals and Password Reset'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: 'The reason for the appeal'
+      responses:
+        '302':
+          description: 'Redirect after processing the appeal for unblock.'
+
+  /password/request:
+    get:
+      operationId: R1103
+      summary: 'R1103: Password Reset Request Form'
+      description: 'Displays the password reset request form. Access: PUB'
+      tags:
+        - 'M11: Appeals and Password Reset'
+      responses:
+        '200':
+          description: 'OK. Password reset request form displayed.'
+
+  /send-email:
+    get:
+      operationId: R1104
+      summary: 'R1104: Send Email Form'
+      description: 'Displays the send email form. Access: PUB'
+      tags:
+        - 'M11: Appeals and Password Reset'
+      responses:
+        '200':
+          description: 'OK. Send email form displayed.'
+
+  /password/reset/{token}:
+    get:
+      operationId: R1105
+      summary: 'R1105: Password Reset Form'
+      description: 'Displays the password reset form. Access: PUB'
+      tags:
+        - 'M11: Appeals and Password Reset'
+      parameters:
+        - in: path
+          name: token
+          required: true
+          schema:
+            type: string
+          description: 'The password reset token'
+      responses:
+        '200':
+          description: 'OK. Password reset form displayed.'
+
+  /password/reset:
+    post:
+      operationId: R1106
+      summary: 'R1106: Submit Password Reset'
+      description: 'Processes the password reset form submission. Access: PUB'
+      tags:
+        - 'M11: Appeals and Password Reset'
+      responses:
+        '302':
+          description: 'Redirect after processing the password reset.'
+
+  /send:
+    post:
+      operationId: R1107
+      summary: 'R1107: Send Email'
+      description: 'Processes the send email form submission. Access: PUB'
+      tags:
+        - 'M11: Appeals and Password Reset'
+
+      responses:
+        '302':
+          description: 'Redirect after processing the send email form.'
+
+  /feedback:
+    get:
+      operationId: R1108
+      summary: 'R1108: View Feedback'
+      description: 'Displays the feedback view. Access: PUB'
+      tags:
+        - 'M11: Appeals and Password Reset'
+      responses:
+        '200':
+          description: 'OK. Feedback view displayed.'
