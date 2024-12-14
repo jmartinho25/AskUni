@@ -145,21 +145,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/report', [ReportController::class, 'store'])->name('report.store');
 });
 
+
 // Moderator and Admin Routes
 Route::middleware(['auth', 'moderator'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');
     Route::post('/admin/users/{id}/unblock', [AdminController::class, 'unblock'])->name('admin.users.unblock');
     Route::delete('/admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
     Route::get('/admin/unblock-requests', [UserController::class, 'unblockRequests'])->name('admin.unblock.requests');
     Route::post('/reports/resolve/{id}', [UserController::class, 'resolveReport'])->name('admin.reports.resolve');
     Route::get('user/{id}/reports', [UserController::class, 'userReports'])->name('admin.user.reports');
     Route::post('/admin/users/{id}/block', [AdminController::class, 'block'])->name('admin.users.block');
-    Route::post('/admin/users/{id}/elevate-moderator', [ModeratorController::class, 'elevateToModerator'])->name('admin.users.elevate.moderator');
-    Route::post('/users/{id}/demote-moderator', [ModeratorController::class, 'demoteFromModerator'])->name('admin.users.demote.moderator');
     Route::get('/admin/support-contacts', [SupportController::class, 'index'])->name('admin.support.contacts');
     Route::post('/support-questions/{id}/solve', [SupportController::class, 'solve'])->name('support-questions.solve');
     Route::post('/support-questions/answer', [SupportController::class, 'storeAnswer'])->name('support-questions.answer');
+    Route::get('/admin/reported-content', [AdminController::class, 'viewReportedContent'])->name('admin.reported.content');
+
 });
 
 // Admin Routes
@@ -167,6 +167,9 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/users/search', [UserController::class, 'searchAPI'])->name('admin.users.search');
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');
+    Route::post('/admin/users/{id}/elevate-moderator', [ModeratorController::class, 'elevateToModerator'])->name('admin.users.elevate.moderator');
+    Route::post('/users/{id}/demote-moderator', [ModeratorController::class, 'demoteFromModerator'])->name('admin.users.demote.moderator');
 });
 Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');

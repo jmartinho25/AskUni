@@ -23,6 +23,10 @@
     <a href="{{ route('admin.support.contacts') }}" class="btn btn-primary" title="View Support Contacts">
         <i class="fas fa-headset"></i> View Support Contacts
     </a>
+    <p></p>
+    <a href="{{ route('admin.reported.content') }}" class="btn btn-primary" title="View Reported Content">
+        <i class="fas fa-exclamation-triangle"></i> View Reported Content
+    </a>
 
     @if(Auth::user()->hasRole('admin'))
         <h2>Users</h2>

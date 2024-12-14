@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\AppealForUnblock;
+use App\Models\ContentReports;
 
 class AdminController extends Controller
 {
@@ -67,5 +68,16 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.dashboard')->with('success', 'User has been unblocked!');
+    }
+    public function viewReportedContent()
+    {
+        $reportedContent = ContentReports::with('post.user', 'comment.user')
+            ->orderBy('solved', 'asc')
+            ->get()
+            ->sortBy(function($report) {
+                $user = $report->post ? $report->post->user : ($report->comment ? $report->comment->user : null);
+                return $user ? $user->name : 'Deleted User';
+            });
+        return view('pages.admin.reported-content', compact('reportedContent'));
     }
 }
