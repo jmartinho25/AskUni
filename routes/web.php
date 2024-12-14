@@ -22,6 +22,7 @@ use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppealForUnblockController;
 use App\Http\Controllers\EditHistoryController;
+use App\Http\Controllers\ModeratorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,23 +143,30 @@ Route::middleware('auth')->group(function () {
     Route::post('/report', [ReportController::class, 'store'])->name('report.store');
 });
 
-// Admin Routes
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
-    Route::get('dashboard', [UserController::class, 'index'])->name('admin.dashboard');
-    Route::get('unblock-requests', [UserController::class, 'unblockRequests'])->name('admin.unblock.requests');
-    Route::get('user/{id}/reports', [UserController::class, 'userReports'])->name('admin.user.reports');
-    Route::get('/users/search', [UserController::class, 'searchAPI'])->name('admin.users.search');
+// Moderator Routes
+Route::middleware(['auth', 'role:admin|moderator'])->group(function () {
+    Route::get('admin/unblock-requests', [UserController::class, 'unblockRequests'])->name('admin.unblock.requests');
+    Route::get('admin/support-contacts', [SupportController::class, 'index'])->name('admin.support.contacts');
     Route::post('/users/unblock/{id}', [UserController::class, 'unblock'])->name('admin.users.unblock');
     Route::post('/reports/resolve/{id}', [UserController::class, 'resolveReport'])->name('admin.reports.resolve');
+    Route::get('user/{id}/reports', [UserController::class, 'userReports'])->name('admin.user.reports');
+    Route::get('dashboard', [UserController::class, 'index'])->name('admin.dashboard');
+
+});
+
+// Admin Routes
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
+    Route::get('/users/search', [UserController::class, 'searchAPI'])->name('admin.users.search');
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
-    Route::get('support-contacts', [SupportController::class, 'index'])->name('admin.support.contacts');
 });
 Route::middleware(['auth', 'can:admin,App\Models\User'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/admin/users/{id}/elevate', [AdminController::class, 'elevate'])->name('admin.users.elevate');
 });
-
+Route::post('/admin/users/{id}/elevate-moderator', [ModeratorController::class, 'elevateToModerator'])
+    ->name('admin.users.elevate.moderator')
+    ->middleware(['auth', 'admin']);
 
 
 // FAQ Routes
@@ -234,6 +242,7 @@ Route::post('/admin/users/{id}/unblock', [AdminController::class, 'unblock'])->n
 
 // Delete own account
 Route::delete('/users/{id}/auto-destroy', [UserController::class, 'autoDestroy'])->name('users.autoDestroy');
+
 
 // Edit History
 Route::controller(EditHistoryController::class)->group(function () {
