@@ -12,7 +12,7 @@
         </div>
     @endif
     <h1>Edit Profile</h1>
-    <form action="{{ route('update-profile', ['id'=> $user->id]) }}" method="POST" enctype="multipart/form-data">
+    <form id="editProfileForm" action="{{ route('update-profile', ['id'=> $user->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 

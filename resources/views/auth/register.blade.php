@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form method="POST" action="{{ route('register') }}">
+<form id="registerForm" method="POST" action="{{ route('register') }}">
     {{ csrf_field() }}
 
     <label for="username">Username
