@@ -1645,5 +1645,53 @@ body {
     content:'\2715';
   }
 
+
+  /* Profile */
+
+  .profile-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profile-sidebar, .profile-content {
+    width: 100%;
+    padding: 1em;
+    border-right: none;
+  }
+
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+
+  .tabset > label {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Tags */
+
+  .tag-layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tag-info, .tag-questions {
+    width: 100%;
+    padding: 1em;
+    border-right: none;
+  }
+
+  .tag-image {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+
+  .sort-buttons {
+    text-align: center;
+  }
 }
 
