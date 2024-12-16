@@ -74,21 +74,23 @@ class AdminController extends Controller
         $query = $request->input('query');
         $reportedContent = ContentReports::with('post.user', 'comment.user')
             ->orderBy('solved', 'asc')
-            ->get();
+            ->paginate(10);
 
         if ($query) {
-            $reportedContent = $reportedContent->filter(function($report) use ($query) {
+            $reportedContent->getCollection()->transform(function($report) use ($query) {
                 $user = $report->post ? $report->post->user : ($report->comment ? $report->comment->user : null);
-                return $user && stripos($user->name, $query) !== false;
-            });
+                if ($user && stripos($user->name, $query) !== false) {
+                    return $report;
+                }
+            })->filter();
         }
 
-        $reportedContent = $reportedContent->sortBy(function($report) {
-            $user = $report->post ? $report->post->user : ($report->comment ? $report->comment->user : null);
-            return $user ? $user->name : 'Deleted User';
+        $groupedReports = $reportedContent->getCollection()->groupBy(function($report) {
+            return $report->post ? $report->post->user_id : ($report->comment ? $report->comment->user_id : null);
         });
 
-        return view('pages.admin.reported-content', compact('reportedContent', 'query'));
+        return view('pages.admin.reported-content', compact('groupedReports', 'query', 'reportedContent'));
     }
+    
     
 }
