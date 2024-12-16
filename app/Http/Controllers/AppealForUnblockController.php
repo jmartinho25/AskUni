@@ -24,12 +24,11 @@ class AppealForUnblockController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return redirect()->back()->withErrors(['email' => 'Email or password is incorrect.']);
+        if(!$user || !Hash::check($request->password, $user->password)) {
+            return redirect()->route('login')->with('error', 'Invalid credentials.');
         }
-
         if (!$user->is_blocked) {
-            return redirect()->route('feed')->with('error', 'You are not blocked, no appeal needed.'); // Redireciona para o feed
+            return redirect()->route('appealForUnblock.index')->with('error', 'You are not blocked, no appeal needed.'); 
         }
 
         $appeal = AppealForUnblock::where('users_id', $user->id)->first();
@@ -44,6 +43,6 @@ class AppealForUnblockController extends Controller
             ]);
         }
 
-            return redirect()->route('appealForUnblock.index')->with('success', 'Appeal submitted successfully.');
+        return redirect()->route('appealForUnblock.index')->with('success', 'Appeal submitted successfully.');
     }
 }

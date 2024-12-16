@@ -1157,7 +1157,7 @@ INSERT INTO users_roles (users_id, roles_id) VALUES
 (11, 2);
 
 INSERT INTO posts (content, date, users_id) VALUES 
-('What are the most effective study techniques for mastering engineering mathematics? I struggle with calculus and differential equations and would love some guidance.', now(), 1),
+('What are the most effective study techniques for mastering engineering mathematics? I struggle with calculus and differential equations and would love some guidance.', '2022-02-11 12:23:23',1),
 ('Hello fellow engineers! Can anyone recommend reliable resources for understanding circuit analysis? I need help grasping complex concepts and theorems.', now(), 1),
 ('Can someone explain the principles behind Newton’s laws of motion? I’m trying to relate them to real-world engineering applications.', now(), 2),
 ('I need help with my thermodynamics course. What are the key concepts I should focus on to prepare for the upcoming exam?', now(), 2),

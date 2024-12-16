@@ -1,8 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
 
+<div class="container">
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <h1>Unblock Requests</h1>
 
     <table class="table">

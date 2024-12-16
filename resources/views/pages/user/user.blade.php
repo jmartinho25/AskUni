@@ -1,3 +1,6 @@
+@php
+    use Carbon\Carbon;
+@endphp
 @extends('layouts.app')
 
 @section('content')
@@ -117,7 +120,7 @@
                             <div class="question-card">
                                 <h3>{{ $question->title }}</h3>
                                 <p>{{ $question->post->content }}</p>
-                                <p>Date: {{ $question->post->date }}</p>
+                                <p>Date: {{ Carbon::parse($question->post->date)->diffForHumans() }}</p>
                                 <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
                             </div>
                         @endforeach
@@ -133,7 +136,7 @@
                         @foreach ($answers as $answer)
                             <div class="answer-card">
                                 <p>{{ $answer->content }}</p>
-                                <p>Date: {{ $answer->date }}</p>
+                                <p>Date: {{ Carbon::parse($answer->date)->diffForHumans() }}</p>
                                 <a class="button" href="{{ route('questions.show', $answer->answer->questions_id) }}#answer-{{ $answer->id }}" id="btn-edit" title="Details">
                                     <i class="fas fa-book-open"></i>
                                 </a>
@@ -167,7 +170,7 @@
                     @foreach ($comments as $comment)
                         <div class="answer-card">
                             <p>{{ $comment->content }}</p>
-                            <p>Date: {{ $comment->date }}</p>
+                            <p>Date: {{ Carbon::parse($comment->date)->diffForHumans() }}</p>
                             @if($comment->question!=null)
                                 <a class="button" href="{{ route('questions.show', $comment->question->posts_id) }} #comment-{{ $comment->id }}" id="btn-edit" title="Details">
                                 <i class="fas fa-book-open"></i>
@@ -207,15 +210,15 @@
                             <div class="question-card">
                                 <h3>{{ $question->title }}</h3>
                                 <p>{{ $question->post->content }}</p>
-                                <p>Date: {{ $question->post->date }}</p>
+                                <p>Date: {{ Carbon::parse($question->post->date)->diffForHumans() }}</p>
                                 <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
                             </div>
                         @endforeach
                         @foreach ($likedAnswers as $answer)
                             <div class="answer-card">
                                 <p>{{ $answer->post->content }}</p>
-                                <p>Date: {{ $answer->post->date }}</p>
-                                <a class="button" href="{{ route('questions.show', $answer->questions_id) }}" id="btn-edit" title="Details">
+                                <p>Date: {{ Carbon::parse($answer->post->date)->diffForHumans() }}</p>
+                                <a class="button" href="{{ route('questions.show', $answer->questions_id) }}#answer-{{ $answer->posts_id }}" id="btn-edit" title="Details">
                                     <i class="fas fa-book-open"></i>
                                 </a>
                             </div>
@@ -231,15 +234,15 @@
                             <div class="question-card">
                                 <h3>{{ $question->title }}</h3>
                                 <p>{{ $question->post->content }}</p>
-                                <p>Date: {{ $question->post->date }}</p>
+                                <p>Date: {{ Carbon::parse($question->post->date)->diffForHumans() }}</p>
                                 <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
                             </div>
                         @endforeach
                         @foreach ($dislikedAnswers as $answer)
                             <div class="answer-card">
                                 <p>{{ $answer->post->content }}</p>
-                                <p>Date: {{ $answer->post->date }}</p>
-                                <a class="button" href="{{ route('questions.show', $answer->questions_id) }}" id="btn-edit" title="Details">
+                                <p>Date: {{ Carbon::parse($answer->post->date)->diffForHumans() }}</p>
+                                <a class="button" href="{{ route('questions.show', $answer->questions_id) }}#answer-{{ $answer->posts_id }}" id="btn-edit" title="Details">
                                     <i class="fas fa-book-open"></i>
                                 </a>
                             </div>
