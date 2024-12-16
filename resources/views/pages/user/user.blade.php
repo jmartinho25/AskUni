@@ -126,6 +126,9 @@
                         @endforeach
                         @endif
                         </div>
+                        <div class="pagination">
+                            {{ $questions->appends(['answers_page' => $answers->currentPage(), 'comments_page' => $comments->currentPage(), 'liked_questions_page' => $likedQuestions->currentPage(), 'liked_answers_page' => $likedAnswers->currentPage(), 'disliked_questions_page' => $dislikedQuestions->currentPage(), 'disliked_answers_page' => $dislikedAnswers->currentPage()])->links() }}
+                        </div>
                     </section>
                     <section id="answers" class="tab-panel">
                         <h2>Answers</h2>
@@ -160,6 +163,9 @@
                         @endforeach
                         @endif
                         </div>
+                        <div class="pagination">
+                            {{ $answers->appends(['questions_page' => $questions->currentPage(), 'comments_page' => $comments->currentPage(), 'liked_questions_page' => $likedQuestions->currentPage(), 'liked_answers_page' => $likedAnswers->currentPage(), 'disliked_questions_page' => $dislikedQuestions->currentPage(), 'disliked_answers_page' => $dislikedAnswers->currentPage()])->links() }}
+                        </div>
                     </section>
                     <section id="comments" class="tab-panel">
                     <h2>Comments</h2>
@@ -172,7 +178,7 @@
                             <p>{{ $comment->content }}</p>
                             <p>Date: {{ Carbon::parse($comment->date)->diffForHumans() }}</p>
                             @if($comment->question!=null)
-                                <a class="button" href="{{ route('questions.show', $comment->question->posts_id) }} #comment-{{ $comment->id }}" id="btn-edit" title="Details">
+                                <a class="button" href="{{ route('questions.show', $comment->question->posts_id) }}#comment-{{ $comment->id }}" id="btn-edit" title="Details">
                                 <i class="fas fa-book-open"></i>
                                 </a>
                             @elseif($comment->answer!=null)
@@ -198,13 +204,17 @@
                     @endforeach
                     @endif
                     </div>
+                    <div class="pagination">
+                        {{ $comments->appends(['questions_page' => $questions->currentPage(), 'answers_page' => $answers->currentPage(), 'liked_questions_page' => $likedQuestions->currentPage(), 'liked_answers_page' => $likedAnswers->currentPage(), 'disliked_questions_page' => $dislikedQuestions->currentPage(), 'disliked_answers_page' => $dislikedAnswers->currentPage()])->links() }}
+                    </div>
                     </section>
                     <section id="votes" class="tab-panel">
             <h2>My Votes</h2>
                 <div class="all-questions">
                     <h3>Likes</h3>
-                    @if ($likedQuestions->isEmpty() && $likedAnswers->isEmpty())
-                        <p>No liked posts available.</p>
+                    <h4>Questions</h4>
+                    @if ($likedQuestions->isEmpty())
+                        <p>No liked questions available.</p>
                     @else
                         @foreach ($likedQuestions as $question)
                             <div class="question-card">
@@ -214,6 +224,14 @@
                                 <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
                             </div>
                         @endforeach
+                    @endif
+                    <div class="pagination">
+                        {{ $likedQuestions->appends(['questions_page' => $questions->currentPage(), 'answers_page' => $answers->currentPage(), 'comments_page' => $comments->currentPage(), 'liked_answers_page' => $likedAnswers->currentPage(), 'disliked_questions_page' => $dislikedQuestions->currentPage(), 'disliked_answers_page' => $dislikedAnswers->currentPage()])->links() }}
+                    </div>
+                    <h4>Answers</h4>
+                    @if ($likedAnswers->isEmpty())
+                        <p>No liked answers available.</p>
+                    @else
                         @foreach ($likedAnswers as $answer)
                             <div class="answer-card">
                                 <p>{{ $answer->post->content }}</p>
@@ -224,11 +242,15 @@
                             </div>
                         @endforeach
                     @endif
+                    <div class="pagination">
+                        {{ $likedAnswers->appends(['questions_page' => $questions->currentPage(), 'answers_page' => $answers->currentPage(), 'comments_page' => $comments->currentPage(), 'liked_questions_page' => $likedQuestions->currentPage(), 'disliked_questions_page' => $dislikedQuestions->currentPage(), 'disliked_answers_page' => $dislikedAnswers->currentPage()])->links() }}
+                    </div>
                 </div>
                 <div class="all-questions">
                     <h3>Dislikes</h3>
-                    @if ($dislikedQuestions->isEmpty() && $dislikedAnswers->isEmpty())
-                        <p>No disliked posts available.</p>
+                    <h4>Questions</h4>
+                    @if ($dislikedQuestions->isEmpty())
+                        <p>No disliked questions available.</p>
                     @else
                         @foreach ($dislikedQuestions as $question)
                             <div class="question-card">
@@ -238,6 +260,14 @@
                                 <a class="read_more" href="{{ route('questions.show', $question->posts_id) }}" class="btn btn-secondary">Read More</a>
                             </div>
                         @endforeach
+                    @endif
+                    <div class="pagination">
+                        {{ $dislikedQuestions->appends(['questions_page' => $questions->currentPage(), 'answers_page' => $answers->currentPage(), 'comments_page' => $comments->currentPage(), 'liked_questions_page' => $likedQuestions->currentPage(), 'liked_answers_page' => $likedAnswers->currentPage(), 'disliked_answers_page' => $dislikedAnswers->currentPage()])->links() }}
+                    </div>
+                    <h4>Answers</h4>
+                    @if ($dislikedAnswers->isEmpty())
+                        <p>No disliked answers available.</p>
+                    @else
                         @foreach ($dislikedAnswers as $answer)
                             <div class="answer-card">
                                 <p>{{ $answer->post->content }}</p>
@@ -248,7 +278,9 @@
                             </div>
                         @endforeach
                     @endif
-
+                    <div class="pagination">
+                        {{ $dislikedAnswers->appends(['questions_page' => $questions->currentPage(), 'answers_page' => $answers->currentPage(), 'comments_page' => $comments->currentPage(), 'liked_questions_page' => $likedQuestions->currentPage(), 'liked_answers_page' => $likedAnswers->currentPage(), 'disliked_questions_page' => $dislikedQuestions->currentPage()])->links() }}
+                    </div>
                 </div>
         </section>
                 </div>

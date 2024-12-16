@@ -30,35 +30,35 @@ class UserController extends Controller
         
         $posts = $user->posts()->get();
         
-        $answers = $user->answers()->get();
-
-        $questions = $user->questions()->get();
-
-        $comments= $user->comments()->get();
-
+        $answers = $user->answers()->paginate(10, ['*'], 'answers_page');
+    
+        $questions = $user->questions()->paginate(10, ['*'], 'questions_page');
+    
+        $comments = $user->comments()->paginate(10, ['*'], 'comments_page');
+    
         $badges = $user->badges()->get();
-
+    
         $tags = $user->tags()->get();
-
+    
         $likedQuestions = Question::whereHas('post.likes', function ($query) use ($user) {
             $query->where('users_id', $user->id);
-        })->get();
-
+        })->paginate(5, ['*'], 'liked_questions_page');
+    
         $likedAnswers = Answer::whereHas('post.likes', function ($query) use ($user) {
             $query->where('users_id', $user->id);
-        })->get();
-
+        })->paginate(5, ['*'], 'liked_answers_page');
+    
         $dislikedQuestions = Question::whereHas('post.dislikes', function ($query) use ($user) {
             $query->where('users_id', $user->id);
-        })->get();
-
+        })->paginate(5, ['*'], 'disliked_questions_page');
+    
         $dislikedAnswers = Answer::whereHas('post.dislikes', function ($query) use ($user) {
             $query->where('users_id', $user->id);
-        })->get();
-
+        })->paginate(5, ['*'], 'disliked_answers_page');
+    
         $supportQuestions = SupportQuestion::where('users_id', $id)->with('answers.user')->get();
         
-        return view('pages.user.user', compact('user', 'posts', 'answers','questions', 'badges', 'comments', 'likedQuestions', 'likedAnswers', 'dislikedQuestions', 'dislikedAnswers', 'supportQuestions'));
+        return view('pages.user.user', compact('user', 'posts', 'answers', 'questions', 'badges', 'comments', 'likedQuestions', 'likedAnswers', 'dislikedQuestions', 'dislikedAnswers', 'supportQuestions'));
     }
 
     // Show search page
