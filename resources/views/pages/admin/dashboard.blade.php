@@ -55,7 +55,7 @@
             <tbody id="users-table-body">
                 @forelse($users as $user)
                     <tr @if($user->deleted_at) class="table-danger" @endif>
-                        <td>{{ $user->name }}</td>
+                        <td> <a href="{{ route('profile', $user->id) }}">{{ $user->name }}</a></td>
                         <td>{{ $user->email }}</td>
                         <td>
                             @if($user->is_blocked)

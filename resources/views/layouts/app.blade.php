@@ -26,7 +26,6 @@
     @if (Auth::check())
     <script src="{{ url('js/notifications.js') }}" defer></script>
     @endif
-    <script src="{{ url('js/search-users.js') }}" defer></script>
     <script src="{{ url('js/search-questions.js') }}" defer></script>
     <script src="{{ url('js/tags.js') }}" defer></script>
     <script src="{{ url('js/like-dislike.js') }}" defer></script>    
