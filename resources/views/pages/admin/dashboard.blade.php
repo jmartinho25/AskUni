@@ -27,9 +27,14 @@
     <a href="{{ route('admin.reported.content') }}" class="btn btn-primary" title="View Reported Content">
         <i class="fas fa-exclamation-triangle"></i> View Reported Content
     </a>
+    <p></p>
 
     @if(Auth::user()->hasRole('admin'))
-        <h2>Users</h2>
+
+        <a href="{{ route('admin.users.create') }}" class="btn btn-primary" title="Create New User">
+            <i class="fas fa-user-plus"></i> Create New User
+        </a>
+        <p></p>
 
         <form action="{{ route('admin.dashboard') }}" method="GET" id="user-search-bar">
             <input type="text" name="query" id="user-search-input" value="{{ $query ?? '' }}" placeholder="Search users...">

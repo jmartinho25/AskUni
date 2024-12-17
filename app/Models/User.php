@@ -120,6 +120,11 @@ class User extends Authenticatable
     {
         return $this->roles()->where('name', $role)->exists();
     }
+    public function assignRole($role)
+    {
+        $role = Role::where('name', $role)->firstOrFail();
+        $this->roles()->attach($role);
+    }
     public function followedQuestions()
     {
         return $this->belongsToMany(Question::class, 'users_follow_questions', 'users_id', 'questions_id');

@@ -177,6 +177,10 @@ Route::post('/admin/users/{id}/elevate-moderator', [ModeratorController::class, 
     ->middleware(['auth', 'admin']);
 
 
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/users/create', [AdminController::class, 'createUser'])->name('admin.users.create');
+    Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
+});
 // FAQ Routes
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 

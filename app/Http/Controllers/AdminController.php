@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\AppealForUnblock;
 use App\Models\ContentReports;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -90,6 +91,39 @@ class AdminController extends Controller
         });
 
         return view('pages.admin.reported-content', compact('groupedReports', 'query', 'reportedContent'));
+    }
+    public function createUser()
+    {
+        return view('pages.admin.create-user');
+    }
+    public function storeUser(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users|regex:/^[a-zA-Z0-9._%+-]+@fe\.up\.pt$/',
+            'password' => 'required|string|min:8|confirmed',
+            'description' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'role' => 'required|string|in:user,moderator,admin',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'description' => $request->description,
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('profile_pictures', 'public');
+            $user->photo = $path;
+        }
+
+        $user->assignRole($request->role);
+
+        return redirect()->route('admin.dashboard')->with('success', 'User created successfully.');
     }
     
     
