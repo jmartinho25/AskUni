@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let messageHtml = `<div class="chat-message">
             <img src="${escapeHTML(data.sender_image)}" alt="${escapeHTML(data.sender_name)}">
             <div class="message-content">
-                <strong><a href="/users/${escapeHTML(data.sender_id)}">${escapeHTML(data.sender_name)}</a>:</strong> ${escapeHTML(data.message)}
+                <strong><a href="/users/${data.sender_id}">${escapeHTML(data.sender_name)}</a>:</strong> ${escapeHTML(data.message)}
                 <div class="chat-date">${formatDate(data.created_at)}</div>
             </div>
         </div>`;

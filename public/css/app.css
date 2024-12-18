@@ -1914,35 +1914,39 @@ body {
     padding-right: 15px;
   }
 
-.table-dashboard td.actions button {
-    background-color: #fff;
-    border: none;
-    color: #0784d2;
-    padding: 5px 10px;
-    font-size: 1.5rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    align-content: center;
-    margin-top: 0;
+  .table-dashboard td.actions button {
+      background-color: #fff;
+      border: none;
+      color: #0784d2;
+      padding: 5px 10px;
+      font-size: 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      align-content: center;
+      margin-top: 0;
 
-    
-}
+      
+  }
 
-.edit-history-container {
-  flex-direction: column; /* Altera a direção do flex para coluna */
-  align-items: flex-start; /* Alinha os itens ao início */
-  padding-left: 0; /* Remove o padding esquerdo */
-}
+  .edit-history-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 0;
+  }
 
-.edit-history-container p {
-  margin-top: 10px; /* Adiciona margem superior para separar do botão */
-  margin-left: 0; /* Remove a margem esquerda */
-}
+  .edit-history-container p {
+    margin-top: 10px;
+    margin-left: 0;
+  }
 
-.modal-button {
-  margin-right: 0; /* Remove a margem direita */
-}
+  .modal-button {
+    margin-right: 0;
+  }
+
+  #chat-box, #chat-form {
+    width: 100%;
+  }
 
 
 
