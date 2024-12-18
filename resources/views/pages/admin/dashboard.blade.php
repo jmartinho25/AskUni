@@ -47,7 +47,7 @@
             <p>Results for: "{{ $query }}"</p>
         @endif
 
-        <table class="table">
+        <table class="table-dashboard">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -78,7 +78,7 @@
                                 <span class="text-secondary">User</span>
                             @endif
                         </td>
-                        <td>
+                        <td class="actions">
                             @if($user->deleted_at)
                                 <span class="text-danger">Deleted</span>
                                 <form action="{{ route('users.restore', $user->id) }}" method="POST" style="display:inline-block;">

@@ -80,7 +80,7 @@ body {
   #content > form input {
     background-color: white;
   }
-
+  /*
   @media (max-width: 70em) {
     #cards {
       grid-template-columns: repeat(2, 1fr);
@@ -117,7 +117,7 @@ body {
       margin: 0;
       border-bottom: 1px solid rgba(96, 108, 118, 0.4);
     }
-  }
+  }*/
   /**
    * Override milligram colors
    * Some styles might be missing
@@ -832,6 +832,7 @@ body {
   position: absolute;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 250px;
   width: 300px;
   left: 50%;
   transform: translateX(-50%);
@@ -1574,8 +1575,15 @@ body {
 }
 
 
+.table-dashboard td.actions form{
+  margin-bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-@media (max-width: 600px) {
+
+@media (max-width: 1020px) {
 
   main > header.top-nav {
     align-items: center;
@@ -1622,7 +1630,7 @@ body {
 
   #menu .hamburger {
     display: block;
-    background-color: #717171;
+    background-color: #ff8800;
     color: white;
     padding: 1em;
   }
@@ -1693,5 +1701,151 @@ body {
   .sort-buttons {
     text-align: center;
   }
+
+  .question-card, .answer-card, .tag-card {
+    width: 100%;
+  }
+
+  .tag-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer p {
+    margin-bottom: 10px;
+  }
+
+  .edit-history {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-history .dates {
+    width: 100%;
+  }
+
+  .profile-container {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-sidebar {
+    border-right: none;
+  }
+
+  .tag-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tag-info {
+    border-right: none;
+  }
+
+  .top-nav .search input {
+    width: 100%;
+  }
+
+  .top-nav .nav-items {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .notifications-dropdown {
+    width: 100%;
+    left: 0;
+    transform: none;
+  }
+
+  .faq-item p {
+    margin-left: 0;
+  }
+
+  .support-question-item p {
+    margin-left: 0;
+  }
+
+  .answer-item p {
+    margin-left: 0;
+  }
+
+  .comment-item p {
+    margin-left: 0;
+  }
+
+  .question-comment-item p {
+    margin-left: 0;
+  }
+
+  .question-item p {
+    margin-left: 0;
+  }
+
+  .profile-content{
+    margin-top: 0;
+  }
+
+  #badges.tab-panel{
+    border-bottom: 1px solid #ccc;;
+  }
+
+  .table-dashboard th:nth-child(3),.table-dashboard td:nth-child(3),
+  .table-dashboard th:nth-child(2),.table-dashboard td:nth-child(2){
+        display: none;
+    }
+
+    .table td, .table th {
+        height: auto;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+  /* Estilo para os botões na seção de ações no modo responsivo */
+  .table-dashboard td.actions {
+    display: flex;
+    justify-content: left; 
+    align-items: center;
+    min-height: 100%;
+  }
+
+  .table-dashboard td.actions button:first-of-type{
+    padding-left: 0;
+    padding-right: 15px;
+  }
+
+.table-dashboard td.actions button {
+    background-color: #fff;
+    border: none;
+    color: #0784d2;
+    padding: 5px 10px;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    align-content: center;
+    margin-top: 0;
+
+    
 }
 
+.edit-history-container {
+  flex-direction: column; /* Altera a direção do flex para coluna */
+  align-items: flex-start; /* Alinha os itens ao início */
+  padding-left: 0; /* Remove o padding esquerdo */
+}
+
+.edit-history-container p {
+  margin-top: 10px; /* Adiciona margem superior para separar do botão */
+  margin-left: 0; /* Remove a margem esquerda */
+}
+
+.modal-button {
+  margin-right: 0; /* Remove a margem direita */
+}
+
+
+
+}

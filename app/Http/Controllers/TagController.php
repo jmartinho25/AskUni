@@ -155,6 +155,16 @@ class TagController extends Controller
         return redirect()->route('tags.manage')->with('success', 'Tag updated successfully.');
     }
 
+    public function edit(Tag $tag)
+    {
+        return view('pages/tags.edit', compact('tag'));
+    }
+
+    public function create()
+    {
+        return view('pages/tags.create');
+    }
+
     public function destroy($id)
     {
         $tag = Tag::findOrFail($id);

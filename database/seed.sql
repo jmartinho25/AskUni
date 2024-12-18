@@ -1358,13 +1358,13 @@ INSERT INTO earned_badges (users_id, badges_id, date) VALUES
 (10, 2, now());
 
 INSERT INTO frequently_asked_questions (question, answer) VALUES
-('How do I create an account?', 'To create an account, click on <i class="fas fa-sign-in-alt"></i>, then click on "Register" and fill in the required informations.'),
+('How do I create an account?', 'To create an account, click on "Sign-In" button, then click on "Register" and fill in the required informations.'),
 ('How do I update my profile information?', 'To update your profile information, go to your profile page and click on the "Edit Profile" button.'),
 ('How do I post a question?', 'To post a question, click on the "Add Question" button on the homepage and fill in the required details.'),
-('How do I answer a question?', 'To answer a question, click on the question you want to answer and then click on <i class="fas fa-reply"></i>.'),
-('How do I edit my question or answer?', 'To edit your question or answer, go to your question or answer and click on  <i class="fas fa-pencil-alt"></i>. '),
-('How do I delete my question or answer?', 'To delete your question or answer, go to your question or answer and click on  <i class="fas fa-trash-alt"></i>. '),
-('How do I upvote or downvote a question or answer?', 'To upvote or downvote a question or answer, click on <i class="far fa-thumbs-up"></i> or <i class="far fa-thumbs-down"></i> .');
+('How do I answer a question?', 'To answer a question, click on the question you want to answer and then click on the reply button.'),
+('How do I edit my question or answer?', 'To edit your question or answer, go to your question or answer and click on the edit button.'),
+('How do I delete my question or answer?', 'To delete your question or answer, go to your question or answer and click on the delete button.'),
+('How do I upvote or downvote a question or answer?', 'To upvote or downvote a question or answer, click on the thumbs up or thumbs down button.');
 
 
 INSERT INTO support_questions(users_id, content, solved) VALUES

@@ -15,7 +15,9 @@
     <h1 id="explore-tags">Explore Tags</h1>
 
     @can('manage', App\Models\Tag::class)
-        <a href="{{ route('tags.manage') }}" class="btn btn-primary mb-3">Manage Tags</a>
+        <a href="{{ route('tags.manage') }}" class="button" class="btn btn-primary mb-3">
+        <i class="fas fa-cog"></i> Manage Tags
+        </a>
     @endcan
 
     @foreach($tags as $category => $categoryTags)

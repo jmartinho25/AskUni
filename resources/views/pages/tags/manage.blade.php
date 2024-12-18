@@ -20,55 +20,9 @@
         </div>
     @endif
 
-    <form action="{{ route('tags.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group">
-            <label for="name">Name
-                <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Maximum 255 characters</span>
-                </div>
-            </label>
-            <input type="text" name="name" id="name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="category">Category
-                <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Maximum 255 characters</span>
-                </div>
-            </label>
-            <input type="text" name="category" id="category" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="description">Description
-                <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Maximum 255 characters</span>
-                </div>
-            </label>
-            <textarea name="description" id="description" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="about">About
-                <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Maximum 1000 characters</span>
-                </div>
-            </label>
-            <textarea name="about" id="about" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="picture">Picture
-                <div class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">File type: jpg, jpeg, png, gif <br> Maximum size: 2MB</span>
-                </div>
-            </label>
-            <input type="file" name="picture" id="picture" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Create Tag</button>
-    </form>
+    <a href="{{ route('tags.create') }}" class="btn btn-primary mb-3">
+        <i class="fas fa-plus"></i> Create Tag
+    </a>
 
     <hr>
 
@@ -90,25 +44,19 @@
                     <td>{{ $tag->category }}</td>
                     <td>{{ $tag->description }}</td>
                     <td>{{ $tag->about }}</td>
-                    <td>
-                        <form action="{{ route('tags.update', $tag->id) }}" method="POST" enctype="multipart/form-data" style="display:inline;">
-                            @csrf
-                            @method('PUT')
-                            <input type="text" name="name" value="{{ $tag->name }}" required>
-                            <input type="text" name="category" value="{{ $tag->category }}" required>
-                            <textarea name="description">{{ $tag->description }}</textarea>
-                            <textarea name="about">{{ $tag->about }}</textarea>
-                            <input type="file" name="picture">
-                            <button type="submit" class="btn btn-warning">Update</button>
-                        </form>
-                        <form action="{{ route('tags.destroy', $tag->id) }}" method="POST" style="display:inline;">
+                    <td >
+                    <div style="display: inline-flex; align-items: center; gap: 8px;">
+                    <a href="{{ route('tags.edit', $tag->id) }}"  class="btn btn-edit" title="Edit" >
+                            <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <form action="{{ route('tags.destroy', $tag->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this tag?')" title="Delete">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this tag?')" title="Delete" style="display:inline-block;">
                                 <i class="fas fa-trash-alt"></i> 
                             </button>
-
-                        </form>
+                    </form>
+                    </div>
                     </td>
                 </tr>
             @endforeach
