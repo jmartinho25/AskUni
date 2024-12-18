@@ -755,11 +755,12 @@ body {
 
 .top-nav .notifications i,
 .top-nav .profile i,
-.top-nav .support i {
+.top-nav .support i,
+.top-nav .chat-room i {
   font-size: 1.5em;
 }
 
-.support .fa.fa-headset:hover{
+.support .fa.fa-headset:hover, .chat-room .fa-globe:hover {
   color: #cc6600;
 }
 
@@ -1574,6 +1575,102 @@ body {
   opacity: 1;
 }
 
+/***********************************CHAT*************************************/
+
+#chat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2em;
+}
+
+#chat-box {
+  height: 400px;
+  overflow-y: scroll;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 80%;
+}
+
+.chat-message {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.chat-message img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.chat-message .message-content {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.chat-message .chat-date {
+  display: none;
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  white-space: nowrap;
+}
+
+.chat-message .message-content:hover .chat-date {
+  display: block;
+}
+
+.chat-message.user-message {
+  justify-content: flex-end;
+}
+
+.chat-message.user-message .message-content {
+  background-color: #e0f7fa;
+}
+
+.chat-message.user-message img {
+  order: 2;
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+#chat-form {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 80%;
+}
+
+#chat-form #message {
+  flex: 1;
+  margin-right: 10px;
+  margin-bottom: 0;
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  padding: 1em;
+  border: 1px solid #ddd;
+}
+
+#chat-form button {
+  font-size: 1.3em;
+  margin-bottom: 0;
+}
 
 .table-dashboard td.actions form{
   margin-bottom: 0;
@@ -1618,6 +1715,7 @@ body {
   .top-nav nav.nav-items .add-question,
   .top-nav nav.nav-items .profile,
   .top-nav nav.nav-items .support,
+  .top-nav nav.nav-items .chat-room,
   #sign-out,
   #sign-in {
     display: none;

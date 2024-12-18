@@ -253,6 +253,12 @@ CREATE TABLE support_answers (
     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP CHECK (date <= now())
 );
 
+CREATE TABLE chat_messages (
+    id SERIAL PRIMARY KEY,
+    sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 --------------------------------
 -- Create Indexes
@@ -1391,3 +1397,9 @@ INSERT INTO support_answers(support_questions_id, users_id, content) VALUES
 (1, 3, 'To change your password, go to your profile page and click on the "Change Password" button.'),
 (2, 3, 'To change your profile information, go to your profile page and click on the "Edit Profile" button.'),
 (3, 3, 'To report a post, click on the "Report" button on the post you want to report.');
+
+
+INSERT INTO chat_messages (sender_id, message) VALUES
+(1, 'Hello, how are you?'),
+(2, 'I am good, thank you! How about you?'),
+(1, 'I am doing well, thanks for asking.');

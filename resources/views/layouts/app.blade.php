@@ -22,9 +22,13 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
+    <!-- Pusher -->
+    <script src="https://js.pusher.com/7.0/pusher.min.js" defer></script>
+
     <script src="{{ url('js/app.js') }}" defer></script>
     @if (Auth::check())
     <script src="{{ url('js/notifications.js') }}" defer></script>
+    <script src="{{ url('js/chat.js') }}" defer></script>
     @endif
     <script src="{{ url('js/search-questions.js') }}" defer></script>
     <script src="{{ url('js/tags.js') }}" defer></script>
@@ -66,6 +70,10 @@
 
             <div class="add-question">
                 <a id="add-question-button" href="{{ route('questions.create') }}">Add Question</a>
+            </div>
+
+            <div class="chat-room">
+                <a id="chat-room-button" href="{{ route('chat.index') }}"><i class="fa-solid fa-globe"></i></a>
             </div>
 
             <div class="support">
@@ -113,6 +121,7 @@
             <li><a href="{{ route('questions.create') }}">Add Question</a></li>
             <li><a href="{{ route('support-questions.create') }}">Contact Support</a></li>
             <li><a href="{{ route('profile', Auth::user()->id) }}">Profile</a></li>
+            <li><a href="{{ route('chat.index') }}">Community Chat</a></li>
             <li><a href="{{ url('/logout') }}">Logout</a></li>
             @else
             <li><a href="{{ url('/login') }}">Login</a></li>

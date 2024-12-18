@@ -23,6 +23,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppealForUnblockController;
 use App\Http\Controllers\EditHistoryController;
 use App\Http\Controllers\ModeratorController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -253,6 +254,13 @@ Route::delete('/users/{id}/auto-destroy', [UserController::class, 'autoDestroy']
 // Edit History
 Route::controller(EditHistoryController::class)->group(function () {
     Route::get('/api/edit-history/{id}', 'getEditHistoryAPI')->name('edit-history');
+});
+
+// Chat
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/messages', [ChatController::class, 'fetchMessages'])->name('chat.fetchMessages');
+    Route::post('/chat/messages', [ChatController::class, 'sendMessage'])->name('chat.sendMessage');
 });
 
 });
