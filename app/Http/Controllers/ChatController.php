@@ -12,17 +12,23 @@ class ChatController extends Controller
 {
     public function index()
     {
-        $messages = ChatMessage::with('sender')
-            ->where('created_at', '>=', Carbon::now()->subMinutes(15))
-            ->get();
-        return view('pages.chat.index', compact('messages'));
+        return view('pages.chat.index');
     }
 
-    public function fetchMessages()
+    public function fetchMessages(Request $request)
     {
-        $messages = ChatMessage::with('sender')
-            ->where('created_at', '>=', Carbon::now()->subMinutes(15))
-            ->get();
+        $offset = 10;
+        $lastMessageId = $request->input('last_message_id');
+    
+        $query = ChatMessage::with('sender')
+            ->orderBy('created_at', 'desc');
+    
+        if ($lastMessageId) {
+            $query->where('id', '<', $lastMessageId);
+        }
+    
+        $messages = $query->take($offset)->get();
+    
         return response()->json($messages);
     }
 

@@ -26,6 +26,9 @@ function formatDate(date) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    let loading = false;
+    let lastMessageId = null;
+
     fetchMessages();
 
     document.getElementById('chat-form').addEventListener('submit', function(event) {
@@ -42,28 +45,45 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     async function fetchMessages() {
+        if (loading) return;
+        loading = true;
+
         let chatBox = document.getElementById('chat-box');
-        chatBox.innerHTML = '<div id="chat-loading"><i class="fas fa-circle-notch fa-spin"></i></div>';
+        let loadingIndicator = document.getElementById('chat-loading');
+        loadingIndicator.style.display = 'block';
+
         try {
-            const response = await fetch('/chat/messages');
+            const response = await fetch(`/chat/messages?last_message_id=${lastMessageId || ''}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             const messages = await response.json();
-            chatBox.innerHTML = '';
+
+            let initialScrollHeight = chatBox.scrollHeight;
+
             messages.forEach(function(message) {
                 let messageHtml = `<div class="chat-message ${parseInt(message.sender.id) === parseInt(window.chatConfig.userId) ? 'user-message' : ''}">
                     <img src="${escapeHTML(message.sender.photo)}" alt="${escapeHTML(message.sender.name)}">
                     <div class="message-content">
-                        <strong><a href="/users/${message.sender.id}">${escapeHTML(message.sender.name)}</a>:</strong> ${escapeHTML(message.message)}
+                        <strong><a href="/users/${message.sender.id}">${escapeHTML(message.sender.name)}</a>&nbsp;</strong> ${escapeHTML(message.message)}
                         <div class="chat-date">${escapeHTML(formatDate(message.created_at))}</div>
                     </div>
                 </div>`;
-                chatBox.innerHTML += messageHtml;
+                chatBox.insertAdjacentHTML('afterbegin', messageHtml);
             });
-            chatBox.scrollTop = chatBox.scrollHeight;
+
+            if (messages.length > 0) {
+                lastMessageId = messages[messages.length - 1].id;
+            }
+
+            chatBox.scrollTop = chatBox.scrollHeight - initialScrollHeight;
+
+            loading = false;
+            loadingIndicator.style.display = 'none';
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
+            loading = false;
+            loadingIndicator.style.display = 'none';
         }
     }
 
@@ -85,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let messageHtml = `<div class="chat-message user-message">
             <img src="${escapeHTML(window.chatConfig.userImage)}" alt="${escapeHTML(window.chatConfig.userName)}">
             <div class="message-content">
-                <strong><a href="/users/${window.chatConfig.userId}">${escapeHTML(window.chatConfig.userName)}</a>:</strong> ${escapeHTML(messageContent)}
+                <strong><a href="/users/${window.chatConfig.userId}">${escapeHTML(window.chatConfig.userName)}</a>&nbsp;</strong> ${escapeHTML(messageContent)}
                 <div class="chat-date">${formatDate(new Date())}</div>
             </div>
         </div>`;
@@ -125,11 +145,21 @@ document.addEventListener('DOMContentLoaded', function() {
         let messageHtml = `<div class="chat-message">
             <img src="${escapeHTML(data.sender_image)}" alt="${escapeHTML(data.sender_name)}">
             <div class="message-content">
-                <strong><a href="/users/${data.sender_id}">${escapeHTML(data.sender_name)}</a>:</strong> ${escapeHTML(data.message)}
+                <strong><a href="/users/${data.sender_id}">${escapeHTML(data.sender_name)}</a>&nbsp;</strong> ${escapeHTML(data.message)}
                 <div class="chat-date">${formatDate(data.created_at)}</div>
             </div>
         </div>`;
         chatBox.innerHTML += messageHtml;
         chatBox.scrollTop = chatBox.scrollHeight;
+    });
+
+    document.getElementById('chat-box').addEventListener('scroll', function() {
+        if (this.scrollTop === 0 && !loading) {
+            let chatBox = document.getElementById('chat-box');
+            let loadingIndicator = document.getElementById('chat-loading');
+            chatBox.insertBefore(loadingIndicator, chatBox.firstChild);
+            loadingIndicator.style.display = 'block';
+            fetchMessages();
+        }
     });
 });

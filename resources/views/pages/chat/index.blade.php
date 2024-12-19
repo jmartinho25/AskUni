@@ -5,6 +5,9 @@
     <div id="chat">
         <h4 id="chat-title">FEUP Community Chat Room</h4>
         <div id="chat-box">
+            <div id="chat-loading">
+                <i class="fas fa-circle-notch fa-spin"></i>
+            </div>
         </div>
         <form id="chat-form">
             @csrf
