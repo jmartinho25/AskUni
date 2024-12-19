@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function fetchMessages() {
         let chatBox = document.getElementById('chat-box');
-        chatBox.innerHTML = '<p><i class="fas fa-circle-notch fa-spin"></i></p>';
+        chatBox.innerHTML = '<div id="chat-loading"><i class="fas fa-circle-notch fa-spin"></i></div>';
         try {
             const response = await fetch('/chat/messages');
             if (!response.ok) {

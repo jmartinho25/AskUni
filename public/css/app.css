@@ -1672,6 +1672,11 @@ body {
   margin-bottom: 0;
 }
 
+#chat-loading {
+  text-align: center;
+  width: 100%;
+}
+
 .table-dashboard td.actions form{
   margin-bottom: 0;
   display: flex;
