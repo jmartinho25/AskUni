@@ -23,7 +23,7 @@
                     <span class="tooltip-text">Maximum 50 characters</span>
                 </div>
             </label>
-            <input type="text" name="name" id="name" value="{{ $user->name }}" class="form-control" required>
+            <input type="text" name="name" id="name" value="{{ $user->name }}" class="form-control" placeholder="Enter your name" required>
         </div>
 
         <div class="form-group">
@@ -33,7 +33,7 @@
                     <span class="tooltip-text">Maximum 20 characters</span>
                 </div>
             </label>
-            <input type="text" name="username" id="username" value="{{ $user->username }}" class="form-control" required>
+            <input type="text" name="username" id="username" value="{{ $user->username }}" class="form-control" placeholder="Enter your username" required>
         </div>
 
         <div class="form-group">
@@ -43,7 +43,7 @@
                     <span class="tooltip-text">Format: @fe.up.pt <br> Maximum 250 characters</span>
                 </div>
             </label>
-            <input type="email" name="email" id="email" value="{{ $user->email }}" class="form-control" required>
+            <input type="email" name="email" id="email" value="{{ $user->email }}" class="form-control" placeholder="example@fe.up.pt" required>
         </div>
 
         <div class="form-group">
@@ -53,12 +53,12 @@
                     <span class="tooltip-text">Minimum 8 characters</span>
                 </div>
             </label>
-            <input type="password" name="password" id="password" class="form-control">
+            <input type="password" name="password" id="password" class="form-control" placeholder="********">
         </div>
 
         <div class="form-group">
             <label for="password_confirmation">Confirm Password</label>
-            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="********">
         </div>
 
         <div class="form-group">
@@ -68,7 +68,7 @@
                     <span class="tooltip-text">Maximum 255 characters</span>
                 </div>
             </label>
-            <textarea name="description" id="description" class="form-control">{{ $user->description }}</textarea>
+            <textarea name="description" id="description" class="form-control" placeholder="Enter a brief description about yourself">{{ $user->description }}</textarea>
         </div>
 
         <div class="form-group">
