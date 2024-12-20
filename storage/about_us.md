@@ -15,6 +15,10 @@ We are a passionate team of developers, educators, and learners committed to mak
 * **Support System**: Get help when you need it through our support ticket system
 * **User Profiles**: Showcase your expertise and contributions
 * **Search Function**: Find relevant content quickly and efficiently
+* **Global Chat**: Communicate with other users in real-time.
+* **Notifications**: Stay informed with real-time updates and alerts.
+* **Moderation Tools**: Ensure the quality and relevance of content with powerful moderation tools.
+* **Responsive Design**: Access the platform seamlessly from any device.
 
 ### Why Choose AskUni?
 * Community-Driven: AskUni thrives on the collective expertise and curiosity of its members
