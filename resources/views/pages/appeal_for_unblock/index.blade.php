@@ -17,18 +17,8 @@
 
     <form action="{{ route('appealForUnblock.store') }}" method="POST">
         @csrf
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="content">Appeal Content</label>
-            <textarea id="content" name="content" class="form-control" required></textarea>
-        </div>
+        <label for="content">Appeal Content:</label>
+        <textarea name="content" id="content" class="form-control" placeholder="Enter your appeal content" required></textarea>
         <button type="submit" class="btn btn-primary">Submit Appeal</button>
     </form>
 </div>
