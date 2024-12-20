@@ -99,8 +99,8 @@ class AdminController extends Controller
     public function storeUser(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255',
+            'name' => 'required|string|max:50',
+            'username' => 'required|string|max:20',
             'email' => 'required|string|email|max:255|unique:users|regex:/^[a-zA-Z0-9._%+-]+@fe\.up\.pt$/',
             'password' => 'required|string|min:8|confirmed',
             'description' => 'nullable|string|max:255',

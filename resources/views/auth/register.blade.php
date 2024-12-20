@@ -8,7 +8,7 @@
     <label for="username">Username
       <div class="tooltip">
         <i class="fas fa-info-circle"></i>
-        <span class="tooltip-text">Maximum 250 characters</span>
+        <span class="tooltip-text">Maximum 20 characters</span>
       </div>
     </label>
     <input id="username" type="text" name="username" value="{{ old('username') }}" required autofocus>
@@ -21,7 +21,7 @@
     <label for="name">Name
       <div class="tooltip">
         <i class="fas fa-info-circle"></i>
-        <span class="tooltip-text">Maximum 250 characters</span>
+        <span class="tooltip-text">Maximum 50 characters</span>
       </div>
     </label>
     <input id="name" type="text" name="name" value="{{ old('name') }}" required>

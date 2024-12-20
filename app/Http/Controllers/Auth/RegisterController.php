@@ -32,7 +32,7 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:250',
+            'name' => 'required|string|max:50',
             'email' => [
                 'required',
                 'email',
@@ -41,7 +41,7 @@ class RegisterController extends Controller
                 'regex:/^[^@]+@fe\.up\.pt$/'
             ],
             'password' => 'required|min:8|confirmed',
-            'username' => 'required|string|max:250|unique:users',  
+            'username' => 'required|string|max:20|unique:users',  
         ]);
     
         User::create([

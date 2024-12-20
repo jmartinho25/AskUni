@@ -20,7 +20,7 @@
             <label for="name">Name
                 <div class="tooltip">
                     <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Maximum 250 characters</span>
+                    <span class="tooltip-text">Maximum 50 characters</span>
                 </div>
             </label>
             <input type="text" name="name" id="name" value="{{ $user->name }}" class="form-control" required>
@@ -30,7 +30,7 @@
             <label for="username">Username
                 <div class="tooltip">
                     <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Maximum 250 characters</span>
+                    <span class="tooltip-text">Maximum 20 characters</span>
                 </div>
             </label>
             <input type="text" name="username" id="username" value="{{ $user->username }}" class="form-control" required>
