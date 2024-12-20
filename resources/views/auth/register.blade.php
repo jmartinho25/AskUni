@@ -11,7 +11,7 @@
         <span class="tooltip-text">Maximum 20 characters</span>
       </div>
     </label>
-    <input id="username" type="text" name="username" value="{{ old('username') }}" required autofocus>
+    <input id="username" type="text" name="username" value="{{ old('username') }}"  required autofocus>
     @if ($errors->has('username'))
       <span class="error">
           {{ $errors->first('username') }}
@@ -24,7 +24,7 @@
         <span class="tooltip-text">Maximum 50 characters</span>
       </div>
     </label>
-    <input id="name" type="text" name="name" value="{{ old('name') }}" required>
+    <input id="name" type="text" name="name" value="{{ old('name') }}"  required>
     @if ($errors->has('name'))
       <span class="error">
           {{ $errors->first('name') }}
@@ -37,7 +37,7 @@
         <span class="tooltip-text">Format: @fe.up.pt <br> Maximum 250 characters</span>
       </div>
     </label>
-    <input id="email" type="email" name="email" value="{{ old('email') }}" required>
+    <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="example@fe.up.pt" required>
     @if ($errors->has('email'))
       <span class="error">
           {{ $errors->first('email') }}
@@ -50,7 +50,7 @@
         <span class="tooltip-text">Minimum 8 characters</span>
       </div>
     </label>
-    <input id="password" type="password" name="password" required>
+    <input id="password" type="password" name="password" placeholder="********" required>
     @if ($errors->has('password'))
       <span class="error">
           {{ $errors->first('password') }}
@@ -58,7 +58,7 @@
     @endif
 
     <label for="password-confirm">Confirm Password</label>
-    <input id="password-confirm" type="password" name="password_confirmation" required>
+    <input id="password-confirm" type="password" name="password_confirmation" placeholder="********" required>
 
     <button type="submit">
       Register

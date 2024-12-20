@@ -20,15 +20,15 @@
             <span class="tooltip-text">Format: @fe.up.pt</span>
         </div>
     </label>
-    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
+    <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="example@fe.up.pt" required autofocus>
     @if ($errors->has('email'))
         <span class="error">
           {{ $errors->first('email') }}
         </span>
     @endif
 
-    <label for="password" >Password</label>
-    <input id="password" type="password" name="password" required>
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" placeholder="********" required>
     @if ($errors->has('password'))
         <span class="alert-error">
             {{ $errors->first('password') }}
