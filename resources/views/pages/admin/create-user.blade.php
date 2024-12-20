@@ -19,7 +19,7 @@
             <label for="name">Name
                 <div class="tooltip">
                     <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Maximum 250 characters</span>
+                    <span class="tooltip-text">Maximum 50 characters</span>
                 </div>
             </label>
             <input type="text" name="name" id="name" class="form-control" required>
@@ -29,7 +29,7 @@
             <label for="username">Username
                 <div class="tooltip">
                     <i class="fas fa-info-circle"></i>
-                    <span class="tooltip-text">Maximum 250 characters</span>
+                    <span class="tooltip-text">Maximum 20 characters</span>
                 </div>
             </label>
             <input type="text" name="username" id="username" class="form-control" required>
@@ -42,7 +42,7 @@
                     <span class="tooltip-text">Format: @fe.up.pt <br> Maximum 250 characters</span>
                 </div>
             </label>
-            <input type="email" name="email" id="email" class="form-control" required>
+            <input type="email" name="email" id="email" class="form-control" placeholder="example@fe.up.pt" required>
         </div>
 
         <div class="form-group">
@@ -52,12 +52,12 @@
                     <span class="tooltip-text">Minimum 8 characters</span>
                 </div>
             </label>
-            <input type="password" name="password" id="password" class="form-control" required>
+            <input type="password" name="password" id="password" class="form-control" placeholder="********" required>
         </div>
 
         <div class="form-group">
             <label for="password_confirmation">Confirm Password</label>
-            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
+            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="********" required>
         </div>
 
         <div class="form-group">
@@ -67,7 +67,7 @@
                     <span class="tooltip-text">Maximum 255 characters</span>
                 </div>
             </label>
-            <textarea name="description" id="description" class="form-control"></textarea>
+            <textarea name="description" id="description" class="form-control" placeholder="Enter a brief description about yourself"></textarea>
         </div>
 
         <div class="form-group">
