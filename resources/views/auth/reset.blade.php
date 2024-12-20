@@ -22,11 +22,11 @@
         @csrf
         <input type="hidden" name="token" value="{{ $token }}">
         <label for="email">Email:</label>
-        <input type="email" name="email" id="email" value="{{ $email ?? old('email') }}" required>
+        <input type="email" name="email" id="email" value="{{ $email ?? old('email') }}" placeholder="example@fe.up.pt" required>
         <label for="password">New Password:</label>
-        <input type="password" name="password" id="password" required>
+        <input type="password" name="password" id="password" placeholder="********" required>
         <label for="password_confirmation">Confirm New Password:</label>
-        <input type="password" name="password_confirmation" id="password_confirmation" required>
+        <input type="password" name="password_confirmation" id="password_confirmation" placeholder="********" required>
         <button type="submit">Reset Password</button>
     </form>
 </div>
