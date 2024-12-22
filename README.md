@@ -58,7 +58,7 @@ To get started, you can use the accounts provided below, or you can create your 
 
 | Type          | Email  | Password |
 | ------------- | --------- | -------- |
-| admin_user@fe.up.pt    | hashed_password_admin |
+| Administrator | admin_user@fe.up.pt    | hashed_password_admin |
 | Moderator | jane_smith@fe.up.pt  | hashed_password_2 |
 | Regular User   | alice_jones@fe.up.pt   | hashed_password_3 |
 | Blocked User| john_doe@fe.up.pt|1234|
