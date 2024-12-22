@@ -25,6 +25,7 @@ tags:
   - name: 'M09: Tags'
   - name: 'M10: Edit History'
   - name: 'M11: Appeals and Password Reset'
+  - name: 'M12: Chat'
 
 
 
@@ -1813,3 +1814,113 @@ paths:
       responses:
         '200':
           description: 'OK. Feedback view displayed.'
+        
+
+
+################ CHAT ################
+
+  /chat:
+    get:
+      operationId: R1201
+      summary: 'R1201: View Chat'
+      description: 'Displays the chat interface. Access: USR'
+      tags:
+        - 'M12: Chat'
+      responses:
+        '200':
+          description: 'OK. Chat interface displayed.'
+        '401':
+          description: 'Unauthorized. User needs to log in.'
+
+  /chat/messages:
+    get:
+      operationId: R1202
+      summary: 'R1202: Fetch Chat Messages'
+      description: 'Fetches chat messages. Access: USR'
+      tags:
+        - 'M12: Chat'
+      parameters:
+        - in: query
+          name: last_message_id
+          schema:
+            type: integer
+          description: 'The ID of the last message fetched.'
+      responses:
+        '200':
+          description: 'OK. Chat messages fetched.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    sender_id:
+                      type: integer
+                    message:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    sender:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        photo:
+                          type: string
+        '401':
+          description: 'Unauthorized. User needs to log in.'
+
+    post:
+      operationId: R1203
+      summary: 'R1203: Send Chat Message'
+      description: 'Sends a new chat message. Access: USR'
+      tags:
+        - 'M12: Chat'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 'The content of the chat message.'
+              required:
+                - message
+      responses:
+        '200':
+          description: 'OK. Chat message sent.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  sender_id:
+                    type: integer
+                  message:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  sender:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      photo:
+                        type: string
+        '401':
+          description: 'Unauthorized. User needs to log in.'
+        '422':
+          description: 'Validation error. Message content is required.'
