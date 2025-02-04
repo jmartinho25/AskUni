@@ -1,9 +1,14 @@
-## AskUni
-
-# Project Name
+# AskUni
 
 ## Description
 This project is a Q&A platform aimed at students and professionals of FEUP. It allows users to ask questions, answer questions, follow topics of interest, and collaborate with the community.
+
+## Project Components
+
+- [ER: Requirements Specification Component](WIKI/ER.md)
+- [EBD: Database Specification Component](WIKI/EBD.md)
+- [EAP: Architecture Specification and Prototype](WIKI/EAP.md)
+- [PA: Product and Presentation](WIKI/PA.md)
 
 ### Features
 - Q&A system
@@ -15,6 +20,15 @@ This project is a Q&A platform aimed at students and professionals of FEUP. It a
 - User profiles to showcase expertise and contributions
 - Efficient search function
 - Global chat for real-time communication
+
+
+### Screenshots
+
+![Screenshot1](docs/Screenshot_1.jpg)
+![Screenshot2](docs/Screenshot_2.jpg)
+![Screenshot3](docs/Screenshot_3.jpg)
+![Screenshot4](docs/Screenshot_4.jpg)
+
 
 ## Installation
 To install the project, follow the steps below:
@@ -48,7 +62,7 @@ To install the project, follow the steps below:
 
 ### Using the production Image
 
-To use the production imagem you should use the following command:
+To use the production imagem you should use the following command (only works in FEUP's network):
 
 ```bash
 docker run -d --name lbaw24153 -p 8001:80 gitlab.up.pt:5050/lbaw/lbaw2425/lbaw24153
@@ -58,7 +72,7 @@ To get started, you can use the accounts provided below, or you can create your 
 
 | Type          | Email  | Password |
 | ------------- | --------- | -------- |
-| admin_user@fe.up.pt    | hashed_password_admin |
+| Administrator | admin_user@fe.up.pt    | hashed_password_admin |
 | Moderator | jane_smith@fe.up.pt  | hashed_password_2 |
 | Regular User   | alice_jones@fe.up.pt   | hashed_password_3 |
 | Blocked User| john_doe@fe.up.pt|1234|
